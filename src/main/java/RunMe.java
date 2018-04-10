@@ -11,6 +11,16 @@ public class RunMe {
 
         SearchResults found= tc.search(new SearchCriteria().impulseClass("I"), false);
 
-        found.getRecords().forEach(r -> System.out.println(r.toJson()) );
+        found.getRecords().forEach(r -> System.out.println(r.toJson()));
+
+        SearchResults mCtiMotors= tc.search(
+                new SearchCriteria()
+                        .impulseClass("M")
+                        .diameter(75)
+                        .manufacturerAbbreviation("cti"),
+               true);
+
+        found.getRecords().forEach(r -> System.out.println(r.toJson()));
+
     }
 }
