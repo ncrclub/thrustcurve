@@ -1,9 +1,9 @@
 package org.thrustcurve.api.search;
 
 import org.thrustcurve.api.criterion.Primitive;
-import util.xml.XmlTag;
+import org.thrustcurve.api.SearchCriteria;
+import org.thrustcurve.api.xml.XmlTag;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class SearchRequest {

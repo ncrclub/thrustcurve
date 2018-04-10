@@ -1,8 +1,8 @@
 package org.thrustcurve.api.data;
 
-import util.json.JsonArray;
-import util.json.JsonObject;
-import util.xml.XmlTag;
+import org.thrustcurve.api.json.JsonArray;
+import org.thrustcurve.api.json.JsonObject;
+import org.thrustcurve.api.xml.XmlTag;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,10 @@
 package org.thrustcurve.api.search;
 
 import org.thrustcurve.api.data.TCMotorRecord;
-import util.json.JsonArray;
-import util.json.JsonObject;
-import util.xml.XmlTag;
-import util.xml.XmlTagList;
+import org.thrustcurve.api.json.JsonArray;
+import org.thrustcurve.api.json.JsonObject;
+import org.thrustcurve.api.xml.XmlTag;
+import org.thrustcurve.api.xml.XmlTagList;
 
 import java.util.ArrayList;
 import java.util.Iterator;

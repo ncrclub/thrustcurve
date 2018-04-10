@@ -2,9 +2,9 @@ package org.thrustcurve.api.criterion;
 
 import org.thrustcurve.api.SearchCriteria;
 
-public class Designation extends Primitive {
+public class CommonName extends Primitive {
 
-	public Designation(String value) {
+	public CommonName(String value) {
 		super(SearchCriteria.CRITERIA_DESIGNATION, value);
 	}
 

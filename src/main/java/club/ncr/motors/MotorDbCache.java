@@ -1,16 +1,16 @@
 package club.ncr.motors;
 
-import club.ncr.website.db.Motor;
-import club.ncr.website.db.MotorCase;
-import club.ncr.website.db.MotorCertOrg;
-import club.ncr.website.db.MotorData;
-import club.ncr.website.db.MotorDataFormat;
-import club.ncr.website.db.MotorDiameter;
-import club.ncr.website.db.MotorImpulse;
-import club.ncr.website.db.MotorMfg;
-import club.ncr.website.db.MotorName;
-import club.ncr.website.db.MotorPropellant;
-import club.ncr.website.db.MotorType;
+import club.ncr.cayenne.Motor;
+import club.ncr.cayenne.MotorCase;
+import club.ncr.cayenne.MotorCertOrg;
+import club.ncr.cayenne.MotorData;
+import club.ncr.cayenne.MotorDataFormat;
+import club.ncr.cayenne.MotorDiameter;
+import club.ncr.cayenne.MotorImpulse;
+import club.ncr.cayenne.MotorMfg;
+import club.ncr.cayenne.MotorName;
+import club.ncr.cayenne.MotorPropellant;
+import club.ncr.cayenne.MotorType;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.thrustcurve.api.data.TCMotorData;

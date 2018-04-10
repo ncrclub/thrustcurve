@@ -1,13 +1,15 @@
 package org.thrustcurve.api.criterion;
 
+import org.thrustcurve.api.SearchCriteria;
+
 public class Diameter extends Primitive {
 
-	public Diameter() {
-		this(null);
+	public Diameter(String value) {
+		super(SearchCriteria.CRITERIA_DIAMETER, value);
 	}
 
-	public Diameter(String value) {
-		super("diameter", value);
+	public Diameter(int value) {
+		super(SearchCriteria.CRITERIA_DIAMETER, ""+ value);
 	}
 
 }

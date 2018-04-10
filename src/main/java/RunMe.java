@@ -1,13 +1,12 @@
-import org.thrustcurve.api.ThrustCurveApi;
-import org.thrustcurve.api.search.SearchCriteria;
-import org.thrustcurve.api.search.SearchRequest;
+import org.thrustcurve.TCApiClient;
+import org.thrustcurve.api.SearchCriteria;
 import org.thrustcurve.api.search.SearchResults;
 
 public class RunMe {
 
     public static void main(String[] args) throws Exception {
 
-        ThrustCurveApi tc= new ThrustCurveApi();
+        TCApiClient tc= new TCApiClient();
 
         SearchResults found= tc.search(new SearchCriteria().impulseClass("I"), false);
 

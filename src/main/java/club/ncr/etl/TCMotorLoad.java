@@ -1,12 +1,12 @@
 package club.ncr.etl;
 
 import club.ncr.motors.MotorDbCache;
-import club.ncr.website.db.MotorDiameter;
-import club.ncr.website.db.MotorImpulse;
-import club.ncr.website.db.MotorMfg;
+import club.ncr.cayenne.MotorDiameter;
+import club.ncr.cayenne.MotorImpulse;
+import club.ncr.cayenne.MotorMfg;
 import org.apache.cayenne.access.DataContext;
-import org.thrustcurve.api.ThrustCurveApi;
-import org.thrustcurve.api.search.SearchCriteria;
+import org.thrustcurve.TCApiClient;
+import org.thrustcurve.api.SearchCriteria;
 import org.thrustcurve.api.search.SearchResults;
 
 import java.io.IOException;
@@ -138,9 +138,9 @@ public class TCMotorLoad {
 	}
 
 	private SearchResults update(SearchCriteria criteria) {
-		ThrustCurveApi api;
+		TCApiClient api;
 		try {
-			api= new ThrustCurveApi();
+			api= new TCApiClient();
 			
 			try {
 				SearchResults searchResults= api.search(criteria, true);
