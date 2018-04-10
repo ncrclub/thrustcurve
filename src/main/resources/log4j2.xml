@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+  <Appenders>
+    <Console name="CONSOLE" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{yyMMdd:HHmmss.SSS} %-5level %c{1}\t%msg%n" />
+    </Console>
+
+    <RollingFile name="ERROR"
+      fileName="/var/log/tomcat/ncr/error.log"
+      filePattern="/var/log/tomcat/ncr/error.log_%i"
+      immediateFlush="false" append="true">
+      <PatternLayout pattern="%d{yyMMdd:HHmmss.SSS} %-5level %c\t%msg%n" />
+      <Policies>
+        <SizeBasedTriggeringPolicy size="10Mb" />
+      </Policies>
+      <DefaultRolloverStrategy max="3" />
+    </RollingFile>
+
+    <RollingFile name="ACCESS"
+      fileName="/var/log/tomcat/ncr/access.log"
+      filePattern="/var/log/tomcat/ncr/access.log_%i"
+      immediateFlush="true" append="true">
+      <PatternLayout pattern="%d{yyMMdd:HHmmss.SSS} %-5level %c{1}\t%msg%n" />
+      <Policies>
+        <SizeBasedTriggeringPolicy size="20Mb" />
+      </Policies>
+      <DefaultRolloverStrategy max="5" />
+    </RollingFile>
+    
+    <RollingFile name="TOMCAT"
+      fileName="/var/log/tomcat/ncr/tomcat.log"
+      filePattern="/var/log/tomcat/ncr/tomcat.log_%i"
+      immediateFlush="false" append="true">
+      <PatternLayout pattern="%d{yyMMdd:HHmmss.SSS} %-5level \t%msg%n" />
+      <Policies>
+        <SizeBasedTriggeringPolicy size="10Mb" />
+      </Policies>
+      <DefaultRolloverStrategy max="1" />
+    </RollingFile>
+    
+    <RollingFile name="CAYENNE"
+      fileName="/var/log/tomcat/ncr/cayenne.log"
+      filePattern="/var/log/tomcat/ncr/cayenne.log_%i"
+      immediateFlush="false" append="true">
+      <PatternLayout pattern="%d{yyMMdd:HHmmss.SSS} %-5level \t%msg%n" />
+      <Policies>
+        <SizeBasedTriggeringPolicy size="10Mb" />
+      </Policies>
+      <DefaultRolloverStrategy max="1" />
+    </RollingFile>
+
+    <RollingFile name="DEBUG"
+      fileName="/var/log/tomcat/ncr/debug.log"
+      filePattern="/var/log/tomcat/ncr/debug.log_%i"
+      immediateFlush="true" append="true">
+      <PatternLayout pattern="%d{yyMMdd:HHmmss.SSS} %-5level %-20c{1}\t%msg%n" />
+      <Policies>
+        <SizeBasedTriggeringPolicy size="10Mb" />
+      </Policies>
+      <DefaultRolloverStrategy max="1" />
+    </RollingFile>
+
+  </Appenders>
+
+  <Loggers>
+    <Logger name="org.apache.catalina" additivity="false" level="ERROR">
+      <AppenderRef ref="TOMCAT"/>
+    </Logger>
+    <Logger name="mc.andromeda.modules.AccessLogger" additivity="false" level="DEBUG">
+      <AppenderRef ref="ACCESS"/>
+    </Logger>
+    <Logger additivity="true" level="ERROR">
+      <AppenderRef ref="ERROR"/>
+    </Logger>
+    <Root level="all">
+      <AppenderRef ref="DEBUG" />
+    </Root>
+  </Loggers>
+
+</Configuration>

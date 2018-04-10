@@ -1,0 +1,1331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/3.0/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
+	 project-version="6">
+	<property name="defaultPackage" value="club.ncr.website.db.phpbb"/>
+	<property name="defaultSchema" value="ncr_phpbbs"/>
+	<db-entity name="phpbb_acl_groups" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="auth_option_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="auth_role_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="auth_setting" type="TINYINT" isMandatory="true" length="2"/>
+		<db-attribute name="forum_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="group_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_acl_options" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="auth_option" type="VARCHAR" isMandatory="true" length="50"/>
+		<db-attribute name="auth_option_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="founder_only" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="is_global" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="is_local" type="TINYINT" isMandatory="true" length="1"/>
+	</db-entity>
+	<db-entity name="phpbb_acl_roles" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="role_description" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="role_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="role_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="role_order" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="role_type" type="VARCHAR" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="phpbb_acl_roles_data" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="auth_option_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="auth_setting" type="TINYINT" isMandatory="true" length="2"/>
+		<db-attribute name="role_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_acl_users" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="auth_option_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="auth_role_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="auth_setting" type="TINYINT" isMandatory="true" length="2"/>
+		<db-attribute name="forum_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_attachments" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="attach_comment" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="attach_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="download_count" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="extension" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="filesize" type="BIGINT" isMandatory="true" length="20"/>
+		<db-attribute name="filetime" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="in_message" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="is_orphan" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="mimetype" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="physical_filename" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="post_msg_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="poster_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="real_filename" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="thumbnail" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="topic_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_banlist" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="ban_email" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="ban_end" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="ban_exclude" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="ban_give_reason" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="ban_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="ban_ip" type="VARCHAR" isMandatory="true" length="40"/>
+		<db-attribute name="ban_reason" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="ban_start" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="ban_userid" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_bbcodes" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="bbcode_helpline" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="bbcode_id" type="SMALLINT" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="bbcode_match" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="bbcode_tag" type="VARCHAR" isMandatory="true" length="16"/>
+		<db-attribute name="bbcode_tpl" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="display_on_posting" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="first_pass_match" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="first_pass_replace" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="second_pass_match" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="second_pass_replace" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+	</db-entity>
+	<db-entity name="phpbb_bookmarks" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="topic_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_bots" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="bot_active" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="bot_agent" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="bot_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="bot_ip" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="bot_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="user_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_config" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="config_name" type="VARCHAR" isPrimaryKey="true" isMandatory="true" length="255"/>
+		<db-attribute name="config_value" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="is_dynamic" type="TINYINT" isMandatory="true" length="1"/>
+	</db-entity>
+	<db-entity name="phpbb_confirm" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="attempts" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="8"/>
+		<db-attribute name="confirm_id" type="CHAR" isPrimaryKey="true" isMandatory="true" length="32"/>
+		<db-attribute name="confirm_type" type="TINYINT" isMandatory="true" length="3"/>
+		<db-attribute name="seed" type="BIGINT" isMandatory="true" length="10"/>
+		<db-attribute name="session_id" type="CHAR" isPrimaryKey="true" isMandatory="true" length="32"/>
+	</db-entity>
+	<db-entity name="phpbb_disallow" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="disallow_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="disallow_username" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="phpbb_drafts" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="draft_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="draft_message" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="draft_subject" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="forum_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="save_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="topic_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_extension_groups" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="allow_group" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="allow_in_pm" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="allowed_forums" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="cat_id" type="TINYINT" isMandatory="true" length="2"/>
+		<db-attribute name="download_mode" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="group_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="group_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="max_filesize" type="BIGINT" isMandatory="true" length="20"/>
+		<db-attribute name="upload_icon" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="phpbb_extensions" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="extension" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="extension_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="group_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_forums" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="display_on_index" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="display_subforum_list" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="enable_icons" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="enable_indexing" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="enable_prune" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="forum_desc" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="forum_desc_bitfield" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="forum_desc_options" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="forum_desc_uid" type="VARCHAR" isMandatory="true" length="8"/>
+		<db-attribute name="forum_flags" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="forum_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="forum_image" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="forum_last_post_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="forum_last_post_subject" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="forum_last_post_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="forum_last_poster_colour" type="VARCHAR" isMandatory="true" length="6"/>
+		<db-attribute name="forum_last_poster_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="forum_last_poster_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="forum_link" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="forum_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="forum_options" type="BIGINT" isMandatory="true" length="20"/>
+		<db-attribute name="forum_parents" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="forum_password" type="VARCHAR" isMandatory="true" length="40"/>
+		<db-attribute name="forum_posts" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="forum_rules" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="forum_rules_bitfield" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="forum_rules_link" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="forum_rules_options" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="forum_rules_uid" type="VARCHAR" isMandatory="true" length="8"/>
+		<db-attribute name="forum_status" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="forum_style" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="forum_topics" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="forum_topics_per_page" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="forum_topics_real" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="forum_type" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="left_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="parent_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="prune_days" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="prune_freq" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="prune_next" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="prune_viewed" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="right_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_forums_access" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="forum_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="session_id" type="CHAR" isPrimaryKey="true" isMandatory="true" length="32"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_forums_track" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="forum_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="mark_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_forums_watch" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="forum_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="notify_status" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_groups" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="group_avatar" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="group_avatar_height" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="group_avatar_type" type="TINYINT" isMandatory="true" length="2"/>
+		<db-attribute name="group_avatar_width" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="group_colour" type="VARCHAR" isMandatory="true" length="6"/>
+		<db-attribute name="group_desc" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="group_desc_bitfield" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="group_desc_options" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="group_desc_uid" type="VARCHAR" isMandatory="true" length="8"/>
+		<db-attribute name="group_display" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="group_founder_manage" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="group_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="group_legend" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="group_max_recipients" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="group_message_limit" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="group_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="group_rank" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="group_receive_pm" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="group_sig_chars" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="group_skip_auth" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="group_type" type="TINYINT" isMandatory="true" length="4"/>
+	</db-entity>
+	<db-entity name="phpbb_icons" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="display_on_posting" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="icons_height" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="icons_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="icons_order" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="icons_url" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="icons_width" type="TINYINT" isMandatory="true" length="4"/>
+	</db-entity>
+	<db-entity name="phpbb_lang" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="lang_author" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="lang_dir" type="VARCHAR" isMandatory="true" length="30"/>
+		<db-attribute name="lang_english_name" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="lang_id" type="TINYINT" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="lang_iso" type="VARCHAR" isMandatory="true" length="30"/>
+		<db-attribute name="lang_local_name" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="phpbb_log" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="forum_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="log_data" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="log_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="log_ip" type="VARCHAR" isMandatory="true" length="40"/>
+		<db-attribute name="log_operation" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="log_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="log_type" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="reportee_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="topic_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_login_attempts" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="attempt_browser" type="VARCHAR" isMandatory="true" length="150"/>
+		<db-attribute name="attempt_forwarded_for" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="attempt_ip" type="VARCHAR" isPrimaryKey="true" isMandatory="true" length="40"/>
+		<db-attribute name="attempt_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="username" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="username_clean" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="phpbb_moderator_cache" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="display_on_index" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="forum_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="group_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="group_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="username" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="phpbb_modules" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="left_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="module_auth" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="module_basename" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="module_class" type="VARCHAR" isMandatory="true" length="10"/>
+		<db-attribute name="module_display" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="module_enabled" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="module_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="module_langname" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="module_mode" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="parent_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="right_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_poll_options" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="poll_option_id" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="poll_option_text" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="poll_option_total" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="topic_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_poll_votes" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="poll_option_id" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="topic_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="vote_user_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="vote_user_ip" type="VARCHAR" isMandatory="true" length="40"/>
+	</db-entity>
+	<db-entity name="phpbb_posts" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="bbcode_bitfield" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="bbcode_uid" type="VARCHAR" isMandatory="true" length="8"/>
+		<db-attribute name="enable_bbcode" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="enable_magic_url" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="enable_sig" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="enable_smilies" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="forum_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="icon_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="post_approved" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="post_attachment" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="post_checksum" type="VARCHAR" isMandatory="true" length="32"/>
+		<db-attribute name="post_edit_count" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="post_edit_locked" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="post_edit_reason" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="post_edit_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="post_edit_user" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="post_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="post_postcount" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="post_reported" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="post_subject" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="post_text" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="post_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="post_username" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="poster_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="poster_ip" type="VARCHAR" isMandatory="true" length="40"/>
+		<db-attribute name="topic_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_privmsgs" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="author_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="author_ip" type="VARCHAR" isMandatory="true" length="40"/>
+		<db-attribute name="bbcode_bitfield" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="bbcode_uid" type="VARCHAR" isMandatory="true" length="8"/>
+		<db-attribute name="bcc_address" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="enable_bbcode" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="enable_magic_url" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="enable_sig" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="enable_smilies" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="icon_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="message_attachment" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="message_edit_count" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="message_edit_reason" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="message_edit_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="message_edit_user" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="message_reported" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="message_subject" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="message_text" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="message_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="msg_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="root_level" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="to_address" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+	</db-entity>
+	<db-entity name="phpbb_privmsgs_folder" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="folder_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="folder_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="pm_count" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_privmsgs_rules" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="rule_action" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="rule_check" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="rule_connection" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="rule_folder_id" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="rule_group_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="rule_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="rule_string" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="rule_user_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_privmsgs_to" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="author_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="folder_id" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="msg_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="pm_deleted" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="pm_forwarded" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="pm_marked" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="pm_new" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="pm_replied" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="pm_unread" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_profile_fields" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="field_active" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="field_default_value" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="field_hide" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="field_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="field_ident" type="VARCHAR" isMandatory="true" length="20"/>
+		<db-attribute name="field_length" type="VARCHAR" isMandatory="true" length="20"/>
+		<db-attribute name="field_maxlen" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="field_minlen" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="field_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="field_no_view" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="field_novalue" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="field_order" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="field_required" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="field_show_novalue" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="field_show_on_reg" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="field_show_on_vt" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="field_show_profile" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="field_type" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="field_validation" type="VARCHAR" isMandatory="true" length="20"/>
+	</db-entity>
+	<db-entity name="phpbb_profile_fields_data" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_profile_fields_lang" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="field_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="field_type" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="lang_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="lang_value" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="option_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_profile_lang" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="field_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="lang_default_value" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="lang_explain" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="lang_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="lang_name" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="phpbb_ranks" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="rank_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="rank_image" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="rank_min" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="rank_special" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="rank_title" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="phpbb_reports" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="pm_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="post_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="reason_id" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="report_closed" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="report_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="report_text" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="report_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_notify" type="TINYINT" isMandatory="true" length="1"/>
+	</db-entity>
+	<db-entity name="phpbb_reports_reasons" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="reason_description" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="reason_id" type="SMALLINT" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="reason_order" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="reason_title" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="phpbb_search_results" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="search_authors" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="search_key" type="VARCHAR" isPrimaryKey="true" isMandatory="true" length="32"/>
+		<db-attribute name="search_keywords" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="search_time" type="BIGINT" isMandatory="true" length="11"/>
+	</db-entity>
+	<db-entity name="phpbb_search_wordlist" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="word_common" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="word_count" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="word_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="word_text" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="phpbb_search_wordmatch" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="post_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="title_match" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="word_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_sessions" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="session_admin" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="session_autologin" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="session_browser" type="VARCHAR" isMandatory="true" length="150"/>
+		<db-attribute name="session_forum_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="session_forwarded_for" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="session_id" type="CHAR" isPrimaryKey="true" isMandatory="true" length="32"/>
+		<db-attribute name="session_ip" type="VARCHAR" isMandatory="true" length="40"/>
+		<db-attribute name="session_last_visit" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="session_page" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="session_start" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="session_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="session_user_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="session_viewonline" type="TINYINT" isMandatory="true" length="1"/>
+	</db-entity>
+	<db-entity name="phpbb_sessions_keys" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="key_id" type="CHAR" isPrimaryKey="true" isMandatory="true" length="32"/>
+		<db-attribute name="last_ip" type="VARCHAR" isMandatory="true" length="40"/>
+		<db-attribute name="last_login" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_sitelist" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="ip_exclude" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="site_hostname" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="site_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="site_ip" type="VARCHAR" isMandatory="true" length="40"/>
+	</db-entity>
+	<db-entity name="phpbb_smilies" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="code" type="VARCHAR" isMandatory="true" length="50"/>
+		<db-attribute name="display_on_posting" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="emotion" type="VARCHAR" isMandatory="true" length="50"/>
+		<db-attribute name="smiley_height" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="smiley_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="smiley_order" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="smiley_url" type="VARCHAR" isMandatory="true" length="50"/>
+		<db-attribute name="smiley_width" type="SMALLINT" isMandatory="true" length="4"/>
+	</db-entity>
+	<db-entity name="phpbb_styles" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="imageset_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="style_active" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="style_copyright" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="style_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="style_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="template_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="theme_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_styles_imageset" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="imageset_copyright" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="imageset_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="imageset_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="imageset_path" type="VARCHAR" isMandatory="true" length="100"/>
+	</db-entity>
+	<db-entity name="phpbb_styles_imageset_data" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="image_filename" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="image_height" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="image_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="image_lang" type="VARCHAR" isMandatory="true" length="30"/>
+		<db-attribute name="image_name" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="image_width" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="imageset_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_styles_template" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="bbcode_bitfield" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="template_copyright" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="template_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="template_inherit_path" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="template_inherits_id" type="BIGINT" isMandatory="true" length="4"/>
+		<db-attribute name="template_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="template_path" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="template_storedb" type="TINYINT" isMandatory="true" length="1"/>
+	</db-entity>
+	<db-entity name="phpbb_styles_template_data" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="template_data" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="template_filename" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="template_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="template_included" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="template_mtime" type="BIGINT" isMandatory="true" length="11"/>
+	</db-entity>
+	<db-entity name="phpbb_styles_theme" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="theme_copyright" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="theme_data" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="theme_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="theme_mtime" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="theme_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="theme_path" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="theme_storedb" type="TINYINT" isMandatory="true" length="1"/>
+	</db-entity>
+	<db-entity name="phpbb_topics" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="forum_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="icon_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="poll_last_vote" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="poll_length" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="poll_max_options" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="poll_start" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="poll_title" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="poll_vote_change" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="topic_approved" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="topic_attachment" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="topic_bumped" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="topic_bumper" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="topic_first_post_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="topic_first_poster_colour" type="VARCHAR" isMandatory="true" length="6"/>
+		<db-attribute name="topic_first_poster_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="topic_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="topic_last_post_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="topic_last_post_subject" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="topic_last_post_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="topic_last_poster_colour" type="VARCHAR" isMandatory="true" length="6"/>
+		<db-attribute name="topic_last_poster_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="topic_last_poster_name" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="topic_last_view_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="topic_moved_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="topic_poster" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="topic_replies" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="topic_replies_real" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="topic_reported" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="topic_status" type="TINYINT" isMandatory="true" length="3"/>
+		<db-attribute name="topic_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="topic_time_limit" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="topic_title" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="topic_type" type="TINYINT" isMandatory="true" length="3"/>
+		<db-attribute name="topic_views" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_topics_posted" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="topic_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="topic_posted" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_topics_track" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="forum_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="mark_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="topic_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_topics_watch" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="notify_status" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="topic_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_id" type="BIGINT" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_user_group" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="group_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="group_leader" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="user_pending" type="TINYINT" isMandatory="true" length="1"/>
+	</db-entity>
+	<db-entity name="phpbb_users" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="group_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_actkey" type="VARCHAR" isMandatory="true" length="32"/>
+		<db-attribute name="user_aim" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="user_allow_massemail" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_allow_pm" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_allow_viewemail" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_allow_viewonline" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_avatar" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="user_avatar_height" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="user_avatar_type" type="TINYINT" isMandatory="true" length="2"/>
+		<db-attribute name="user_avatar_width" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="user_birthday" type="VARCHAR" isMandatory="true" length="10"/>
+		<db-attribute name="user_colour" type="VARCHAR" isMandatory="true" length="6"/>
+		<db-attribute name="user_dateformat" type="VARCHAR" isMandatory="true" length="30"/>
+		<db-attribute name="user_dst" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_email" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="user_email_hash" type="BIGINT" isMandatory="true" length="20"/>
+		<db-attribute name="user_emailtime" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_form_salt" type="VARCHAR" isMandatory="true" length="32"/>
+		<db-attribute name="user_from" type="VARCHAR" isMandatory="true" length="100"/>
+		<db-attribute name="user_full_folder" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="user_icq" type="VARCHAR" isMandatory="true" length="15"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="user_inactive_reason" type="TINYINT" isMandatory="true" length="2"/>
+		<db-attribute name="user_inactive_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_interests" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="user_ip" type="VARCHAR" isMandatory="true" length="40"/>
+		<db-attribute name="user_jabber" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="user_lang" type="VARCHAR" isMandatory="true" length="30"/>
+		<db-attribute name="user_last_confirm_key" type="VARCHAR" isMandatory="true" length="10"/>
+		<db-attribute name="user_last_privmsg" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_last_search" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_last_warning" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_lastmark" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_lastpage" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="user_lastpost_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_lastvisit" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_login_attempts" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="user_message_rules" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_msnm" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="user_new" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_new_privmsg" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="user_newpasswd" type="VARCHAR" isMandatory="true" length="40"/>
+		<db-attribute name="user_notify" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_notify_pm" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_notify_type" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="user_occ" type="LONGVARCHAR" isMandatory="true" length="65535"/>
+		<db-attribute name="user_options" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_pass_convert" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_passchg" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_password" type="VARCHAR" isMandatory="true" length="40"/>
+		<db-attribute name="user_perm_from" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_permissions" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="user_post_show_days" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="user_post_sortby_dir" type="VARCHAR" isMandatory="true" length="1"/>
+		<db-attribute name="user_post_sortby_type" type="VARCHAR" isMandatory="true" length="1"/>
+		<db-attribute name="user_posts" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_rank" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_regdate" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_reminded" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="user_reminded_time" type="BIGINT" isMandatory="true" length="11"/>
+		<db-attribute name="user_sig" type="LONGVARCHAR" isMandatory="true" length="16277215"/>
+		<db-attribute name="user_sig_bbcode_bitfield" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="user_sig_bbcode_uid" type="VARCHAR" isMandatory="true" length="8"/>
+		<db-attribute name="user_style" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_timezone" type="DECIMAL" isMandatory="true" length="5" scale="2"/>
+		<db-attribute name="user_topic_show_days" type="SMALLINT" isMandatory="true" length="4"/>
+		<db-attribute name="user_topic_sortby_dir" type="VARCHAR" isMandatory="true" length="1"/>
+		<db-attribute name="user_topic_sortby_type" type="VARCHAR" isMandatory="true" length="1"/>
+		<db-attribute name="user_type" type="TINYINT" isMandatory="true" length="2"/>
+		<db-attribute name="user_unread_privmsg" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="user_warnings" type="TINYINT" isMandatory="true" length="4"/>
+		<db-attribute name="user_website" type="VARCHAR" isMandatory="true" length="200"/>
+		<db-attribute name="user_yim" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="username" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="username_clean" type="VARCHAR" isMandatory="true" length="255"/>
+	</db-entity>
+	<db-entity name="phpbb_warnings" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="log_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="post_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="user_id" type="BIGINT" isMandatory="true" length="8"/>
+		<db-attribute name="warning_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="warning_time" type="BIGINT" isMandatory="true" length="11"/>
+	</db-entity>
+	<db-entity name="phpbb_words" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="replacement" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="word" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="word_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="phpbb_zebra" schema="ncr_phpbbs" catalog="ncr_phpbbs">
+		<db-attribute name="foe" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="friend" type="TINYINT" isMandatory="true" length="1"/>
+		<db-attribute name="user_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+		<db-attribute name="zebra_id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="8"/>
+	</db-entity>
+	<obj-entity name="PhpbbAclGroups" className="org.ncr.db.phpbb.PhpbbAclGroups" dbEntityName="phpbb_acl_groups">
+		<obj-attribute name="authOptionId" type="java.lang.Long" db-attribute-path="auth_option_id"/>
+		<obj-attribute name="authRoleId" type="java.lang.Long" db-attribute-path="auth_role_id"/>
+		<obj-attribute name="authSetting" type="java.lang.Byte" db-attribute-path="auth_setting"/>
+		<obj-attribute name="forumId" type="java.lang.Long" db-attribute-path="forum_id"/>
+		<obj-attribute name="groupId" type="java.lang.Long" db-attribute-path="group_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbAclOptions" className="org.ncr.db.phpbb.PhpbbAclOptions" dbEntityName="phpbb_acl_options">
+		<obj-attribute name="authOption" type="java.lang.String" db-attribute-path="auth_option"/>
+		<obj-attribute name="founderOnly" type="java.lang.Byte" db-attribute-path="founder_only"/>
+		<obj-attribute name="isGlobal" type="java.lang.Byte" db-attribute-path="is_global"/>
+		<obj-attribute name="isLocal" type="java.lang.Byte" db-attribute-path="is_local"/>
+	</obj-entity>
+	<obj-entity name="PhpbbAclRoles" className="org.ncr.db.phpbb.PhpbbAclRoles" dbEntityName="phpbb_acl_roles">
+		<obj-attribute name="roleDescription" type="java.lang.String" db-attribute-path="role_description"/>
+		<obj-attribute name="roleName" type="java.lang.String" db-attribute-path="role_name"/>
+		<obj-attribute name="roleOrder" type="java.lang.Short" db-attribute-path="role_order"/>
+		<obj-attribute name="roleType" type="java.lang.String" db-attribute-path="role_type"/>
+	</obj-entity>
+	<obj-entity name="PhpbbAclRolesData" className="org.ncr.db.phpbb.PhpbbAclRolesData" dbEntityName="phpbb_acl_roles_data">
+		<obj-attribute name="authSetting" type="java.lang.Byte" db-attribute-path="auth_setting"/>
+	</obj-entity>
+	<obj-entity name="PhpbbAclUsers" className="org.ncr.db.phpbb.PhpbbAclUsers" dbEntityName="phpbb_acl_users">
+		<obj-attribute name="authOptionId" type="java.lang.Long" db-attribute-path="auth_option_id"/>
+		<obj-attribute name="authRoleId" type="java.lang.Long" db-attribute-path="auth_role_id"/>
+		<obj-attribute name="authSetting" type="java.lang.Byte" db-attribute-path="auth_setting"/>
+		<obj-attribute name="forumId" type="java.lang.Long" db-attribute-path="forum_id"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbAttachments" className="org.ncr.db.phpbb.PhpbbAttachments" dbEntityName="phpbb_attachments">
+		<obj-attribute name="attachComment" type="java.lang.String" db-attribute-path="attach_comment"/>
+		<obj-attribute name="downloadCount" type="java.lang.Long" db-attribute-path="download_count"/>
+		<obj-attribute name="extension" type="java.lang.String" db-attribute-path="extension"/>
+		<obj-attribute name="filesize" type="java.lang.Long" db-attribute-path="filesize"/>
+		<obj-attribute name="filetime" type="java.lang.Long" db-attribute-path="filetime"/>
+		<obj-attribute name="inMessage" type="java.lang.Byte" db-attribute-path="in_message"/>
+		<obj-attribute name="isOrphan" type="java.lang.Byte" db-attribute-path="is_orphan"/>
+		<obj-attribute name="mimetype" type="java.lang.String" db-attribute-path="mimetype"/>
+		<obj-attribute name="physicalFilename" type="java.lang.String" db-attribute-path="physical_filename"/>
+		<obj-attribute name="postMsgId" type="java.lang.Long" db-attribute-path="post_msg_id"/>
+		<obj-attribute name="posterId" type="java.lang.Long" db-attribute-path="poster_id"/>
+		<obj-attribute name="realFilename" type="java.lang.String" db-attribute-path="real_filename"/>
+		<obj-attribute name="thumbnail" type="java.lang.Byte" db-attribute-path="thumbnail"/>
+		<obj-attribute name="topicId" type="java.lang.Long" db-attribute-path="topic_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbBanlist" className="org.ncr.db.phpbb.PhpbbBanlist" dbEntityName="phpbb_banlist">
+		<obj-attribute name="banEmail" type="java.lang.String" db-attribute-path="ban_email"/>
+		<obj-attribute name="banEnd" type="java.lang.Long" db-attribute-path="ban_end"/>
+		<obj-attribute name="banExclude" type="java.lang.Byte" db-attribute-path="ban_exclude"/>
+		<obj-attribute name="banGiveReason" type="java.lang.String" db-attribute-path="ban_give_reason"/>
+		<obj-attribute name="banIp" type="java.lang.String" db-attribute-path="ban_ip"/>
+		<obj-attribute name="banReason" type="java.lang.String" db-attribute-path="ban_reason"/>
+		<obj-attribute name="banStart" type="java.lang.Long" db-attribute-path="ban_start"/>
+		<obj-attribute name="banUserid" type="java.lang.Long" db-attribute-path="ban_userid"/>
+	</obj-entity>
+	<obj-entity name="PhpbbBbcodes" className="org.ncr.db.phpbb.PhpbbBbcodes" dbEntityName="phpbb_bbcodes">
+		<obj-attribute name="bbcodeHelpline" type="java.lang.String" db-attribute-path="bbcode_helpline"/>
+		<obj-attribute name="bbcodeMatch" type="java.lang.String" db-attribute-path="bbcode_match"/>
+		<obj-attribute name="bbcodeTag" type="java.lang.String" db-attribute-path="bbcode_tag"/>
+		<obj-attribute name="bbcodeTpl" type="java.lang.String" db-attribute-path="bbcode_tpl"/>
+		<obj-attribute name="displayOnPosting" type="java.lang.Byte" db-attribute-path="display_on_posting"/>
+		<obj-attribute name="firstPassMatch" type="java.lang.String" db-attribute-path="first_pass_match"/>
+		<obj-attribute name="firstPassReplace" type="java.lang.String" db-attribute-path="first_pass_replace"/>
+		<obj-attribute name="secondPassMatch" type="java.lang.String" db-attribute-path="second_pass_match"/>
+		<obj-attribute name="secondPassReplace" type="java.lang.String" db-attribute-path="second_pass_replace"/>
+	</obj-entity>
+	<obj-entity name="PhpbbBookmarks" className="org.ncr.db.phpbb.PhpbbBookmarks" dbEntityName="phpbb_bookmarks">
+	</obj-entity>
+	<obj-entity name="PhpbbBots" className="org.ncr.db.phpbb.PhpbbBots" dbEntityName="phpbb_bots">
+		<obj-attribute name="botActive" type="java.lang.Byte" db-attribute-path="bot_active"/>
+		<obj-attribute name="botAgent" type="java.lang.String" db-attribute-path="bot_agent"/>
+		<obj-attribute name="botIp" type="java.lang.String" db-attribute-path="bot_ip"/>
+		<obj-attribute name="botName" type="java.lang.String" db-attribute-path="bot_name"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbConfig" className="org.ncr.db.phpbb.PhpbbConfig" dbEntityName="phpbb_config">
+		<obj-attribute name="configValue" type="java.lang.String" db-attribute-path="config_value"/>
+		<obj-attribute name="isDynamic" type="java.lang.Byte" db-attribute-path="is_dynamic"/>
+	</obj-entity>
+	<obj-entity name="PhpbbConfirm" className="org.ncr.db.phpbb.PhpbbConfirm" dbEntityName="phpbb_confirm">
+		<obj-attribute name="attempts" type="java.lang.Long" db-attribute-path="attempts"/>
+		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
+		<obj-attribute name="confirmType" type="java.lang.Byte" db-attribute-path="confirm_type"/>
+		<obj-attribute name="seed" type="java.lang.Long" db-attribute-path="seed"/>
+	</obj-entity>
+	<obj-entity name="PhpbbDisallow" className="org.ncr.db.phpbb.PhpbbDisallow" dbEntityName="phpbb_disallow">
+		<obj-attribute name="disallowUsername" type="java.lang.String" db-attribute-path="disallow_username"/>
+	</obj-entity>
+	<obj-entity name="PhpbbDrafts" className="org.ncr.db.phpbb.PhpbbDrafts" dbEntityName="phpbb_drafts">
+		<obj-attribute name="draftMessage" type="java.lang.String" db-attribute-path="draft_message"/>
+		<obj-attribute name="draftSubject" type="java.lang.String" db-attribute-path="draft_subject"/>
+		<obj-attribute name="forumId" type="java.lang.Long" db-attribute-path="forum_id"/>
+		<obj-attribute name="saveTime" type="java.lang.Long" db-attribute-path="save_time"/>
+		<obj-attribute name="topicId" type="java.lang.Long" db-attribute-path="topic_id"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbExtensionGroups" className="org.ncr.db.phpbb.PhpbbExtensionGroups" dbEntityName="phpbb_extension_groups">
+		<obj-attribute name="allowGroup" type="java.lang.Byte" db-attribute-path="allow_group"/>
+		<obj-attribute name="allowInPm" type="java.lang.Byte" db-attribute-path="allow_in_pm"/>
+		<obj-attribute name="allowedForums" type="java.lang.String" db-attribute-path="allowed_forums"/>
+		<obj-attribute name="catId" type="java.lang.Byte" db-attribute-path="cat_id"/>
+		<obj-attribute name="downloadMode" type="java.lang.Byte" db-attribute-path="download_mode"/>
+		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="group_name"/>
+		<obj-attribute name="maxFilesize" type="java.lang.Long" db-attribute-path="max_filesize"/>
+		<obj-attribute name="uploadIcon" type="java.lang.String" db-attribute-path="upload_icon"/>
+	</obj-entity>
+	<obj-entity name="PhpbbExtensions" className="org.ncr.db.phpbb.PhpbbExtensions" dbEntityName="phpbb_extensions">
+		<obj-attribute name="extension" type="java.lang.String" db-attribute-path="extension"/>
+		<obj-attribute name="groupId" type="java.lang.Long" db-attribute-path="group_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbForums" className="org.ncr.db.phpbb.PhpbbForums" dbEntityName="phpbb_forums">
+		<obj-attribute name="displayOnIndex" type="java.lang.Byte" db-attribute-path="display_on_index"/>
+		<obj-attribute name="displaySubforumList" type="java.lang.Byte" db-attribute-path="display_subforum_list"/>
+		<obj-attribute name="enableIcons" type="java.lang.Byte" db-attribute-path="enable_icons"/>
+		<obj-attribute name="enableIndexing" type="java.lang.Byte" db-attribute-path="enable_indexing"/>
+		<obj-attribute name="enablePrune" type="java.lang.Byte" db-attribute-path="enable_prune"/>
+		<obj-attribute name="forumDesc" type="java.lang.String" db-attribute-path="forum_desc"/>
+		<obj-attribute name="forumDescBitfield" type="java.lang.String" db-attribute-path="forum_desc_bitfield"/>
+		<obj-attribute name="forumDescOptions" type="java.lang.Long" db-attribute-path="forum_desc_options"/>
+		<obj-attribute name="forumDescUid" type="java.lang.String" db-attribute-path="forum_desc_uid"/>
+		<obj-attribute name="forumFlags" type="java.lang.Byte" db-attribute-path="forum_flags"/>
+		<obj-attribute name="forumImage" type="java.lang.String" db-attribute-path="forum_image"/>
+		<obj-attribute name="forumLastPostId" type="java.lang.Long" db-attribute-path="forum_last_post_id"/>
+		<obj-attribute name="forumLastPostSubject" type="java.lang.String" db-attribute-path="forum_last_post_subject"/>
+		<obj-attribute name="forumLastPostTime" type="java.lang.Long" db-attribute-path="forum_last_post_time"/>
+		<obj-attribute name="forumLastPosterColour" type="java.lang.String" db-attribute-path="forum_last_poster_colour"/>
+		<obj-attribute name="forumLastPosterId" type="java.lang.Long" db-attribute-path="forum_last_poster_id"/>
+		<obj-attribute name="forumLastPosterName" type="java.lang.String" db-attribute-path="forum_last_poster_name"/>
+		<obj-attribute name="forumLink" type="java.lang.String" db-attribute-path="forum_link"/>
+		<obj-attribute name="forumName" type="java.lang.String" db-attribute-path="forum_name"/>
+		<obj-attribute name="forumOptions" type="java.lang.Long" db-attribute-path="forum_options"/>
+		<obj-attribute name="forumParents" type="java.lang.String" db-attribute-path="forum_parents"/>
+		<obj-attribute name="forumPassword" type="java.lang.String" db-attribute-path="forum_password"/>
+		<obj-attribute name="forumPosts" type="java.lang.Long" db-attribute-path="forum_posts"/>
+		<obj-attribute name="forumRules" type="java.lang.String" db-attribute-path="forum_rules"/>
+		<obj-attribute name="forumRulesBitfield" type="java.lang.String" db-attribute-path="forum_rules_bitfield"/>
+		<obj-attribute name="forumRulesLink" type="java.lang.String" db-attribute-path="forum_rules_link"/>
+		<obj-attribute name="forumRulesOptions" type="java.lang.Long" db-attribute-path="forum_rules_options"/>
+		<obj-attribute name="forumRulesUid" type="java.lang.String" db-attribute-path="forum_rules_uid"/>
+		<obj-attribute name="forumStatus" type="java.lang.Byte" db-attribute-path="forum_status"/>
+		<obj-attribute name="forumStyle" type="java.lang.Long" db-attribute-path="forum_style"/>
+		<obj-attribute name="forumTopics" type="java.lang.Long" db-attribute-path="forum_topics"/>
+		<obj-attribute name="forumTopicsPerPage" type="java.lang.Byte" db-attribute-path="forum_topics_per_page"/>
+		<obj-attribute name="forumTopicsReal" type="java.lang.Long" db-attribute-path="forum_topics_real"/>
+		<obj-attribute name="forumType" type="java.lang.Byte" db-attribute-path="forum_type"/>
+		<obj-attribute name="leftId" type="java.lang.Long" db-attribute-path="left_id"/>
+		<obj-attribute name="parentId" type="java.lang.Long" db-attribute-path="parent_id"/>
+		<obj-attribute name="pruneDays" type="java.lang.Long" db-attribute-path="prune_days"/>
+		<obj-attribute name="pruneFreq" type="java.lang.Long" db-attribute-path="prune_freq"/>
+		<obj-attribute name="pruneNext" type="java.lang.Long" db-attribute-path="prune_next"/>
+		<obj-attribute name="pruneViewed" type="java.lang.Long" db-attribute-path="prune_viewed"/>
+		<obj-attribute name="rightId" type="java.lang.Long" db-attribute-path="right_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbForumsAccess" className="org.ncr.db.phpbb.PhpbbForumsAccess" dbEntityName="phpbb_forums_access">
+	</obj-entity>
+	<obj-entity name="PhpbbForumsTrack" className="org.ncr.db.phpbb.PhpbbForumsTrack" dbEntityName="phpbb_forums_track">
+		<obj-attribute name="markTime" type="java.lang.Long" db-attribute-path="mark_time"/>
+	</obj-entity>
+	<obj-entity name="PhpbbForumsWatch" className="org.ncr.db.phpbb.PhpbbForumsWatch" dbEntityName="phpbb_forums_watch">
+		<obj-attribute name="forumId" type="java.lang.Long" db-attribute-path="forum_id"/>
+		<obj-attribute name="notifyStatus" type="java.lang.Byte" db-attribute-path="notify_status"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbGroups" className="org.ncr.db.phpbb.PhpbbGroups" dbEntityName="phpbb_groups">
+		<obj-attribute name="groupAvatar" type="java.lang.String" db-attribute-path="group_avatar"/>
+		<obj-attribute name="groupAvatarHeight" type="java.lang.Short" db-attribute-path="group_avatar_height"/>
+		<obj-attribute name="groupAvatarType" type="java.lang.Byte" db-attribute-path="group_avatar_type"/>
+		<obj-attribute name="groupAvatarWidth" type="java.lang.Short" db-attribute-path="group_avatar_width"/>
+		<obj-attribute name="groupColour" type="java.lang.String" db-attribute-path="group_colour"/>
+		<obj-attribute name="groupDesc" type="java.lang.String" db-attribute-path="group_desc"/>
+		<obj-attribute name="groupDescBitfield" type="java.lang.String" db-attribute-path="group_desc_bitfield"/>
+		<obj-attribute name="groupDescOptions" type="java.lang.Long" db-attribute-path="group_desc_options"/>
+		<obj-attribute name="groupDescUid" type="java.lang.String" db-attribute-path="group_desc_uid"/>
+		<obj-attribute name="groupDisplay" type="java.lang.Byte" db-attribute-path="group_display"/>
+		<obj-attribute name="groupFounderManage" type="java.lang.Byte" db-attribute-path="group_founder_manage"/>
+		<obj-attribute name="groupLegend" type="java.lang.Byte" db-attribute-path="group_legend"/>
+		<obj-attribute name="groupMaxRecipients" type="java.lang.Long" db-attribute-path="group_max_recipients"/>
+		<obj-attribute name="groupMessageLimit" type="java.lang.Long" db-attribute-path="group_message_limit"/>
+		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="group_name"/>
+		<obj-attribute name="groupRank" type="java.lang.Long" db-attribute-path="group_rank"/>
+		<obj-attribute name="groupReceivePm" type="java.lang.Byte" db-attribute-path="group_receive_pm"/>
+		<obj-attribute name="groupSigChars" type="java.lang.Long" db-attribute-path="group_sig_chars"/>
+		<obj-attribute name="groupSkipAuth" type="java.lang.Byte" db-attribute-path="group_skip_auth"/>
+		<obj-attribute name="groupType" type="java.lang.Byte" db-attribute-path="group_type"/>
+	</obj-entity>
+	<obj-entity name="PhpbbIcons" className="org.ncr.db.phpbb.PhpbbIcons" dbEntityName="phpbb_icons">
+		<obj-attribute name="displayOnPosting" type="java.lang.Byte" db-attribute-path="display_on_posting"/>
+		<obj-attribute name="iconsHeight" type="java.lang.Byte" db-attribute-path="icons_height"/>
+		<obj-attribute name="iconsOrder" type="java.lang.Long" db-attribute-path="icons_order"/>
+		<obj-attribute name="iconsUrl" type="java.lang.String" db-attribute-path="icons_url"/>
+		<obj-attribute name="iconsWidth" type="java.lang.Byte" db-attribute-path="icons_width"/>
+	</obj-entity>
+	<obj-entity name="PhpbbLang" className="org.ncr.db.phpbb.PhpbbLang" dbEntityName="phpbb_lang">
+		<obj-attribute name="langAuthor" type="java.lang.String" db-attribute-path="lang_author"/>
+		<obj-attribute name="langDir" type="java.lang.String" db-attribute-path="lang_dir"/>
+		<obj-attribute name="langEnglishName" type="java.lang.String" db-attribute-path="lang_english_name"/>
+		<obj-attribute name="langIso" type="java.lang.String" db-attribute-path="lang_iso"/>
+		<obj-attribute name="langLocalName" type="java.lang.String" db-attribute-path="lang_local_name"/>
+	</obj-entity>
+	<obj-entity name="PhpbbLog" className="org.ncr.db.phpbb.PhpbbLog" dbEntityName="phpbb_log">
+		<obj-attribute name="forumId" type="java.lang.Long" db-attribute-path="forum_id"/>
+		<obj-attribute name="logData" type="java.lang.String" db-attribute-path="log_data"/>
+		<obj-attribute name="logIp" type="java.lang.String" db-attribute-path="log_ip"/>
+		<obj-attribute name="logOperation" type="java.lang.String" db-attribute-path="log_operation"/>
+		<obj-attribute name="logTime" type="java.lang.Long" db-attribute-path="log_time"/>
+		<obj-attribute name="logType" type="java.lang.Byte" db-attribute-path="log_type"/>
+		<obj-attribute name="reporteeId" type="java.lang.Long" db-attribute-path="reportee_id"/>
+		<obj-attribute name="topicId" type="java.lang.Long" db-attribute-path="topic_id"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbLoginAttempts" className="org.ncr.db.phpbb.PhpbbLoginAttempts" dbEntityName="phpbb_login_attempts">
+		<obj-attribute name="attemptBrowser" type="java.lang.String" db-attribute-path="attempt_browser"/>
+		<obj-attribute name="attemptForwardedFor" type="java.lang.String" db-attribute-path="attempt_forwarded_for"/>
+		<obj-attribute name="attemptIp" type="java.lang.String" db-attribute-path="attempt_ip"/>
+		<obj-attribute name="attemptTime" type="java.lang.Long" db-attribute-path="attempt_time"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+		<obj-attribute name="username" type="java.lang.String" db-attribute-path="username"/>
+		<obj-attribute name="usernameClean" type="java.lang.String" db-attribute-path="username_clean"/>
+	</obj-entity>
+	<obj-entity name="PhpbbModeratorCache" className="org.ncr.db.phpbb.PhpbbModeratorCache" dbEntityName="phpbb_moderator_cache">
+		<obj-attribute name="displayOnIndex" type="java.lang.Byte" db-attribute-path="display_on_index"/>
+		<obj-attribute name="forumId" type="java.lang.Long" db-attribute-path="forum_id"/>
+		<obj-attribute name="groupId" type="java.lang.Long" db-attribute-path="group_id"/>
+		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="group_name"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+		<obj-attribute name="username" type="java.lang.String" db-attribute-path="username"/>
+	</obj-entity>
+	<obj-entity name="PhpbbModules" className="org.ncr.db.phpbb.PhpbbModules" dbEntityName="phpbb_modules">
+		<obj-attribute name="leftId" type="java.lang.Long" db-attribute-path="left_id"/>
+		<obj-attribute name="moduleAuth" type="java.lang.String" db-attribute-path="module_auth"/>
+		<obj-attribute name="moduleBasename" type="java.lang.String" db-attribute-path="module_basename"/>
+		<obj-attribute name="moduleClass" type="java.lang.String" db-attribute-path="module_class"/>
+		<obj-attribute name="moduleDisplay" type="java.lang.Byte" db-attribute-path="module_display"/>
+		<obj-attribute name="moduleEnabled" type="java.lang.Byte" db-attribute-path="module_enabled"/>
+		<obj-attribute name="moduleLangname" type="java.lang.String" db-attribute-path="module_langname"/>
+		<obj-attribute name="moduleMode" type="java.lang.String" db-attribute-path="module_mode"/>
+		<obj-attribute name="parentId" type="java.lang.Long" db-attribute-path="parent_id"/>
+		<obj-attribute name="rightId" type="java.lang.Long" db-attribute-path="right_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbPollOptions" className="org.ncr.db.phpbb.PhpbbPollOptions" dbEntityName="phpbb_poll_options">
+		<obj-attribute name="pollOptionId" type="java.lang.Byte" db-attribute-path="poll_option_id"/>
+		<obj-attribute name="pollOptionText" type="java.lang.String" db-attribute-path="poll_option_text"/>
+		<obj-attribute name="pollOptionTotal" type="java.lang.Long" db-attribute-path="poll_option_total"/>
+		<obj-attribute name="topicId" type="java.lang.Long" db-attribute-path="topic_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbPollVotes" className="org.ncr.db.phpbb.PhpbbPollVotes" dbEntityName="phpbb_poll_votes">
+		<obj-attribute name="pollOptionId" type="java.lang.Byte" db-attribute-path="poll_option_id"/>
+		<obj-attribute name="topicId" type="java.lang.Long" db-attribute-path="topic_id"/>
+		<obj-attribute name="voteUserId" type="java.lang.Long" db-attribute-path="vote_user_id"/>
+		<obj-attribute name="voteUserIp" type="java.lang.String" db-attribute-path="vote_user_ip"/>
+	</obj-entity>
+	<obj-entity name="PhpbbPosts" className="org.ncr.db.phpbb.PhpbbPosts" dbEntityName="phpbb_posts">
+		<obj-attribute name="bbcodeBitfield" type="java.lang.String" db-attribute-path="bbcode_bitfield"/>
+		<obj-attribute name="bbcodeUid" type="java.lang.String" db-attribute-path="bbcode_uid"/>
+		<obj-attribute name="enableBbcode" type="java.lang.Byte" db-attribute-path="enable_bbcode"/>
+		<obj-attribute name="enableMagicUrl" type="java.lang.Byte" db-attribute-path="enable_magic_url"/>
+		<obj-attribute name="enableSig" type="java.lang.Byte" db-attribute-path="enable_sig"/>
+		<obj-attribute name="enableSmilies" type="java.lang.Byte" db-attribute-path="enable_smilies"/>
+		<obj-attribute name="forumId" type="java.lang.Long" db-attribute-path="forum_id"/>
+		<obj-attribute name="iconId" type="java.lang.Long" db-attribute-path="icon_id"/>
+		<obj-attribute name="postApproved" type="java.lang.Byte" db-attribute-path="post_approved"/>
+		<obj-attribute name="postAttachment" type="java.lang.Byte" db-attribute-path="post_attachment"/>
+		<obj-attribute name="postChecksum" type="java.lang.String" db-attribute-path="post_checksum"/>
+		<obj-attribute name="postEditCount" type="java.lang.Short" db-attribute-path="post_edit_count"/>
+		<obj-attribute name="postEditLocked" type="java.lang.Byte" db-attribute-path="post_edit_locked"/>
+		<obj-attribute name="postEditReason" type="java.lang.String" db-attribute-path="post_edit_reason"/>
+		<obj-attribute name="postEditTime" type="java.lang.Long" db-attribute-path="post_edit_time"/>
+		<obj-attribute name="postEditUser" type="java.lang.Long" db-attribute-path="post_edit_user"/>
+		<obj-attribute name="postPostcount" type="java.lang.Byte" db-attribute-path="post_postcount"/>
+		<obj-attribute name="postReported" type="java.lang.Byte" db-attribute-path="post_reported"/>
+		<obj-attribute name="postSubject" type="java.lang.String" db-attribute-path="post_subject"/>
+		<obj-attribute name="postText" type="java.lang.String" db-attribute-path="post_text"/>
+		<obj-attribute name="postTime" type="java.lang.Long" db-attribute-path="post_time"/>
+		<obj-attribute name="postUsername" type="java.lang.String" db-attribute-path="post_username"/>
+		<obj-attribute name="posterId" type="java.lang.Long" db-attribute-path="poster_id"/>
+		<obj-attribute name="posterIp" type="java.lang.String" db-attribute-path="poster_ip"/>
+		<obj-attribute name="topicId" type="java.lang.Long" db-attribute-path="topic_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbPrivmsgs" className="org.ncr.db.phpbb.PhpbbPrivmsgs" dbEntityName="phpbb_privmsgs">
+		<obj-attribute name="authorId" type="java.lang.Long" db-attribute-path="author_id"/>
+		<obj-attribute name="authorIp" type="java.lang.String" db-attribute-path="author_ip"/>
+		<obj-attribute name="bbcodeBitfield" type="java.lang.String" db-attribute-path="bbcode_bitfield"/>
+		<obj-attribute name="bbcodeUid" type="java.lang.String" db-attribute-path="bbcode_uid"/>
+		<obj-attribute name="bccAddress" type="java.lang.String" db-attribute-path="bcc_address"/>
+		<obj-attribute name="enableBbcode" type="java.lang.Byte" db-attribute-path="enable_bbcode"/>
+		<obj-attribute name="enableMagicUrl" type="java.lang.Byte" db-attribute-path="enable_magic_url"/>
+		<obj-attribute name="enableSig" type="java.lang.Byte" db-attribute-path="enable_sig"/>
+		<obj-attribute name="enableSmilies" type="java.lang.Byte" db-attribute-path="enable_smilies"/>
+		<obj-attribute name="iconId" type="java.lang.Long" db-attribute-path="icon_id"/>
+		<obj-attribute name="messageAttachment" type="java.lang.Byte" db-attribute-path="message_attachment"/>
+		<obj-attribute name="messageEditCount" type="java.lang.Short" db-attribute-path="message_edit_count"/>
+		<obj-attribute name="messageEditReason" type="java.lang.String" db-attribute-path="message_edit_reason"/>
+		<obj-attribute name="messageEditTime" type="java.lang.Long" db-attribute-path="message_edit_time"/>
+		<obj-attribute name="messageEditUser" type="java.lang.Long" db-attribute-path="message_edit_user"/>
+		<obj-attribute name="messageReported" type="java.lang.Byte" db-attribute-path="message_reported"/>
+		<obj-attribute name="messageSubject" type="java.lang.String" db-attribute-path="message_subject"/>
+		<obj-attribute name="messageText" type="java.lang.String" db-attribute-path="message_text"/>
+		<obj-attribute name="messageTime" type="java.lang.Long" db-attribute-path="message_time"/>
+		<obj-attribute name="rootLevel" type="java.lang.Long" db-attribute-path="root_level"/>
+		<obj-attribute name="toAddress" type="java.lang.String" db-attribute-path="to_address"/>
+	</obj-entity>
+	<obj-entity name="PhpbbPrivmsgsFolder" className="org.ncr.db.phpbb.PhpbbPrivmsgsFolder" dbEntityName="phpbb_privmsgs_folder">
+		<obj-attribute name="folderName" type="java.lang.String" db-attribute-path="folder_name"/>
+		<obj-attribute name="pmCount" type="java.lang.Long" db-attribute-path="pm_count"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbPrivmsgsRules" className="org.ncr.db.phpbb.PhpbbPrivmsgsRules" dbEntityName="phpbb_privmsgs_rules">
+		<obj-attribute name="ruleAction" type="java.lang.Long" db-attribute-path="rule_action"/>
+		<obj-attribute name="ruleCheck" type="java.lang.Long" db-attribute-path="rule_check"/>
+		<obj-attribute name="ruleConnection" type="java.lang.Long" db-attribute-path="rule_connection"/>
+		<obj-attribute name="ruleFolderId" type="java.lang.Integer" db-attribute-path="rule_folder_id"/>
+		<obj-attribute name="ruleGroupId" type="java.lang.Long" db-attribute-path="rule_group_id"/>
+		<obj-attribute name="ruleString" type="java.lang.String" db-attribute-path="rule_string"/>
+		<obj-attribute name="ruleUserId" type="java.lang.Long" db-attribute-path="rule_user_id"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbPrivmsgsTo" className="org.ncr.db.phpbb.PhpbbPrivmsgsTo" dbEntityName="phpbb_privmsgs_to">
+		<obj-attribute name="authorId" type="java.lang.Long" db-attribute-path="author_id"/>
+		<obj-attribute name="folderId" type="java.lang.Integer" db-attribute-path="folder_id"/>
+		<obj-attribute name="msgId" type="java.lang.Long" db-attribute-path="msg_id"/>
+		<obj-attribute name="pmDeleted" type="java.lang.Byte" db-attribute-path="pm_deleted"/>
+		<obj-attribute name="pmForwarded" type="java.lang.Byte" db-attribute-path="pm_forwarded"/>
+		<obj-attribute name="pmMarked" type="java.lang.Byte" db-attribute-path="pm_marked"/>
+		<obj-attribute name="pmNew" type="java.lang.Byte" db-attribute-path="pm_new"/>
+		<obj-attribute name="pmReplied" type="java.lang.Byte" db-attribute-path="pm_replied"/>
+		<obj-attribute name="pmUnread" type="java.lang.Byte" db-attribute-path="pm_unread"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbProfileFields" className="org.ncr.db.phpbb.PhpbbProfileFields" dbEntityName="phpbb_profile_fields">
+		<obj-attribute name="fieldActive" type="java.lang.Byte" db-attribute-path="field_active"/>
+		<obj-attribute name="fieldDefaultValue" type="java.lang.String" db-attribute-path="field_default_value"/>
+		<obj-attribute name="fieldHide" type="java.lang.Byte" db-attribute-path="field_hide"/>
+		<obj-attribute name="fieldIdent" type="java.lang.String" db-attribute-path="field_ident"/>
+		<obj-attribute name="fieldLength" type="java.lang.String" db-attribute-path="field_length"/>
+		<obj-attribute name="fieldMaxlen" type="java.lang.String" db-attribute-path="field_maxlen"/>
+		<obj-attribute name="fieldMinlen" type="java.lang.String" db-attribute-path="field_minlen"/>
+		<obj-attribute name="fieldName" type="java.lang.String" db-attribute-path="field_name"/>
+		<obj-attribute name="fieldNoView" type="java.lang.Byte" db-attribute-path="field_no_view"/>
+		<obj-attribute name="fieldNovalue" type="java.lang.String" db-attribute-path="field_novalue"/>
+		<obj-attribute name="fieldOrder" type="java.lang.Long" db-attribute-path="field_order"/>
+		<obj-attribute name="fieldRequired" type="java.lang.Byte" db-attribute-path="field_required"/>
+		<obj-attribute name="fieldShowNovalue" type="java.lang.Byte" db-attribute-path="field_show_novalue"/>
+		<obj-attribute name="fieldShowOnReg" type="java.lang.Byte" db-attribute-path="field_show_on_reg"/>
+		<obj-attribute name="fieldShowOnVt" type="java.lang.Byte" db-attribute-path="field_show_on_vt"/>
+		<obj-attribute name="fieldShowProfile" type="java.lang.Byte" db-attribute-path="field_show_profile"/>
+		<obj-attribute name="fieldType" type="java.lang.Byte" db-attribute-path="field_type"/>
+		<obj-attribute name="fieldValidation" type="java.lang.String" db-attribute-path="field_validation"/>
+	</obj-entity>
+	<obj-entity name="PhpbbProfileFieldsData" className="org.ncr.db.phpbb.PhpbbProfileFieldsData" dbEntityName="phpbb_profile_fields_data">
+	</obj-entity>
+	<obj-entity name="PhpbbProfileFieldsLang" className="org.ncr.db.phpbb.PhpbbProfileFieldsLang" dbEntityName="phpbb_profile_fields_lang">
+		<obj-attribute name="fieldType" type="java.lang.Byte" db-attribute-path="field_type"/>
+		<obj-attribute name="langValue" type="java.lang.String" db-attribute-path="lang_value"/>
+	</obj-entity>
+	<obj-entity name="PhpbbProfileLang" className="org.ncr.db.phpbb.PhpbbProfileLang" dbEntityName="phpbb_profile_lang">
+		<obj-attribute name="langDefaultValue" type="java.lang.String" db-attribute-path="lang_default_value"/>
+		<obj-attribute name="langExplain" type="java.lang.String" db-attribute-path="lang_explain"/>
+		<obj-attribute name="langName" type="java.lang.String" db-attribute-path="lang_name"/>
+	</obj-entity>
+	<obj-entity name="PhpbbRanks" className="org.ncr.db.phpbb.PhpbbRanks" dbEntityName="phpbb_ranks">
+		<obj-attribute name="rankImage" type="java.lang.String" db-attribute-path="rank_image"/>
+		<obj-attribute name="rankMin" type="java.lang.Long" db-attribute-path="rank_min"/>
+		<obj-attribute name="rankSpecial" type="java.lang.Byte" db-attribute-path="rank_special"/>
+		<obj-attribute name="rankTitle" type="java.lang.String" db-attribute-path="rank_title"/>
+	</obj-entity>
+	<obj-entity name="PhpbbReports" className="org.ncr.db.phpbb.PhpbbReports" dbEntityName="phpbb_reports">
+		<obj-attribute name="pmId" type="java.lang.Long" db-attribute-path="pm_id"/>
+		<obj-attribute name="postId" type="java.lang.Long" db-attribute-path="post_id"/>
+		<obj-attribute name="reasonId" type="java.lang.Short" db-attribute-path="reason_id"/>
+		<obj-attribute name="reportClosed" type="java.lang.Byte" db-attribute-path="report_closed"/>
+		<obj-attribute name="reportText" type="java.lang.String" db-attribute-path="report_text"/>
+		<obj-attribute name="reportTime" type="java.lang.Long" db-attribute-path="report_time"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+		<obj-attribute name="userNotify" type="java.lang.Byte" db-attribute-path="user_notify"/>
+	</obj-entity>
+	<obj-entity name="PhpbbReportsReasons" className="org.ncr.db.phpbb.PhpbbReportsReasons" dbEntityName="phpbb_reports_reasons">
+		<obj-attribute name="reasonDescription" type="java.lang.String" db-attribute-path="reason_description"/>
+		<obj-attribute name="reasonOrder" type="java.lang.Short" db-attribute-path="reason_order"/>
+		<obj-attribute name="reasonTitle" type="java.lang.String" db-attribute-path="reason_title"/>
+	</obj-entity>
+	<obj-entity name="PhpbbSearchResults" className="org.ncr.db.phpbb.PhpbbSearchResults" dbEntityName="phpbb_search_results">
+		<obj-attribute name="searchAuthors" type="java.lang.String" db-attribute-path="search_authors"/>
+		<obj-attribute name="searchKeywords" type="java.lang.String" db-attribute-path="search_keywords"/>
+		<obj-attribute name="searchTime" type="java.lang.Long" db-attribute-path="search_time"/>
+	</obj-entity>
+	<obj-entity name="PhpbbSearchWordlist" className="org.ncr.db.phpbb.PhpbbSearchWordlist" dbEntityName="phpbb_search_wordlist">
+		<obj-attribute name="wordCommon" type="java.lang.Byte" db-attribute-path="word_common"/>
+		<obj-attribute name="wordCount" type="java.lang.Long" db-attribute-path="word_count"/>
+		<obj-attribute name="wordText" type="java.lang.String" db-attribute-path="word_text"/>
+	</obj-entity>
+	<obj-entity name="PhpbbSearchWordmatch" className="org.ncr.db.phpbb.PhpbbSearchWordmatch" dbEntityName="phpbb_search_wordmatch">
+		<obj-attribute name="postId" type="java.lang.Long" db-attribute-path="post_id"/>
+		<obj-attribute name="titleMatch" type="java.lang.Byte" db-attribute-path="title_match"/>
+		<obj-attribute name="wordId" type="java.lang.Long" db-attribute-path="word_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbSessions" className="org.ncr.db.phpbb.PhpbbSessions" dbEntityName="phpbb_sessions">
+		<obj-attribute name="sessionAdmin" type="java.lang.Byte" db-attribute-path="session_admin"/>
+		<obj-attribute name="sessionAutologin" type="java.lang.Byte" db-attribute-path="session_autologin"/>
+		<obj-attribute name="sessionBrowser" type="java.lang.String" db-attribute-path="session_browser"/>
+		<obj-attribute name="sessionForumId" type="java.lang.Long" db-attribute-path="session_forum_id"/>
+		<obj-attribute name="sessionForwardedFor" type="java.lang.String" db-attribute-path="session_forwarded_for"/>
+		<obj-attribute name="sessionId" type="java.lang.String" db-attribute-path="session_id"/>
+		<obj-attribute name="sessionIp" type="java.lang.String" db-attribute-path="session_ip"/>
+		<obj-attribute name="sessionLastVisit" type="java.lang.Long" db-attribute-path="session_last_visit"/>
+		<obj-attribute name="sessionPage" type="java.lang.String" db-attribute-path="session_page"/>
+		<obj-attribute name="sessionStart" type="java.lang.Long" db-attribute-path="session_start"/>
+		<obj-attribute name="sessionTime" type="java.lang.Long" db-attribute-path="session_time"/>
+		<obj-attribute name="sessionViewonline" type="java.lang.Byte" db-attribute-path="session_viewonline"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="session_user_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbSessionsKeys" className="org.ncr.db.phpbb.PhpbbSessionsKeys" dbEntityName="phpbb_sessions_keys">
+		<obj-attribute name="lastIp" type="java.lang.String" db-attribute-path="last_ip"/>
+		<obj-attribute name="lastLogin" type="java.lang.Long" db-attribute-path="last_login"/>
+	</obj-entity>
+	<obj-entity name="PhpbbSitelist" className="org.ncr.db.phpbb.PhpbbSitelist" dbEntityName="phpbb_sitelist">
+		<obj-attribute name="ipExclude" type="java.lang.Byte" db-attribute-path="ip_exclude"/>
+		<obj-attribute name="siteHostname" type="java.lang.String" db-attribute-path="site_hostname"/>
+		<obj-attribute name="siteIp" type="java.lang.String" db-attribute-path="site_ip"/>
+	</obj-entity>
+	<obj-entity name="PhpbbSmilies" className="org.ncr.db.phpbb.PhpbbSmilies" dbEntityName="phpbb_smilies">
+		<obj-attribute name="code" type="java.lang.String" db-attribute-path="code"/>
+		<obj-attribute name="displayOnPosting" type="java.lang.Byte" db-attribute-path="display_on_posting"/>
+		<obj-attribute name="emotion" type="java.lang.String" db-attribute-path="emotion"/>
+		<obj-attribute name="smileyHeight" type="java.lang.Short" db-attribute-path="smiley_height"/>
+		<obj-attribute name="smileyOrder" type="java.lang.Long" db-attribute-path="smiley_order"/>
+		<obj-attribute name="smileyUrl" type="java.lang.String" db-attribute-path="smiley_url"/>
+		<obj-attribute name="smileyWidth" type="java.lang.Short" db-attribute-path="smiley_width"/>
+	</obj-entity>
+	<obj-entity name="PhpbbStyles" className="org.ncr.db.phpbb.PhpbbStyles" dbEntityName="phpbb_styles">
+		<obj-attribute name="imagesetId" type="java.lang.Long" db-attribute-path="imageset_id"/>
+		<obj-attribute name="styleActive" type="java.lang.Byte" db-attribute-path="style_active"/>
+		<obj-attribute name="styleCopyright" type="java.lang.String" db-attribute-path="style_copyright"/>
+		<obj-attribute name="styleName" type="java.lang.String" db-attribute-path="style_name"/>
+		<obj-attribute name="templateId" type="java.lang.Long" db-attribute-path="template_id"/>
+		<obj-attribute name="themeId" type="java.lang.Long" db-attribute-path="theme_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbStylesImageset" className="org.ncr.db.phpbb.PhpbbStylesImageset" dbEntityName="phpbb_styles_imageset">
+		<obj-attribute name="imagesetCopyright" type="java.lang.String" db-attribute-path="imageset_copyright"/>
+		<obj-attribute name="imagesetName" type="java.lang.String" db-attribute-path="imageset_name"/>
+		<obj-attribute name="imagesetPath" type="java.lang.String" db-attribute-path="imageset_path"/>
+	</obj-entity>
+	<obj-entity name="PhpbbStylesImagesetData" className="org.ncr.db.phpbb.PhpbbStylesImagesetData" dbEntityName="phpbb_styles_imageset_data">
+		<obj-attribute name="imageFilename" type="java.lang.String" db-attribute-path="image_filename"/>
+		<obj-attribute name="imageHeight" type="java.lang.Short" db-attribute-path="image_height"/>
+		<obj-attribute name="imageLang" type="java.lang.String" db-attribute-path="image_lang"/>
+		<obj-attribute name="imageName" type="java.lang.String" db-attribute-path="image_name"/>
+		<obj-attribute name="imageWidth" type="java.lang.Short" db-attribute-path="image_width"/>
+		<obj-attribute name="imagesetId" type="java.lang.Long" db-attribute-path="imageset_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbStylesTemplate" className="org.ncr.db.phpbb.PhpbbStylesTemplate" dbEntityName="phpbb_styles_template">
+		<obj-attribute name="bbcodeBitfield" type="java.lang.String" db-attribute-path="bbcode_bitfield"/>
+		<obj-attribute name="templateCopyright" type="java.lang.String" db-attribute-path="template_copyright"/>
+		<obj-attribute name="templateInheritPath" type="java.lang.String" db-attribute-path="template_inherit_path"/>
+		<obj-attribute name="templateInheritsId" type="java.lang.Long" db-attribute-path="template_inherits_id"/>
+		<obj-attribute name="templateName" type="java.lang.String" db-attribute-path="template_name"/>
+		<obj-attribute name="templatePath" type="java.lang.String" db-attribute-path="template_path"/>
+		<obj-attribute name="templateStoredb" type="java.lang.Byte" db-attribute-path="template_storedb"/>
+	</obj-entity>
+	<obj-entity name="PhpbbStylesTemplateData" className="org.ncr.db.phpbb.PhpbbStylesTemplateData" dbEntityName="phpbb_styles_template_data">
+		<obj-attribute name="templateData" type="java.lang.String" db-attribute-path="template_data"/>
+		<obj-attribute name="templateFilename" type="java.lang.String" db-attribute-path="template_filename"/>
+		<obj-attribute name="templateId" type="java.lang.Long" db-attribute-path="template_id"/>
+		<obj-attribute name="templateIncluded" type="java.lang.String" db-attribute-path="template_included"/>
+		<obj-attribute name="templateMtime" type="java.lang.Long" db-attribute-path="template_mtime"/>
+	</obj-entity>
+	<obj-entity name="PhpbbStylesTheme" className="org.ncr.db.phpbb.PhpbbStylesTheme" dbEntityName="phpbb_styles_theme">
+		<obj-attribute name="themeCopyright" type="java.lang.String" db-attribute-path="theme_copyright"/>
+		<obj-attribute name="themeData" type="java.lang.String" db-attribute-path="theme_data"/>
+		<obj-attribute name="themeMtime" type="java.lang.Long" db-attribute-path="theme_mtime"/>
+		<obj-attribute name="themeName" type="java.lang.String" db-attribute-path="theme_name"/>
+		<obj-attribute name="themePath" type="java.lang.String" db-attribute-path="theme_path"/>
+		<obj-attribute name="themeStoredb" type="java.lang.Byte" db-attribute-path="theme_storedb"/>
+	</obj-entity>
+	<obj-entity name="PhpbbTopics" className="org.ncr.db.phpbb.PhpbbTopics" dbEntityName="phpbb_topics">
+		<obj-attribute name="forumId" type="java.lang.Long" db-attribute-path="forum_id"/>
+		<obj-attribute name="iconId" type="java.lang.Long" db-attribute-path="icon_id"/>
+		<obj-attribute name="pollLastVote" type="java.lang.Long" db-attribute-path="poll_last_vote"/>
+		<obj-attribute name="pollLength" type="java.lang.Long" db-attribute-path="poll_length"/>
+		<obj-attribute name="pollMaxOptions" type="java.lang.Byte" db-attribute-path="poll_max_options"/>
+		<obj-attribute name="pollStart" type="java.lang.Long" db-attribute-path="poll_start"/>
+		<obj-attribute name="pollTitle" type="java.lang.String" db-attribute-path="poll_title"/>
+		<obj-attribute name="pollVoteChange" type="java.lang.Byte" db-attribute-path="poll_vote_change"/>
+		<obj-attribute name="topicApproved" type="java.lang.Byte" db-attribute-path="topic_approved"/>
+		<obj-attribute name="topicAttachment" type="java.lang.Byte" db-attribute-path="topic_attachment"/>
+		<obj-attribute name="topicBumped" type="java.lang.Byte" db-attribute-path="topic_bumped"/>
+		<obj-attribute name="topicBumper" type="java.lang.Long" db-attribute-path="topic_bumper"/>
+		<obj-attribute name="topicFirstPostId" type="java.lang.Long" db-attribute-path="topic_first_post_id"/>
+		<obj-attribute name="topicFirstPosterColour" type="java.lang.String" db-attribute-path="topic_first_poster_colour"/>
+		<obj-attribute name="topicFirstPosterName" type="java.lang.String" db-attribute-path="topic_first_poster_name"/>
+		<obj-attribute name="topicLastPostId" type="java.lang.Long" db-attribute-path="topic_last_post_id"/>
+		<obj-attribute name="topicLastPostSubject" type="java.lang.String" db-attribute-path="topic_last_post_subject"/>
+		<obj-attribute name="topicLastPostTime" type="java.lang.Long" db-attribute-path="topic_last_post_time"/>
+		<obj-attribute name="topicLastPosterColour" type="java.lang.String" db-attribute-path="topic_last_poster_colour"/>
+		<obj-attribute name="topicLastPosterId" type="java.lang.Long" db-attribute-path="topic_last_poster_id"/>
+		<obj-attribute name="topicLastPosterName" type="java.lang.String" db-attribute-path="topic_last_poster_name"/>
+		<obj-attribute name="topicLastViewTime" type="java.lang.Long" db-attribute-path="topic_last_view_time"/>
+		<obj-attribute name="topicMovedId" type="java.lang.Long" db-attribute-path="topic_moved_id"/>
+		<obj-attribute name="topicPoster" type="java.lang.Long" db-attribute-path="topic_poster"/>
+		<obj-attribute name="topicReplies" type="java.lang.Long" db-attribute-path="topic_replies"/>
+		<obj-attribute name="topicRepliesReal" type="java.lang.Long" db-attribute-path="topic_replies_real"/>
+		<obj-attribute name="topicReported" type="java.lang.Byte" db-attribute-path="topic_reported"/>
+		<obj-attribute name="topicStatus" type="java.lang.Byte" db-attribute-path="topic_status"/>
+		<obj-attribute name="topicTime" type="java.lang.Long" db-attribute-path="topic_time"/>
+		<obj-attribute name="topicTimeLimit" type="java.lang.Long" db-attribute-path="topic_time_limit"/>
+		<obj-attribute name="topicTitle" type="java.lang.String" db-attribute-path="topic_title"/>
+		<obj-attribute name="topicType" type="java.lang.Byte" db-attribute-path="topic_type"/>
+		<obj-attribute name="topicViews" type="java.lang.Long" db-attribute-path="topic_views"/>
+	</obj-entity>
+	<obj-entity name="PhpbbTopicsPosted" className="org.ncr.db.phpbb.PhpbbTopicsPosted" dbEntityName="phpbb_topics_posted">
+		<obj-attribute name="topicPosted" type="java.lang.Byte" db-attribute-path="topic_posted"/>
+	</obj-entity>
+	<obj-entity name="PhpbbTopicsTrack" className="org.ncr.db.phpbb.PhpbbTopicsTrack" dbEntityName="phpbb_topics_track">
+		<obj-attribute name="forumId" type="java.lang.Long" db-attribute-path="forum_id"/>
+		<obj-attribute name="markTime" type="java.lang.Long" db-attribute-path="mark_time"/>
+	</obj-entity>
+	<obj-entity name="PhpbbTopicsWatch" className="org.ncr.db.phpbb.PhpbbTopicsWatch" dbEntityName="phpbb_topics_watch">
+		<obj-attribute name="notifyStatus" type="java.lang.Byte" db-attribute-path="notify_status"/>
+		<obj-attribute name="topicId" type="java.lang.Long" db-attribute-path="topic_id"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+	</obj-entity>
+	<obj-entity name="PhpbbUserGroup" className="org.ncr.db.phpbb.PhpbbUserGroup" dbEntityName="phpbb_user_group">
+		<obj-attribute name="groupLeader" type="java.lang.Byte" db-attribute-path="group_leader"/>
+		<obj-attribute name="userPending" type="java.lang.Byte" db-attribute-path="user_pending"/>
+	</obj-entity>
+	<obj-entity name="PhpbbUsers" className="org.ncr.db.phpbb.PhpbbUsers" dbEntityName="phpbb_users">
+		<obj-attribute name="groupId" type="java.lang.Long" db-attribute-path="group_id"/>
+		<obj-attribute name="userActkey" type="java.lang.String" db-attribute-path="user_actkey"/>
+		<obj-attribute name="userAim" type="java.lang.String" db-attribute-path="user_aim"/>
+		<obj-attribute name="userAllowMassemail" type="java.lang.Byte" db-attribute-path="user_allow_massemail"/>
+		<obj-attribute name="userAllowPm" type="java.lang.Byte" db-attribute-path="user_allow_pm"/>
+		<obj-attribute name="userAllowViewemail" type="java.lang.Byte" db-attribute-path="user_allow_viewemail"/>
+		<obj-attribute name="userAllowViewonline" type="java.lang.Byte" db-attribute-path="user_allow_viewonline"/>
+		<obj-attribute name="userAvatar" type="java.lang.String" db-attribute-path="user_avatar"/>
+		<obj-attribute name="userAvatarHeight" type="java.lang.Short" db-attribute-path="user_avatar_height"/>
+		<obj-attribute name="userAvatarType" type="java.lang.Byte" db-attribute-path="user_avatar_type"/>
+		<obj-attribute name="userAvatarWidth" type="java.lang.Short" db-attribute-path="user_avatar_width"/>
+		<obj-attribute name="userBirthday" type="java.lang.String" db-attribute-path="user_birthday"/>
+		<obj-attribute name="userColour" type="java.lang.String" db-attribute-path="user_colour"/>
+		<obj-attribute name="userDateformat" type="java.lang.String" db-attribute-path="user_dateformat"/>
+		<obj-attribute name="userDst" type="java.lang.Byte" db-attribute-path="user_dst"/>
+		<obj-attribute name="userEmail" type="java.lang.String" db-attribute-path="user_email"/>
+		<obj-attribute name="userEmailHash" type="java.lang.Long" db-attribute-path="user_email_hash"/>
+		<obj-attribute name="userEmailtime" type="java.lang.Long" db-attribute-path="user_emailtime"/>
+		<obj-attribute name="userFormSalt" type="java.lang.String" db-attribute-path="user_form_salt"/>
+		<obj-attribute name="userFrom" type="java.lang.String" db-attribute-path="user_from"/>
+		<obj-attribute name="userFullFolder" type="java.lang.Integer" db-attribute-path="user_full_folder"/>
+		<obj-attribute name="userIcq" type="java.lang.String" db-attribute-path="user_icq"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+		<obj-attribute name="userInactiveReason" type="java.lang.Byte" db-attribute-path="user_inactive_reason"/>
+		<obj-attribute name="userInactiveTime" type="java.lang.Long" db-attribute-path="user_inactive_time"/>
+		<obj-attribute name="userInterests" type="java.lang.String" db-attribute-path="user_interests"/>
+		<obj-attribute name="userIp" type="java.lang.String" db-attribute-path="user_ip"/>
+		<obj-attribute name="userJabber" type="java.lang.String" db-attribute-path="user_jabber"/>
+		<obj-attribute name="userLang" type="java.lang.String" db-attribute-path="user_lang"/>
+		<obj-attribute name="userLastConfirmKey" type="java.lang.String" db-attribute-path="user_last_confirm_key"/>
+		<obj-attribute name="userLastPrivmsg" type="java.lang.Long" db-attribute-path="user_last_privmsg"/>
+		<obj-attribute name="userLastSearch" type="java.lang.Long" db-attribute-path="user_last_search"/>
+		<obj-attribute name="userLastWarning" type="java.lang.Long" db-attribute-path="user_last_warning"/>
+		<obj-attribute name="userLastmark" type="java.lang.Long" db-attribute-path="user_lastmark"/>
+		<obj-attribute name="userLastpage" type="java.lang.String" db-attribute-path="user_lastpage"/>
+		<obj-attribute name="userLastpostTime" type="java.lang.Long" db-attribute-path="user_lastpost_time"/>
+		<obj-attribute name="userLastvisit" type="java.lang.Long" db-attribute-path="user_lastvisit"/>
+		<obj-attribute name="userLoginAttempts" type="java.lang.Byte" db-attribute-path="user_login_attempts"/>
+		<obj-attribute name="userMessageRules" type="java.lang.Byte" db-attribute-path="user_message_rules"/>
+		<obj-attribute name="userMsnm" type="java.lang.String" db-attribute-path="user_msnm"/>
+		<obj-attribute name="userNew" type="java.lang.Byte" db-attribute-path="user_new"/>
+		<obj-attribute name="userNewPrivmsg" type="java.lang.Integer" db-attribute-path="user_new_privmsg"/>
+		<obj-attribute name="userNewpasswd" type="java.lang.String" db-attribute-path="user_newpasswd"/>
+		<obj-attribute name="userNotify" type="java.lang.Byte" db-attribute-path="user_notify"/>
+		<obj-attribute name="userNotifyPm" type="java.lang.Byte" db-attribute-path="user_notify_pm"/>
+		<obj-attribute name="userNotifyType" type="java.lang.Byte" db-attribute-path="user_notify_type"/>
+		<obj-attribute name="userOcc" type="java.lang.String" db-attribute-path="user_occ"/>
+		<obj-attribute name="userOptions" type="java.lang.Long" db-attribute-path="user_options"/>
+		<obj-attribute name="userPassConvert" type="java.lang.Byte" db-attribute-path="user_pass_convert"/>
+		<obj-attribute name="userPasschg" type="java.lang.Long" db-attribute-path="user_passchg"/>
+		<obj-attribute name="userPassword" type="java.lang.String" db-attribute-path="user_password"/>
+		<obj-attribute name="userPermFrom" type="java.lang.Long" db-attribute-path="user_perm_from"/>
+		<obj-attribute name="userPermissions" type="java.lang.String" db-attribute-path="user_permissions"/>
+		<obj-attribute name="userPostShowDays" type="java.lang.Short" db-attribute-path="user_post_show_days"/>
+		<obj-attribute name="userPostSortbyDir" type="java.lang.String" db-attribute-path="user_post_sortby_dir"/>
+		<obj-attribute name="userPostSortbyType" type="java.lang.String" db-attribute-path="user_post_sortby_type"/>
+		<obj-attribute name="userPosts" type="java.lang.Long" db-attribute-path="user_posts"/>
+		<obj-attribute name="userRank" type="java.lang.Long" db-attribute-path="user_rank"/>
+		<obj-attribute name="userRegdate" type="java.lang.Long" db-attribute-path="user_regdate"/>
+		<obj-attribute name="userReminded" type="java.lang.Byte" db-attribute-path="user_reminded"/>
+		<obj-attribute name="userRemindedTime" type="java.lang.Long" db-attribute-path="user_reminded_time"/>
+		<obj-attribute name="userSig" type="java.lang.String" db-attribute-path="user_sig"/>
+		<obj-attribute name="userSigBbcodeBitfield" type="java.lang.String" db-attribute-path="user_sig_bbcode_bitfield"/>
+		<obj-attribute name="userSigBbcodeUid" type="java.lang.String" db-attribute-path="user_sig_bbcode_uid"/>
+		<obj-attribute name="userStyle" type="java.lang.Long" db-attribute-path="user_style"/>
+		<obj-attribute name="userTimezone" type="java.math.BigDecimal" db-attribute-path="user_timezone"/>
+		<obj-attribute name="userTopicShowDays" type="java.lang.Short" db-attribute-path="user_topic_show_days"/>
+		<obj-attribute name="userTopicSortbyDir" type="java.lang.String" db-attribute-path="user_topic_sortby_dir"/>
+		<obj-attribute name="userTopicSortbyType" type="java.lang.String" db-attribute-path="user_topic_sortby_type"/>
+		<obj-attribute name="userType" type="java.lang.Byte" db-attribute-path="user_type"/>
+		<obj-attribute name="userUnreadPrivmsg" type="java.lang.Integer" db-attribute-path="user_unread_privmsg"/>
+		<obj-attribute name="userWarnings" type="java.lang.Byte" db-attribute-path="user_warnings"/>
+		<obj-attribute name="userWebsite" type="java.lang.String" db-attribute-path="user_website"/>
+		<obj-attribute name="userYim" type="java.lang.String" db-attribute-path="user_yim"/>
+		<obj-attribute name="username" type="java.lang.String" db-attribute-path="username"/>
+		<obj-attribute name="usernameClean" type="java.lang.String" db-attribute-path="username_clean"/>
+	</obj-entity>
+	<obj-entity name="PhpbbWarnings" className="org.ncr.db.phpbb.PhpbbWarnings" dbEntityName="phpbb_warnings">
+		<obj-attribute name="logId" type="java.lang.Long" db-attribute-path="log_id"/>
+		<obj-attribute name="postId" type="java.lang.Long" db-attribute-path="post_id"/>
+		<obj-attribute name="userId" type="java.lang.Long" db-attribute-path="user_id"/>
+		<obj-attribute name="warningTime" type="java.lang.Long" db-attribute-path="warning_time"/>
+	</obj-entity>
+	<obj-entity name="PhpbbWords" className="org.ncr.db.phpbb.PhpbbWords" dbEntityName="phpbb_words">
+		<obj-attribute name="replacement" type="java.lang.String" db-attribute-path="replacement"/>
+		<obj-attribute name="word" type="java.lang.String" db-attribute-path="word"/>
+	</obj-entity>
+	<obj-entity name="PhpbbZebra" className="org.ncr.db.phpbb.PhpbbZebra" dbEntityName="phpbb_zebra">
+		<obj-attribute name="foe" type="java.lang.Byte" db-attribute-path="foe"/>
+		<obj-attribute name="friend" type="java.lang.Byte" db-attribute-path="friend"/>
+	</obj-entity>
+	<db-relationship name="groupUsers" source="phpbb_groups" target="phpbb_user_group" toMany="true">
+		<db-attribute-pair source="group_id" target="group_id"/>
+	</db-relationship>
+	<db-relationship name="untitledRel" source="phpbb_posts" target="nuke_bbforums" toMany="true">
+		<db-attribute-pair source="post_id" target="forum_last_post_id"/>
+	</db-relationship>
+	<db-relationship name="user" source="phpbb_sessions" target="phpbb_users" toMany="false">
+		<db-attribute-pair source="session_user_id" target="user_id"/>
+	</db-relationship>
+	<db-relationship name="group" source="phpbb_user_group" target="phpbb_groups" toMany="false">
+		<db-attribute-pair source="group_id" target="group_id"/>
+	</db-relationship>
+	<db-relationship name="users" source="phpbb_user_group" target="phpbb_users" toDependentPK="true" toMany="false">
+		<db-attribute-pair source="user_id" target="user_id"/>
+	</db-relationship>
+	<db-relationship name="groupMembership" source="phpbb_users" target="phpbb_user_group" toMany="true">
+		<db-attribute-pair source="user_id" target="user_id"/>
+	</db-relationship>
+	<db-relationship name="sessions" source="phpbb_users" target="phpbb_sessions" toMany="true">
+		<db-attribute-pair source="user_id" target="session_user_id"/>
+	</db-relationship>
+	<obj-relationship name="groupUsers" source="PhpbbGroups" target="PhpbbUserGroup" deleteRule="Cascade" db-relationship-path="groupUsers"/>
+	<obj-relationship name="user" source="PhpbbSessions" target="PhpbbUsers" deleteRule="Nullify" db-relationship-path="user"/>
+	<obj-relationship name="group" source="PhpbbUserGroup" target="PhpbbGroups" deleteRule="Deny" db-relationship-path="group"/>
+	<obj-relationship name="users" source="PhpbbUserGroup" target="PhpbbUsers" deleteRule="Deny" db-relationship-path="users"/>
+	<obj-relationship name="groupMemberships" source="PhpbbUsers" target="PhpbbUserGroup" deleteRule="Cascade" db-relationship-path="groupMembership"/>
+	<obj-relationship name="sessions" source="PhpbbUsers" target="PhpbbSessions" deleteRule="Deny" db-relationship-path="sessions"/>
+</data-map>

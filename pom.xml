@@ -3,6 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <artifactId>thrustcurve</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>thrustcurve-client</module>
+        <module>thrustcurve-extract</module>
+        <module>examples</module>
+    </modules>
     <groupId>org.ncrocketry</groupId>
     <version>0.0.1-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
@@ -54,13 +60,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.38</version>
-        </dependency>
-
-        <!-- xml parser -->
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <version>2.11.0</version>
         </dependency>
 
         <!-- logging -->
