@@ -1,6 +1,6 @@
 package org.thrustcurve;
 
-import org.thrustcurve.api.DownloadRequest;
+import org.thrustcurve.api.search.DownloadRequest;
 import org.thrustcurve.api.search.SearchCriteria;
 import org.thrustcurve.api.data.TCMotorRecord;
 import org.thrustcurve.api.search.SearchRequest;
