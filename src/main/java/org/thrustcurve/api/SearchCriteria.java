@@ -158,5 +158,9 @@ public class SearchCriteria {
 		}
 		return this;
 	}
-	
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() +":"+ criteria.values().toString();
+	}
 }

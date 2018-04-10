@@ -80,7 +80,8 @@ public class TCApiClient {
 				
 				for (TCMotorRecord motor : results.getRecords()) {
 					//log.info("Failed download ["+ iox.getMessage() +"] "+ motor);
-					
+					System.err.println("Failed download ["+ iox.getMessage() +"] "+ motor);
+
 				}
 			}
 		}
