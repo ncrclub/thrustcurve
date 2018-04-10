@@ -1,5 +1,6 @@
 package org.thrustcurve.api;
 
+import org.thrustcurve.api.data.TCMotorRecord;
 import util.xml.XmlTag;
 
 import java.util.List;

@@ -1,20 +1,16 @@
-package org.thrustcurve.api;
+package org.thrustcurve.api.criterion;
 
 
 /**
  * This class stores the element name and value of the search criterion passed in the search-request.
  */
-public class Criterion
+public class Primitive
 {
 	
-	private String  element;
+	private String element;
 	private String value;
 
-	public Criterion(String element) {
-		this(element, null);
-	}
-	
-	public Criterion(String element, String value) {
+	public Primitive(String element, String value) {
 		this.element= element;
 		setValue(value);
 	}
@@ -26,11 +22,11 @@ public class Criterion
 
 	public boolean equals(Object o)
 	{
-		if (o instanceof Criterion)
+		if (o instanceof Primitive)
 		{
-			Criterion rhs;
+			Primitive rhs;
 
-			rhs = (Criterion) o;
+			rhs = (Primitive) o;
 			return element.equals(rhs.element);
 		}
 		else

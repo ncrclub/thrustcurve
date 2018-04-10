@@ -1,4 +1,6 @@
-package org.thrustcurve.api;
+package org.thrustcurve.api.search;
+
+import org.thrustcurve.api.criterion.Primitive;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,26 +26,27 @@ public class SearchCriteria {
 	public static final String STD_FMT="yyyy-MM-dd HH:mm:ss";
 	private static final SimpleDateFormat formatter= new SimpleDateFormat(STD_FMT);
 
-	private HashMap<String, Criterion> criteria= new HashMap<String, Criterion>();
+	private HashMap<String, Primitive> criteria= new HashMap<String, Primitive>();
 	
 	public SearchCriteria() {
 		this(null);
 	}
 	
-	public SearchCriteria(ArrayList<Criterion> criteria) {
+	public SearchCriteria(ArrayList<? extends Primitive> criteria) {
 		if (criteria == null) { return; }
-		for (Criterion c : criteria) {
+		for (Primitive c : criteria) {
 			addCriteria(c);
 		}
 	}
 	
-	public void addCriteria(Criterion c) {
+	public SearchCriteria addCriteria(Primitive c) {
 		if (c != null) {
 			this.criteria.put(c.getName(), c);
 		}
+		return this;
 	}
 	
-	public Collection<Criterion> getCriteria() {
+	public Collection<Primitive> getCriteria() {
 		return criteria.values();
 	}
 
@@ -51,98 +54,109 @@ public class SearchCriteria {
 		return criteria.size();
 	}
 	
-	public void manufacturerAbbreviation(String value) {
+	public SearchCriteria manufacturerAbbreviation(String value) {
 		if (value != null) {
-			addCriteria(new Criterion(CRITERIA_MANUFACTURER_ABBREV, value));
+			addCriteria(new Primitive(CRITERIA_MANUFACTURER_ABBREV, value));
 		} else {
 			remove(CRITERIA_MANUFACTURER_ABBREV);
 		}
+		return this;
 	}
 	
-	public void remove(String criterion) {
+	public SearchCriteria remove(String criterion) {
 		criteria.remove(criterion);
+		return this;
 	}
 	
-	public void manufacturer(String value) {
+	public SearchCriteria manufacturer(String value) {
 		if (value != null) {
-			addCriteria(new Criterion(CRITERIA_MANUFACTURER, value));
+			addCriteria(new Primitive(CRITERIA_MANUFACTURER, value));
 		} else {
 			remove(CRITERIA_MANUFACTURER);
 		}
+		return this;
 	}
 	
-	public void designation(String value) {
+	public SearchCriteria designation(String value) {
 		if (value != null) {
-			addCriteria(new Criterion(CRITERIA_DESIGNATION, value));
+			addCriteria(new Primitive(CRITERIA_DESIGNATION, value));
 		} else {
 			remove(CRITERIA_DESIGNATION);
 		}
+		return this;
 	}
 	
-	public void brandName(String value) {
+	public SearchCriteria brandName(String value) {
 		if (value != null) {
-			addCriteria(new Criterion(CRITERIA_BRAND_NAME, value));
+			addCriteria(new Primitive(CRITERIA_BRAND_NAME, value));
 		} else {
 			remove(CRITERIA_BRAND_NAME);
 		}
+		return this;
 	}
 	
-	public void commonName(String value) {
+	public SearchCriteria commonName(String value) {
 		if (value != null) {
-			addCriteria(new Criterion(CRITERIA_COMMON_NAME, value));
+			addCriteria(new Primitive(CRITERIA_COMMON_NAME, value));
 		} else {
 			remove(CRITERIA_COMMON_NAME);
 		}
+		return this;
 	}
 	
-	public void impulseClass(String value) {
+	public SearchCriteria impulseClass(String value) {
 		if (value != null) {
-			addCriteria(new Criterion(CRITERIA_IMPULSE_CLASS, value));
+			addCriteria(new Primitive(CRITERIA_IMPULSE_CLASS, value));
 		} else {
 			remove(CRITERIA_IMPULSE_CLASS);
 		}
+		return this;
 	}
 	
-	public void diameter(Integer value) {
+	public SearchCriteria diameter(Integer value) {
 		if (value != null) {
-			addCriteria(new Criterion(CRITERIA_DIAMETER, ""+ value));
+			addCriteria(new Primitive(CRITERIA_DIAMETER, ""+ value));
 		} else {
 			remove(CRITERIA_DIAMETER);
 		}
+		return this;
 	}
 	
-	public void type(String value) {
+	public SearchCriteria type(String value) {
 		if (value != null) {
-			addCriteria(new Criterion(CRITERIA_TYPE, value));
+			addCriteria(new Primitive(CRITERIA_TYPE, value));
 		} else {
 			remove(CRITERIA_TYPE);
 		}
+		return this;
 	}
 	
-	public void dataUpdatedSince(Date date) {
+	public SearchCriteria dataUpdatedSince(Date date) {
 		if (date != null) {
-			addCriteria(new Criterion(CRITERIA_DATA_UPDATED_SINCE, formatter.format(date)));
+			addCriteria(new Primitive(CRITERIA_DATA_UPDATED_SINCE, formatter.format(date)));
 		} else {
 			remove(CRITERIA_DATA_UPDATED_SINCE);
 		}
+		return this;
 	}
 	
-	public void infoUpdatedSince(Date date) {
+	public SearchCriteria infoUpdatedSince(Date date) {
 		if (date != null) {
-			addCriteria(new Criterion(CRITERIA_INFO_UPDATED_SINCE, formatter.format(date)));
+			addCriteria(new Primitive(CRITERIA_INFO_UPDATED_SINCE, formatter.format(date)));
 		} else {
 			remove(CRITERIA_INFO_UPDATED_SINCE);
 		}
-		
+		return this;
 	}
 	
-	public void maxResults(int max) {
+	public SearchCriteria maxResults(int max) {
 		if (max > 0) {
 			if (max > 100) { max= 100; }
-			addCriteria(new Criterion(CRITERIA_MAX_RESULTS, ""+ max));
+			addCriteria(new Primitive(CRITERIA_MAX_RESULTS, ""+ max));
 		} else {
 			remove(CRITERIA_MAX_RESULTS);
 		}
+		return this;
 	}
 	
 }

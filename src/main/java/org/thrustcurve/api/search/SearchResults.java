@@ -1,5 +1,6 @@
-package org.thrustcurve.api;
+package org.thrustcurve.api.search;
 
+import org.thrustcurve.api.data.TCMotorRecord;
 import util.json.JsonArray;
 import util.json.JsonObject;
 import util.xml.XmlTag;

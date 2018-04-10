@@ -1,8 +1,6 @@
 package org.thrustcurve.api.criterion;
 
-import org.thrustcurve.api.Criterion;
-
-public class Diameter extends Criterion {
+public class Diameter extends Primitive {
 
 	public Diameter() {
 		this(null);

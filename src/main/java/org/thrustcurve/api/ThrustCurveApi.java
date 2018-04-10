@@ -1,5 +1,11 @@
 package org.thrustcurve.api;
 
+import org.thrustcurve.api.criterion.Primitive;
+import org.thrustcurve.api.data.TCMotorData;
+import org.thrustcurve.api.data.TCMotorRecord;
+import org.thrustcurve.api.search.SearchCriteria;
+import org.thrustcurve.api.search.SearchRequest;
+import org.thrustcurve.api.search.SearchResults;
 import util.xml.FullXmlParser;
 import util.xml.XmlTag;
 import util.xml.XmlTagList;
@@ -18,25 +24,32 @@ public class ThrustCurveApi {
     private URL searchEndpoint;
     private URL downloadEndpoint;
     
-    public ThrustCurveApi() throws MalformedURLException {
-    	this("http://www.thrustcurve.org/servlets", "search", "download");
+    public ThrustCurveApi() {
+    	try {
+			init("http://www.thrustcurve.org/servlets", "search", "download");
+		} catch (MalformedURLException mux) {
+    		throw new RuntimeException(mux.getMessage(), mux);
+		}
     }
 
 	/**
 	 * @param serviceUrl
-	 * @param search
-	 * @param download
+	 * @param searchPath
+	 * @param downloadPath
 	 * @throws MalformedURLException
 	 */
-	public ThrustCurveApi(String serviceUrl, String search, String download) throws MalformedURLException {
+	public ThrustCurveApi(String serviceUrl, String searchPath, String downloadPath) throws MalformedURLException {
+		init(serviceUrl, searchPath, downloadPath);
+	}
+
+	private void init(String serviceUrl, String searchPath, String downloadPath) throws MalformedURLException {
     	this.serviceUrl= new URL(serviceUrl);
-    	this.searchEndpoint= new URL(serviceUrl +"/"+ search);
-    	this.downloadEndpoint= new URL(serviceUrl +"/"+ download);
+    	this.searchEndpoint= new URL(serviceUrl +"/"+ searchPath);
+    	this.downloadEndpoint= new URL(serviceUrl +"/"+ downloadPath);
     }
 
     public SearchResults search(SearchCriteria criteria, boolean downloadData) throws IOException {
-		SearchRequest request = new SearchRequest(criteria);
-        return search(request, downloadData);
+        return search(new SearchRequest(criteria), downloadData);
     	
     }
 
@@ -156,7 +169,7 @@ public class ThrustCurveApi {
     	
     	criteria.manufacturer("cti");
     	criteria.diameter(38);
-    	criteria.addCriteria(new Criterion("has-data-files", "true"));
+    	criteria.addCriteria(new Primitive("has-data-files", "true"));
     	criteria.maxResults(100);
     	
     	SearchRequest request= new SearchRequest(criteria);

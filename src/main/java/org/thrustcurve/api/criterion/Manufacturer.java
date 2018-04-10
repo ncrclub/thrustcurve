@@ -1,8 +1,6 @@
 package org.thrustcurve.api.criterion;
 
-import org.thrustcurve.api.Criterion;
-
-public class Manufacturer extends Criterion {
+public class Manufacturer extends Primitive {
 
 	public Manufacturer() {
 		this(null);

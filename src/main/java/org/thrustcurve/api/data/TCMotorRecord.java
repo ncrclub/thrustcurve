@@ -1,4 +1,4 @@
-package org.thrustcurve.api;
+package org.thrustcurve.api.data;
 
 import util.json.JsonArray;
 import util.json.JsonObject;

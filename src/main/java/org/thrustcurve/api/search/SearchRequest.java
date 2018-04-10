@@ -1,5 +1,6 @@
-package org.thrustcurve.api;
+package org.thrustcurve.api.search;
 
+import org.thrustcurve.api.criterion.Primitive;
 import util.xml.XmlTag;
 
 import java.util.ArrayList;
@@ -9,14 +10,9 @@ public class SearchRequest {
 	
 	private SearchCriteria criteria;
 
-	public SearchRequest(ArrayList<Criterion> criteria) {
-		this(new SearchCriteria(criteria));
-	}
-	
 	public SearchRequest(SearchCriteria criteria) {
 		this.criteria= criteria;
 	}
-	
 	
 	public XmlTag getRequestXml() {
 		
@@ -33,7 +29,7 @@ public class SearchRequest {
         request.setAttribute("xsi", "http://www.thrustcurve.org/2008/SearchRequest http://www.thrustcurve.org/2008/search-request.xsd");
         request.setAttribute("xsi:schemaLocation", "http://www.thrustcurve.org/2008/SearchRequest http://www.thrustcurve.org/2008/search-request.xsd");
 
-        for (Criterion criterion : getCriteria())
+        for (Primitive criterion : getCriteria())
         {
         	String value = criterion.getValue();
 			if (value != null && !"".equals(value)) {
@@ -49,7 +45,7 @@ public class SearchRequest {
         return request;
 	}
 	
-	public Collection<Criterion> getCriteria() {
+	public Collection<Primitive> getCriteria() {
 		return criteria.getCriteria();
 	}
 	
