@@ -1,4 +1,4 @@
-package org.thrustcurve.api;
+package org.thrustcurve.api.search;
 
 import org.thrustcurve.api.criterion.Primitive;
 

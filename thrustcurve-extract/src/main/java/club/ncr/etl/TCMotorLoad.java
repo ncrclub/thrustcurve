@@ -6,7 +6,7 @@ import club.ncr.motors.MotorDbCache;
 import club.ncr.cayenne.MotorMfg;
 import org.apache.cayenne.access.DataContext;
 import org.thrustcurve.TCApiClient;
-import org.thrustcurve.api.SearchCriteria;
+import org.thrustcurve.api.search.SearchCriteria;
 import org.thrustcurve.api.search.SearchResults;
 
 import java.io.IOException;

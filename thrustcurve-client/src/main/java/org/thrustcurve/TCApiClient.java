@@ -1,13 +1,11 @@
 package org.thrustcurve;
 
 import org.thrustcurve.api.DownloadRequest;
-import org.thrustcurve.api.SearchCriteria;
-import org.thrustcurve.api.criterion.Primitive;
-import org.thrustcurve.api.data.TCMotorData;
+import org.thrustcurve.api.search.SearchCriteria;
 import org.thrustcurve.api.data.TCMotorRecord;
 import org.thrustcurve.api.search.SearchRequest;
 import org.thrustcurve.api.search.SearchResults;
-import org.thrustcurve.api.xml.FullXmlParser;
+import org.thrustcurve.api.XmlParser;
 import org.thrustcurve.api.xml.XmlTag;
 import org.thrustcurve.api.xml.XmlTagList;
 
@@ -110,7 +108,7 @@ public class TCApiClient {
 		
         InputStream in= conn.getInputStream();
         
-        FullXmlParser parser= new FullXmlParser();
+        XmlParser parser= new XmlParser();
         parser.setInput(in);
         
         if (!parser.parse()) {
@@ -153,7 +151,7 @@ public class TCApiClient {
 		out.close();
 		
         InputStream in= conn.getInputStream();
-        FullXmlParser parser= new FullXmlParser();
+        XmlParser parser= new XmlParser();
         parser.setInput(in);
         
         parser.parse();
@@ -161,36 +159,7 @@ public class TCApiClient {
         XmlTagList xml= parser.xmlData;
 		return xml;
 	}
-	
-    
-    public static void main(String[] args) throws Exception { 
-    	
-    	TCApiClient api= new TCApiClient();
-    	
-    	SearchCriteria criteria= new SearchCriteria();
-    	
-    	criteria.manufacturer("cti");
-    	criteria.diameter(38);
-    	criteria.addCriteria(new Primitive("has-data-files", "true"));
-    	criteria.maxResults(100);
-    	
-    	SearchRequest request= new SearchRequest(criteria);
-    		
-    	// System.out.println(request.getRequestXml());
-    	
-    	SearchResults results= api.search(criteria, true);
-    	
-    	for (TCMotorRecord motor : results) {
-    		System.out.println(motor.getMotorId());
-    		for (TCMotorData data : motor.getData()) {
-    			System.out.println(data.toJson());
-    		}
-    	}
-    	// DownloadRequest download= new DownloadRequest(results.getRecords());
-    	// System.out.println(api.download(download));
-    	
-    }
-    
+
     public URL getServiceUrl() {
 		return serviceUrl;
 	}

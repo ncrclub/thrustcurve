@@ -1,6 +1,6 @@
 package org.thrustcurve.api.criterion;
 
-import org.thrustcurve.api.SearchCriteria;
+import org.thrustcurve.api.search.SearchCriteria;
 
 public class Designation extends Primitive {
 

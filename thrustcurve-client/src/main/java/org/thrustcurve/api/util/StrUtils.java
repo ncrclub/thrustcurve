@@ -1,9 +1,7 @@
-package org.thrustcurve.api.json;
+package org.thrustcurve.api.util;
 /**
  * 
  */
-
-import org.thrustcurve.api.xml.StrFieldKit;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -89,9 +87,9 @@ public class StrUtils {
 	
 	public static String stripTags(final String text) {
 		String replaceText = text;
-		
+
 		if (replaceText == null) { return ""; }
-		
+
 		String[][] tagExprs= new String[][] {
 			 { "<!--.*?-->", "" }					// comments
 			,{ "<!--.*?--&gt;", "" }				// comments
@@ -184,18 +182,7 @@ public class StrUtils {
 			// ,{ "<[Tt][HhDdRr]>","" }
 			,{ "<[Tt][HhDdRr].*?>","" }
 			
-			// td
-//			,{ "</[Tt][Dd]>"," " }
-//			,{ "<[Tt][Dd]>","" }
-//			,{ "<[Tt][Dd].+>","" }
-			
-			// blank lines
-//			,{ "  *"," " }
-//			,{ "\t\t*"," " }
-//			,{ "^ $","" }
-			
 			// collapse repeating new lines
-			// ,{ "[\r\n][\r\n]*","\n" }
 			,{ "[\n][\n]*","\n" }
 		};
 		
@@ -212,108 +199,6 @@ public class StrUtils {
 			replaceText= pattern.matcher(replaceText).replaceAll(replaceWith);
 			
 		}
-		
-		// <!-- comments -->
-		// replaceText= replaceText.replaceAll("<!--.*-->", "");
-		
-		// <html>
-		// replaceText= replaceText.replaceAll("</[Hh][Tt][Mm][Ll]>", "\n");
-		// replaceText= replaceText.replaceAll("<[Hh][Tt][Mm][Ll]>", "\n");
-		
-		// <meta>
-		// replaceText= replaceText.replaceAll("</[Mm][Ee][Tt][Aa]>", "");
-		// replaceText= replaceText.replaceAll("<[Mm][Ee][Tt][Aa].*?>", "");
-		
-		// <head>
-		// replaceText= replaceText.replaceAll("</[Hh][Ee][Aa][Dd]>", "");
-		// replaceText= replaceText.replaceAll("<[Hh][Ee][Aa][Dd].*?>", "");
-//		
-//		// <body>
-//		replaceText= replaceText.replaceAll("</[Bb][Oo][Dd][Yy]>", "");
-//		// replaceText= replaceText.replaceAll("<[Bb][Oo][Dd][Yy]>", "");
-//		replaceText= replaceText.replaceAll("<[Bb][Oo][Dd][Yy].*?>", "");
-//		
-//		// <hN> - headings
-//		replaceText= replaceText.replaceAll("<[Hh][0-9]>", "");
-//		replaceText= replaceText.replaceAll("</[Hh][0-9]>", "");
-//		
-//		// <font>
-//		replaceText= replaceText.replaceAll("</[Ff][Oo][Nn][Tt]>", "");
-//		// replaceText= replaceText.replaceAll("<[Ff][Oo][Nn][Tt]>", "");
-//		replaceText= replaceText.replaceAll("<[Ff][Oo][Nn][Tt].*?>", "");
-//		
-//		// <hr> <br>
-//		replaceText= replaceText.replaceAll("<[HhBb][Rr].*?>", "\n");
-//		
-//		// <p>
-//		replaceText= replaceText.replaceAll("<[Pp].*?>", "\n");
-//		// <i> <u> <b> </p>
-//		replaceText= replaceText.replaceAll("<[IiUuBb].*?>", "");
-//		replaceText= replaceText.replaceAll("</[IiUuBbPp]>", "");
-//		
-//		replaceText= replaceText.replaceAll("<em>", "");
-//		replaceText= replaceText.replaceAll("</em>", "");
-//		
-//		// <div>
-//		replaceText= replaceText.replaceAll("</[Dd][Ii][Vv]>", "");
-//		// replaceText= replaceText.replaceAll("<[Dd][Ii][Vv]>", "");
-//		replaceText= replaceText.replaceAll("<[Dd][Ii][Vv].*?>", "");
-//		
-//		// <span>
-//		replaceText= replaceText.replaceAll("</[Ss][Pp][Aa][Nn]>", "");
-//		// replaceText= replaceText.replaceAll("<[Ss][Pp][Aa][Nn]>", "");
-//		replaceText= replaceText.replaceAll("<[Ss][Pp][Aa][Nn].*?>", "");
-//		
-//		replaceText= replaceText.replaceAll("</[Aa]>", "");
-//		replaceText= replaceText.replaceAll("<[Aa].*?>", " ");
-//		//replaceText= replaceText.replaceAll("<[Aa]", " ");
-////		replaceText= replaceText.replaceAll("href=['\"].+['\"]>", " ");
-//		
-//		replaceText= replaceText.replaceAll("<[sS][tT][rR][oO][nN][gG].*?>", "");
-//		replaceText= replaceText.replaceAll("</[sS][tT][rR][oO][nN][gG]>", "");
-//		replaceText= replaceText.replaceAll("</[Ll][Ii]>", "");
-//		replaceText= replaceText.replaceAll("<[Ll][Ii].*?>", " - ");
-//		
-//		// <ol> <ul>
-//		replaceText= replaceText.replaceAll("</[OoUu][Ll]>", "");
-//		replaceText= replaceText.replaceAll("<[OoUu][Ll]>", "");
-//		
-//		replaceText= replaceText.replaceAll("&lt;", "<");
-//		replaceText= replaceText.replaceAll("&gt;", ">");
-//		replaceText= replaceText.replaceAll("&amp;", "&");
-//		replaceText= replaceText.replaceAll("&nbsp;"," ");
-//		
-//		// table
-//		replaceText= replaceText.replaceAll("</[Tt][Aa][Bb][Ll][Ee]>","");
-//		// replaceText= replaceText.replaceAll("<[Tt][Aa][Bb][Ll][Ee]>","");
-//		replaceText= replaceText.replaceAll("<[Tt][Aa][Bb][Ll][Ee].*?>","");
-//		
-//		// thead
-//		replaceText= replaceText.replaceAll("</[Tt][Hh][Ee][Aa][Dd]>","");
-//		replaceText= replaceText.replaceAll("<[Tt][Hh][Ee][Aa][Dd]>","");
-//		
-//		// tbody
-//		replaceText= replaceText.replaceAll("</[Tt][Bb][Oo][Dd][Yy]>","");
-//		replaceText= replaceText.replaceAll("<[Tt][Bb][Oo][Dd][Yy]>","");
-//		
-//		// <th> <td> <tr>
-//		replaceText= replaceText.replaceAll("</[Tt][HhDdRr]>","");
-//		// replaceText= replaceText.replaceAll("<[Tt][HhDdRr]>","");
-//		replaceText= replaceText.replaceAll("<[Tt][HhDdRr].*?>","");
-//		
-//		// td
-////		replaceText= replaceText.replaceAll("</[Tt][Dd]>"," ");
-////		replaceText= replaceText.replaceAll("<[Tt][Dd]>","");
-////		replaceText= replaceText.replaceAll("<[Tt][Dd].+>","");
-//		
-//		// blank lines
-////		replaceText= replaceText.replaceAll("  *"," ");
-////		replaceText= replaceText.replaceAll("\t\t*"," ");
-////		replaceText= replaceText.replaceAll("^ $","");
-//		
-//		// collapse repeating new lines
-//		replaceText= replaceText.replaceAll("[\r\n][\r\n]*","\n");
-//		replaceText= replaceText.replaceAll("[\n][\n]*","\n");
 		
 		return replaceText;
 	}
@@ -387,34 +272,7 @@ public class StrUtils {
 		for (String[] pair : taboo) {
 			bashSafeVarible = StrUtils.replace(bashSafeVarible, pair[0], pair[1], true);
 		}
-		
-		/*
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, ".", "_", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, " ", "_", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "?", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "(", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, ")", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "-", "_", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "$", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "[", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "]", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "{", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "}", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "|", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "<", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, ">", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, ":", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, ";", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "'", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "~", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "@", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "#", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "%", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "\\", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "\"", "", true);
-		bashSafeVarible = StrUtils.replace(bashSafeVarible, "/", "_", true);
-		*/
-		
+
 		return bashSafeVarible;
 	}
 	public static String prefixText(String prefix, String text) {
@@ -433,7 +291,7 @@ public class StrUtils {
 			return prefix +" "+ text;
 		}
 		
-		StrFieldKit parser= new StrFieldKit(text, '\n');
+		WordParser parser= new WordParser(text, '\n');
 		parser.keepWhitespace();
 		String msg= "";
 		

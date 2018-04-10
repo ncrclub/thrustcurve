@@ -1,4 +1,4 @@
-package org.thrustcurve.api.xml;
+package org.thrustcurve.api.util;
 
 import java.util.Vector;
 
@@ -7,7 +7,7 @@ import java.util.Vector;
 * StrFieldKit is a collection of helper functions
 * for parsing string into fields
 */
-public class StrFieldKit {
+public class WordParser {
 
 	public String errMsg;
 
@@ -19,7 +19,7 @@ public class StrFieldKit {
 /**
 * String Parser Constructor w/ space delimiter
 */
-public StrFieldKit(String str) {
+public WordParser(String str) {
 	parseStr= str;
 } // StrFieldKit
 
@@ -27,7 +27,7 @@ public StrFieldKit(String str) {
 /**
 * String Parser constructed w/ specified delimeter
 */
-public StrFieldKit(String str, char delimiter) {
+public WordParser(String str, char delimiter) {
 	parseStr= str;
 	parseDelimiter= delimiter;
 } // StrFieldKit

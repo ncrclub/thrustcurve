@@ -1,5 +1,5 @@
 import org.thrustcurve.TCApiClient;
-import org.thrustcurve.api.SearchCriteria;
+import org.thrustcurve.api.search.SearchCriteria;
 import org.thrustcurve.api.search.SearchResults;
 
 public class RunMe {

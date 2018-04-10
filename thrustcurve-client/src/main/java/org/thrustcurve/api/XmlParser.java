@@ -1,9 +1,12 @@
 /**
  * 
  */
-package org.thrustcurve.api.xml;
+package org.thrustcurve.api;
 
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
+import org.thrustcurve.api.util.WordParser;
+import org.thrustcurve.api.xml.XmlTag;
+import org.thrustcurve.api.xml.XmlTagList;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -26,7 +29,7 @@ import java.io.InputStream;
  * @author brad
  *
  */
-public class FullXmlParser {
+public class XmlParser {
 
 	private InputStream xmlStream;
 	
@@ -38,7 +41,7 @@ public class FullXmlParser {
 	
 	public String errMsg= null;
 	
-	public FullXmlParser() {
+	public XmlParser() {
 		
 	}
 	
@@ -146,7 +149,7 @@ public class FullXmlParser {
 								String value= child.getNodeValue();
 								
 								
-								StrFieldKit sfk= new StrFieldKit(value, '\n');
+								WordParser sfk= new WordParser(value, '\n');
 								String line= null;
 								value= "";
 								String crlf= "";

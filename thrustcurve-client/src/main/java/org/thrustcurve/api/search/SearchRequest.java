@@ -1,7 +1,6 @@
 package org.thrustcurve.api.search;
 
 
-import org.thrustcurve.api.SearchCriteria;
 import org.thrustcurve.api.criterion.Primitive;
 import org.thrustcurve.api.xml.XmlTag;
 
