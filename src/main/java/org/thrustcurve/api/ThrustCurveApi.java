@@ -1,7 +1,6 @@
 package org.thrustcurve.api;
 
 import org.apache.logging.log4j.Logger;
-import util.kits.Log4JKit;
 import util.xml.FullXmlParser;
 import util.xml.XmlTag;
 import util.xml.XmlTagList;
@@ -12,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.logging.Logger;
 
 
 public class ThrustCurveApi {
@@ -46,7 +46,6 @@ public class ThrustCurveApi {
 		// send the search API request document
 		XmlTag xml= request.getRequestXml();
 		
-		Logger log= Log4JKit.getLog(this);
 		// log.info("Search Request XML:\n"+ xml +"\n");
     	
 		try {
@@ -68,7 +67,7 @@ public class ThrustCurveApi {
 			} catch (IOException iox) {
 				
 				for (TCMotorRecord motor : results.getRecords()) {
-					log.info("Failed download ["+ iox.getMessage() +"] "+ motor);
+					//log.info("Failed download ["+ iox.getMessage() +"] "+ motor);
 					
 				}
 			}
@@ -78,7 +77,7 @@ public class ThrustCurveApi {
 		
 		} catch (IOException iox) {
 			
-			log.info("Failed search ["+ iox.getMessage() +"] "+ xml);
+			//log.info("Failed search ["+ iox.getMessage() +"] "+ xml);
 		}
 		
 		return null;

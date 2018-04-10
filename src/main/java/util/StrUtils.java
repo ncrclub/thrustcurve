@@ -5,7 +5,6 @@ package util;
 
 
 import util.kits.StrFieldKit;
-import util.security.Crypto;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -696,7 +695,7 @@ public class StrUtils {
 		SecureRandom rnd= null;
 		
 		try {
-			rnd = SecureRandom.getInstance(Crypto.RNG);
+			rnd = SecureRandom.getInstanceStrong();
 		} catch (NoSuchAlgorithmException nax) {
 			return "NIL";
 		}
