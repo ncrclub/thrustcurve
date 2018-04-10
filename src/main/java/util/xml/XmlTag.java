@@ -3,7 +3,7 @@
  */
 package util.xml;
 
-import org.apache.xerces.parsers.DOMParser;
+import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

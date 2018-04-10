@@ -1,11 +1,13 @@
 package org.thrustcurve.api;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
 public class SearchCriteria {
+
 
 	public static final String CRITERIA_INFO_UPDATED_SINCE = "info-updated-since";
 	public static final String CRITERIA_MAX_RESULTS = "max-results";
@@ -18,7 +20,10 @@ public class SearchCriteria {
 	public static final String CRITERIA_DESIGNATION = "designation";
 	public static final String CRITERIA_MANUFACTURER = "manufacturer";
 	public static final String CRITERIA_MANUFACTURER_ABBREV = "manufacturer-abbrev";
-	
+
+	public static final String STD_FMT="yyyy-MM-dd HH:mm:ss";
+	private static final SimpleDateFormat formatter= new SimpleDateFormat(STD_FMT);
+
 	private HashMap<String, Criterion> criteria= new HashMap<String, Criterion>();
 	
 	public SearchCriteria() {
@@ -116,7 +121,7 @@ public class SearchCriteria {
 	
 	public void dataUpdatedSince(Date date) {
 		if (date != null) {
-			addCriteria(new Criterion(CRITERIA_DATA_UPDATED_SINCE, DateKit.format(date, DateKit.STD_DATE)));
+			addCriteria(new Criterion(CRITERIA_DATA_UPDATED_SINCE, formatter.format(date)));
 		} else {
 			remove(CRITERIA_DATA_UPDATED_SINCE);
 		}
@@ -124,7 +129,7 @@ public class SearchCriteria {
 	
 	public void infoUpdatedSince(Date date) {
 		if (date != null) {
-			addCriteria(new Criterion(CRITERIA_INFO_UPDATED_SINCE, DateKit.format(date, DateKit.STD_DATE)));
+			addCriteria(new Criterion(CRITERIA_INFO_UPDATED_SINCE, formatter.format(date)));
 		} else {
 			remove(CRITERIA_INFO_UPDATED_SINCE);
 		}

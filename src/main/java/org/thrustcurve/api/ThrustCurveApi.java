@@ -1,6 +1,5 @@
 package org.thrustcurve.api;
 
-import org.apache.logging.log4j.Logger;
 import util.xml.FullXmlParser;
 import util.xml.XmlTag;
 import util.xml.XmlTagList;
@@ -11,7 +10,6 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.logging.Logger;
 
 
 public class ThrustCurveApi {
@@ -111,14 +109,12 @@ public class ThrustCurveApi {
 	public XmlTagList download(DownloadRequest request) throws IOException {
 		// send the download request
 		XmlTag requestXml = request.getRequestXml();
-		
-		Logger log= Log4JKit.getLog(this);
 
     	XmlTagList xml= download(requestXml);
    	 
    	 	while (request.hasMoreResults()) {
    	 		
-   	 		log.info("Fetching more results from search... ");
+   	 		//log.info("Fetching more results from search... ");
    	 		
    	 		XmlTagList chunk= download(request.getRequestXml());
    	 		for (XmlTag result : chunk.seek("download-response.results.result")) {

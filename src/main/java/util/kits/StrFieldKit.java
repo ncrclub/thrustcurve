@@ -170,6 +170,7 @@ public float nextFloat() {
 } // nextInt
 
 
+/*
 public Date nextDate(String fmt) {
 	String str= ((trimWhitespace)? nextField() : nextField().trim());
 	try {
@@ -180,6 +181,7 @@ public Date nextDate(String fmt) {
 	}
 	return null;
 }
+*/
 
 
 } // class StrFieldKit
