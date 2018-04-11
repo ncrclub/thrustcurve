@@ -5,6 +5,8 @@ import club.ncr.cayenne.MotorImpulse;
 import club.ncr.motors.MotorDbCache;
 import club.ncr.cayenne.MotorMfg;
 import org.apache.cayenne.access.DataContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thrustcurve.TCApiClient;
 import org.thrustcurve.api.search.SearchCriteria;
 import org.thrustcurve.api.search.SearchResults;
@@ -13,12 +15,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TCMotorLoad {
 
+    private static final Logger LOG= LoggerFactory.getLogger(TCMotorLoad.class);
     private MotorDbCache cache;
-	private DataContext ctx;
-	
+
 	private boolean runlock;
 	
 	static private MotorImpulse nextImpulse= null;
@@ -32,21 +36,25 @@ public class TCMotorLoad {
 		
 		try {
 		
-		//ctx= Andromeda.createDataContext();
+		cache= new MotorDbCache("cayenne-ncrclub.xml");
 		
-		//cache= new MotorDbCache(ctx);
-		
-		MotorImpulse imp = getNextImpulse();
+		MotorImpulse imp = nextImpulse == null ? getNextImpulse(null) : nextImpulse;
+		if (imp == null) {
+			LOG.error("No Motor Impulses.");
+			return;
+		}
+		nextImpulse= getNextImpulse(imp);
 
-		SearchCriteria criteria= new  SearchCriteria();
-		criteria.impulseClass(imp.getImpulse());
-		criteria.maxResults(20);
+		SearchCriteria criteria= new SearchCriteria()
+				.impulseClass(imp.getImpulse())
+				.maxResults(20);
+
 		SearchResults results= update(criteria);
 			
 		if (results.size() == 0) {
 
 		} if (results.size() > 0 && results.size() < 20) {
-			// log.info("Updated "+ results.size() +" motor records. ["+ imp.getImpulse() +"]");
+			LOG.info("Updated "+ results.size() +" motor records. ["+ imp.getImpulse() +"]");
 		} else if (results.size() >= 20) {
 
 			Collection<MotorDiameter> diameters = cache.getDiameters();
@@ -61,7 +69,7 @@ public class TCMotorLoad {
 
 				} else if (results.size() > 0 && results.size() < 49) {
 
-					// log.info("Updated "+ results.size() +" motor records. ["+ imp.getImpulse() +","+ diam.getDiameter() +"mm]");
+					LOG.info("Updated "+ results.size() +" motor records. ["+ imp.getImpulse() +","+ diam.getDiameter() +"mm]");
 
 				} else if (results.size() >= 49) {
 
@@ -76,65 +84,49 @@ public class TCMotorLoad {
 						results= update(criteria);
 
 						if (results.size() > 0) {
-							// log.info("Updated "+ results.size() +" motor records. "+ mfg.getName() +" ["+ imp.getImpulse() +","+ diam.getDiameter() +"mm]");
+							LOG.info("Updated "+ results.size() +" motor records. "+ mfg.getName() +" ["+ imp.getImpulse() +","+ diam.getDiameter() +"mm]");
 						}
 								
 					}
 				} else {
-					// log.info("No motors found to update for "+ imp.getImpulse() +","+ diam.getDiameter() +"mm");
+					LOG.info("No motors found to update for "+ imp.getImpulse() +","+ diam.getDiameter() +"mm");
 				}
 						
 			}
 		}
 			
 		
-		// log.info("Done with update sequence.");
+		LOG.info("Done with update sequence.");
 		
 		} catch (Throwable anything) {
-			// log.error(anything);
+			LOG.error(anything.getMessage(), anything);
 		} finally {
 			releaseRunLock();
 		}
 			
 	}
 
-	protected MotorImpulse getNextImpulse() {
-		ArrayList<MotorImpulse> impulseArray= new ArrayList<MotorImpulse>();
+	protected MotorImpulse getNextImpulse(MotorImpulse currentImpulse) {
+		List<MotorImpulse> impulseArray= cache.getImpulses().stream().sorted().collect(Collectors.toList());
 
-		/*
-		for (MotorImpulse i : cache.getImpulses()) {
-			impulseArray.add(i);
-		}
-		*/
-		
-		// impulseArray.clear();
-		// impulseArray.add(cache.getImpulse("K"));
-		
-		Collections.sort(impulseArray);
-		
-		
-		if (nextImpulse == null) {
-			nextImpulse= impulseArray.get(0);
+		if (currentImpulse == null && impulseArray.size() > 0) {
+			return impulseArray.get(0);
 		} else {
 			
 			for (int i= 0; i < impulseArray.size(); i++) {
 				MotorImpulse impulse= impulseArray.get(i);
-				if (impulse.equals(nextImpulse)) {
+				if (impulse.equals(currentImpulse)) {
 					if (i == impulseArray.size() - 1) {
-						nextImpulse= impulseArray.get(0);		// back to first impulse
-						break;
+						return null;
 					} else {
-						nextImpulse= impulseArray.get(i+1);
-						break;
+						return impulseArray.get(i+1);
 					}
 				}
 			}
 			
 		}
-		
-		
-		MotorImpulse imp= nextImpulse;
-		return imp;
+
+		return null;
 	}
 
 	private SearchResults update(SearchCriteria criteria) {
@@ -152,12 +144,12 @@ public class TCMotorLoad {
 				return searchResults;
 				
 			} catch (IOException e) {
-				// log.error(e.getMessage(), e);
+				LOG.error(e.getMessage(), e);
 			}
 			
 			
 		} catch (Throwable e) {
-			// log.error(e.getMessage(), e);
+			LOG.error(e.getMessage(), e);
 		}
 		
 		return null;

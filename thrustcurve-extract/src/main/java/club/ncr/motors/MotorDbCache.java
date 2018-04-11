@@ -37,21 +37,20 @@ public class MotorDbCache {
 	private DataContext ctx;
 	private boolean readOnly= false;
 
-	private static ServerRuntime runtime= new ServerRuntime("/cayenne.xml");
+	private static ServerRuntime runtime;
 
-	public MotorDbCache(DataContext ctx) {
+	public MotorDbCache(String cayenneConfigFile) {
 
-		if (ctx == null) {
-			ctx= (DataContext)runtime.getContext();
-		}
-		
-		this.ctx= ctx;
-		
+	    if (this.runtime == null) {
+            this.runtime = ServerRuntime.builder().addConfig(cayenneConfigFile).build();
+        }
+		this.ctx= (DataContext)runtime.getContext();
+
 		// prime the impulses
 		for (char impulse= 'A'; impulse <= 'R'; impulse++) {
 			MotorImpulse.createNew(""+ impulse, ctx);
 		}
-		
+
 		for (MotorMfg mfg : MotorMfg.get(ctx, null)) { manufacturers.put(mfg.getName(), mfg); }
 		for (MotorCertOrg org : MotorCertOrg.get(ctx, null)) { certOrgs.put(org.getName(), org); }
 		for (MotorDiameter diam : MotorDiameter.get(ctx, null)) { diameters.put(""+ diam.getDiameter(), diam); }
