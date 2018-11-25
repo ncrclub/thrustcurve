@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+  <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+  		<layout class="util.log4j.LogLayout" />
+  </appender>
+
+  <appender name="CORE" class="org.apache.log4j.RollingFileAppender">
+  		<param name="File" value="/var/log/tomcat/ncr/core.log" />		<!-- path to log file -->
+  		<param name="MaxFileSize" value="10Mb" />			<!-- roll file when it grows beyond specified size in Mb or Kb -->
+  		<param name="MaxBackupIndex" value="2" />			<!-- how many files to keep -->
+  		<param name="ImmediateFlush" value="true" />		<!-- flush writes to disk immediately -->
+        <!-- layout class="util.logging.LogLayout" / -->
+  </appender>
+
+  <appender name="MODULES" class="org.apache.log4j.RollingFileAppender">
+  		<param name="File" value="/var/log/tomcat/ncr/modules.log" />		<!-- path to log file -->
+  		<param name="MaxFileSize" value="10Mb" />			<!-- roll file when it grows beyond specified size in Mb or Kb -->
+  		<param name="MaxBackupIndex" value="2" />			<!-- how many files to keep -->
+  		<param name="ImmediateFlush" value="true" />		<!-- flush writes to disk immediately -->
+  </appender>
+  
+  <appender name="ACCESS" class="org.apache.log4j.RollingFileAppender">
+  		<param name="File" value="/var/log/tomcat/ncr/access.log" />		<!-- path to log file -->
+  		<param name="MaxFileSize" value="10Mb" />			<!-- roll file when it grows beyond specified size in Mb or Kb -->
+  		<param name="MaxBackupIndex" value="2" />			<!-- how many files to keep -->
+  		<param name="ImmediateFlush" value="true" />		<!-- flush writes to disk immediately -->
+  </appender>
+  
+  <appender name="TOMCAT" class="org.apache.log4j.RollingFileAppender">
+  		<param name="File" value="/var/log/tomcat/ncr/tomcat.log" />		<!-- path to log file -->
+  		<param name="MaxFileSize" value="5Mb" />			<!-- roll file when it grows beyond specified size in Mb or Kb -->
+  		<param name="MaxBackupIndex" value="2" />			<!-- how many files to keep -->
+  		<param name="ImmediateFlush" value="true" />		<!-- flush writes to disk immediately -->
+  </appender>
+  
+  <appender name="CAYENNE" class="org.apache.log4j.RollingFileAppender">
+  		<param name="File" value="/var/log/tomcat/ncr/cayenne.log" />		<!-- path to log file -->
+  		<param name="MaxFileSize" value="5Mb" />			<!-- roll file when it grows beyond specified size in Mb or Kb -->
+  		<param name="MaxBackupIndex" value="2" />			<!-- how many files to keep -->
+  		<param name="ImmediateFlush" value="true" />		<!-- flush writes to disk immediately -->
+  </appender>
+  
+  <appender name="SYSTEM" class="org.apache.log4j.RollingFileAppender">
+  		<param name="File" value="/var/log/tomcat/ncr/system.log" />		<!-- path to log file -->
+  		<param name="MaxFileSize" value="5Mb" />			<!-- roll file when it grows beyond specified size in Mb or Kb -->
+  		<param name="MaxBackupIndex" value="2" />			<!-- how many files to keep -->
+  		<param name="ImmediateFlush" value="true" />		<!-- flush writes to disk immediately -->
+  </appender>
+  
+  <appender name="DEBUG" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="/var/log/tomcat/ncr/debug.log" />	
+		<param name="MaxFileSize" value="10Mb" />
+		<param name="MaxBackupIndex" value="2" />
+		<param name="ImmediateFlush" value="true" />
+	</appender>
+
+<!-- set a specific package's log level -->
+<!-- <logger name="com.package.path" additivity="true"> <level value="INFO"/> </logger> -->
+
+
+<!-- ******************** Cayenne ******************** -->
+	<logger name="org.apache.cayenne" additivity="false"> <level value="TRACE"/> <appender-ref ref="CAYENNE"/> </logger>
+	
+<!-- ******************** Tomcat ******************** -->
+<!-- <logger name="org.apache.catalina" additivity="false"> <level value="TRACE"/> <appender-ref ref="TOMCAT"/> </logger> -->
+	
+<!-- ******************** morse code catch-all ******************** -->
+<!-- 	<logger name="mc"> <level value="DEBUG"/> <appender-ref ref="DEBUG"/> </logger> -->
+	
+<!-- ******************** andromeda system logging ******************** -->
+<!-- 	<logger name="mc.andromeda"> <level value="DEBUG"/> <appender-ref ref="SYSTEM"/> </logger> -->
+<!-- 	<logger name="mc.andromeda.srvr.Andromeda"> <level value="DEBUG"/> <appender-ref ref="DEBUG"/> </logger> -->
+	
+ 	<logger name="mc.andromeda.modules.AccessLogger" additivity="false"> <level value="DEBUG"/> <appender-ref ref="ACCESS"/> </logger>
+ 	<logger name="mc.andromeda"> <level value="DEBUG"/> <appender-ref ref="CORE"/> </logger>
+ 	<logger name="mc.web"> <level value="DEBUG"/> <appender-ref ref="CORE"/> </logger>
+
+ 	<logger name="ncr.org"> <level value="DEBUG"/> <appender-ref ref="SYSTEM"/> </logger>
+	<root> <level value="DEBUG"/> <appender-ref ref="DEBUG"/> </root>
+	
+</log4j:configuration>

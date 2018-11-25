@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap http://cayenne.apache.org/schema/10/modelMap.xsd"
+	 project-version="10">
+	<property name="defaultPackage" value="club.ncr.cayenne"/>
+	<property name="defaultSchema" value="ncr"/>
+	<db-entity name="flight_event" schema="ncr">
+		<db-attribute name="description" type="LONGVARCHAR" length="65535"/>
+		<db-attribute name="event_date" type="DATE" length="10"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+		<db-attribute name="location" type="VARCHAR" length="255"/>
+		<db-attribute name="title" type="VARCHAR" length="45"/>
+		<db-attribute name="weather_conditions" type="LONGVARCHAR" length="65535"/>
+	</db-entity>
+	<db-entity name="flight_log" schema="ncr">
+		<db-attribute name="altitude" type="INTEGER" length="11"/>
+		<db-attribute name="flight_date" type="DATE" isMandatory="true" length="10"/>
+		<db-attribute name="flight_notes" type="LONGVARCHAR" length="65535"/>
+		<db-attribute name="flyer_id" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="flyer_rocket_id" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+		<db-attribute name="launch_control_officer_id" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="launch_event_id" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="motor_id" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="motor_mfg_id" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="motor_name_id" type="INTEGER" isMandatory="true" length="11"/>
+		<db-attribute name="motor_weight" type="DOUBLE" isMandatory="true" length="22"/>
+	</db-entity>
+	<db-entity name="flyer_record" schema="ncr">
+		<db-attribute name="address_1" type="VARCHAR" length="50"/>
+		<db-attribute name="address_2" type="VARCHAR" length="50"/>
+		<db-attribute name="address_city" type="VARCHAR" length="50"/>
+		<db-attribute name="address_state" type="CHAR" length="2"/>
+		<db-attribute name="address_zip" type="VARCHAR" length="10"/>
+		<db-attribute name="affiliation" type="VARCHAR" length="50"/>
+		<db-attribute name="age" type="TINYINT" length="3"/>
+		<db-attribute name="cert_level" type="TINYINT" length="2"/>
+		<db-attribute name="contact_id" type="INTEGER" length="11"/>
+		<db-attribute name="created_date" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="dues_paid" type="VARCHAR" length="16"/>
+		<db-attribute name="dues_paid_date" type="DATE" length="10"/>
+		<db-attribute name="email_address" type="VARCHAR" length="255"/>
+		<db-attribute name="external_user_id" type="INTEGER" length="11"/>
+		<db-attribute name="first_name" type="VARCHAR" length="50"/>
+		<db-attribute name="home_phone" type="VARCHAR" length="20"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="last_name" type="VARCHAR" length="50"/>
+		<db-attribute name="lco_initials" type="VARCHAR" length="5"/>
+		<db-attribute name="member_type" type="TINYINT" length="2"/>
+		<db-attribute name="middle_initial" type="CHAR" length="1"/>
+		<db-attribute name="migration_id" type="INTEGER" length="11"/>
+		<db-attribute name="mobile_phone" type="VARCHAR" length="20"/>
+		<db-attribute name="nar_number" type="VARCHAR" length="10"/>
+		<db-attribute name="notes" type="VARCHAR" length="255"/>
+		<db-attribute name="paid_thru" type="VARCHAR" length="16"/>
+		<db-attribute name="paid_thru_date" type="DATE" length="10"/>
+		<db-attribute name="post_email" type="CHAR" length="1"/>
+		<db-attribute name="tripoli_number" type="VARCHAR" length="10"/>
+		<db-attribute name="user_id" type="INTEGER" length="11"/>
+		<db-attribute name="username" type="VARCHAR" length="25"/>
+		<db-attribute name="work_phone" type="VARCHAR" length="20"/>
+	</db-entity>
+	<db-entity name="flyer_rocket" schema="ncr">
+		<db-attribute name="flyer_user_id" type="INTEGER" length="11"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+		<db-attribute name="maiden_flight_date" type="DATE" length="10"/>
+		<db-attribute name="rocket_name" type="VARCHAR" length="45"/>
+		<db-attribute name="rocket_weight" type="REAL" length="12"/>
+		<db-attribute name="user_notes" type="LONGVARCHAR" length="65535"/>
+		<db-attribute name="weight_units" type="VARCHAR" length="10"/>
+	</db-entity>
+	<db-entity name="gallery" schema="ncr">
+		<db-attribute name="created" type="DATE"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" length="255"/>
+		<db-attribute name="path" type="VARCHAR" length="255"/>
+		<db-attribute name="updated" type="DATE"/>
+		<db-attribute name="views" type="BIGINT"/>
+	</db-entity>
+	<db-entity name="gallery_image" schema="ncr">
+		<db-attribute name="data" type="BLOB"/>
+		<db-attribute name="description" type="VARCHAR" length="1024"/>
+		<db-attribute name="filename" type="VARCHAR" length="128"/>
+		<db-attribute name="format" type="VARCHAR" length="4"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" length="255"/>
+		<db-attribute name="path" type="VARCHAR" length="255"/>
+		<db-attribute name="published" type="DATE"/>
+		<db-attribute name="title" type="VARCHAR" length="255"/>
+		<db-attribute name="views" type="BIGINT"/>
+	</db-entity>
+	<db-entity name="legacy_flyer_record" schema="ncr">
+		<db-attribute name="address_1" type="VARCHAR" length="50"/>
+		<db-attribute name="address_2" type="VARCHAR" length="50"/>
+		<db-attribute name="address_city" type="VARCHAR" length="50"/>
+		<db-attribute name="address_state" type="CHAR" length="2"/>
+		<db-attribute name="address_zip" type="VARCHAR" length="10"/>
+		<db-attribute name="affiliation" type="VARCHAR" length="50"/>
+		<db-attribute name="age" type="TINYINT" length="3"/>
+		<db-attribute name="cert_level" type="TINYINT" length="2"/>
+		<db-attribute name="created_date" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="dues_paid" type="DATE" length="10"/>
+		<db-attribute name="email_address" type="VARCHAR" length="255"/>
+		<db-attribute name="first_name" type="VARCHAR" length="50"/>
+		<db-attribute name="home_phone" type="VARCHAR" length="20"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="last_name" type="VARCHAR" length="50"/>
+		<db-attribute name="lco_initials" type="VARCHAR" length="5"/>
+		<db-attribute name="member_type" type="TINYINT" length="2"/>
+		<db-attribute name="middle_initial" type="CHAR" length="1"/>
+		<db-attribute name="mobile_phone" type="VARCHAR" length="20"/>
+		<db-attribute name="nar_number" type="VARCHAR" length="10"/>
+		<db-attribute name="notes" type="VARCHAR" length="255"/>
+		<db-attribute name="paid_thru" type="DATE" length="10"/>
+		<db-attribute name="post_email" type="CHAR" length="1"/>
+		<db-attribute name="tripoli_number" type="VARCHAR" length="10"/>
+		<db-attribute name="username" type="VARCHAR" length="25"/>
+		<db-attribute name="work_phone" type="VARCHAR" length="20"/>
+	</db-entity>
+	<db-entity name="legacy_launch_event" schema="ncr">
+		<db-attribute name="club_launch" type="CHAR" length="1"/>
+		<db-attribute name="created_date" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="description" type="LONGVARCHAR" length="65535"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="launch_date" type="DATE" length="10"/>
+		<db-attribute name="location" type="VARCHAR" length="50"/>
+		<db-attribute name="name" type="VARCHAR" length="50"/>
+		<db-attribute name="weather" type="LONGVARCHAR" length="65535"/>
+	</db-entity>
+	<db-entity name="legacy_launch_log" schema="ncr">
+		<db-attribute name="altitude" type="BIGINT" length="9"/>
+		<db-attribute name="contests" type="VARCHAR" length="255"/>
+		<db-attribute name="created_date" type="TIMESTAMP" isMandatory="true" length="19"/>
+		<db-attribute name="event_id" type="INTEGER" length="11"/>
+		<db-attribute name="flight_time" type="REAL" length="7" scale="3"/>
+		<db-attribute name="flyer" type="VARCHAR" length="50"/>
+		<db-attribute name="flyer_id" type="INTEGER" length="10"/>
+		<db-attribute name="id" type="BIGINT" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="launch_no" type="INTEGER" length="5"/>
+		<db-attribute name="lco_id" type="INTEGER" length="10"/>
+		<db-attribute name="lco_initials" type="VARCHAR" length="5"/>
+		<db-attribute name="motor" type="VARCHAR" length="50"/>
+		<db-attribute name="motor_group" type="VARCHAR" length="15"/>
+		<db-attribute name="motor_group_id" type="TINYINT" length="4"/>
+		<db-attribute name="motor_man" type="VARCHAR" isMandatory="true" length="50"/>
+		<db-attribute name="nar_no" type="INTEGER" length="8"/>
+		<db-attribute name="notes" type="LONGVARCHAR" length="65535"/>
+		<db-attribute name="pad_no" type="INTEGER" length="3"/>
+		<db-attribute name="post_flight" type="VARCHAR" length="250"/>
+		<db-attribute name="rocket" type="VARCHAR" length="50"/>
+		<db-attribute name="rso_initials" type="VARCHAR" length="5"/>
+	</db-entity>
+	<db-entity name="legacy_level_type" schema="ncr">
+		<db-attribute name="description" type="VARCHAR" length="50"/>
+		<db-attribute name="id" type="TINYINT" isPrimaryKey="true" isMandatory="true" length="4"/>
+	</db-entity>
+	<db-entity name="motor" schema="ncr">
+		<db-attribute name="CertOrgID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="Designation" type="VARCHAR" length="64"/>
+		<db-attribute name="DiameterID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="ExternalID" type="VARCHAR" length="64"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ImpulseID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="LastUpdated" type="DATE" isMandatory="true"/>
+		<db-attribute name="ManufacturerID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="NameID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="PropellantID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="TypeID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="brand_name" type="VARCHAR" length="64"/>
+		<db-attribute name="burn_time" type="DOUBLE"/>
+		<db-attribute name="case_id" type="INTEGER"/>
+		<db-attribute name="gross_weight" type="DOUBLE"/>
+		<db-attribute name="length" type="DOUBLE"/>
+		<db-attribute name="thrust_avg" type="DOUBLE"/>
+		<db-attribute name="thrust_max" type="DOUBLE"/>
+		<db-attribute name="total_impulse_ns" type="DOUBLE"/>
+		<db-attribute name="weight" type="DOUBLE"/>
+	</db-entity>
+	<db-entity name="motor_case" schema="ncr">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
+	</db-entity>
+	<db-entity name="motor_cert_org" schema="ncr">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+		<db-attribute name="Name" type="VARCHAR" length="64"/>
+	</db-entity>
+	<db-entity name="motor_data" schema="ncr">
+		<db-attribute name="data" type="BLOB" isMandatory="true"/>
+		<db-attribute name="data_url" type="VARCHAR" length="128"/>
+		<db-attribute name="file_id" type="INTEGER"/>
+		<db-attribute name="format_id" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="info_url" type="VARCHAR" length="128"/>
+		<db-attribute name="license" type="VARCHAR" length="32"/>
+		<db-attribute name="motor_id" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="source" type="VARCHAR" length="32"/>
+	</db-entity>
+	<db-entity name="motor_data_format" schema="ncr">
+		<db-attribute name="FileExtension" type="VARCHAR" length="4"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+		<db-attribute name="Name" type="VARCHAR" length="64"/>
+	</db-entity>
+	<db-entity name="motor_diameter" schema="ncr">
+		<db-attribute name="Diameter" type="INTEGER"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+	</db-entity>
+	<db-entity name="motor_impulse" schema="ncr">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+		<db-attribute name="Impulse" type="VARCHAR" length="1"/>
+	</db-entity>
+	<db-entity name="motor_mfg" schema="ncr">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+		<db-attribute name="Name" type="VARCHAR" length="64"/>
+		<db-attribute name="abbreviation" type="VARCHAR" length="64"/>
+	</db-entity>
+	<db-entity name="motor_name" schema="ncr">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+		<db-attribute name="ImpulseID" type="INTEGER" length="11"/>
+		<db-attribute name="Name" type="VARCHAR" length="64"/>
+	</db-entity>
+	<db-entity name="motor_propellant" schema="ncr">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
+		<db-attribute name="Name" type="VARCHAR" length="32"/>
+	</db-entity>
+	<db-entity name="motor_type" schema="ncr">
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
+	</db-entity>
+	<obj-entity name="FlightEvent" className="club.ncr.cayenne.FlightEvent" dbEntityName="flight_event">
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="eventDate" type="java.util.Date" db-attribute-path="event_date"/>
+		<obj-attribute name="id" type="java.lang.Integer" db-attribute-path="id"/>
+		<obj-attribute name="location" type="java.lang.String" db-attribute-path="location"/>
+		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
+		<obj-attribute name="weatherConditions" type="java.lang.String" db-attribute-path="weather_conditions"/>
+	</obj-entity>
+	<obj-entity name="FlightLog" className="club.ncr.cayenne.FlightLog" dbEntityName="flight_log">
+		<obj-attribute name="altitude" type="java.lang.Integer" db-attribute-path="altitude"/>
+		<obj-attribute name="flightDate" type="java.util.Date" db-attribute-path="flight_date"/>
+		<obj-attribute name="flightNotes" type="java.lang.String" db-attribute-path="flight_notes"/>
+		<obj-attribute name="flyerId" type="java.lang.Integer" db-attribute-path="flyer_id"/>
+		<obj-attribute name="flyerRocketId" type="java.lang.Integer" db-attribute-path="flyer_rocket_id"/>
+		<obj-attribute name="launchControlOfficerId" type="java.lang.Integer" db-attribute-path="launch_control_officer_id"/>
+		<obj-attribute name="launchEventId" type="java.lang.Integer" db-attribute-path="launch_event_id"/>
+		<obj-attribute name="motorId" type="java.lang.Integer" db-attribute-path="motor_id"/>
+		<obj-attribute name="motorMfgId" type="java.lang.Integer" db-attribute-path="motor_mfg_id"/>
+		<obj-attribute name="motorNameId" type="java.lang.Integer" db-attribute-path="motor_name_id"/>
+		<obj-attribute name="motorWeight" type="java.lang.Double" db-attribute-path="motor_weight"/>
+	</obj-entity>
+	<obj-entity name="FlyerRecord" className="club.ncr.cayenne.FlyerRecord" dbEntityName="flyer_record">
+		<obj-attribute name="address1" type="java.lang.String" db-attribute-path="address_1"/>
+		<obj-attribute name="address2" type="java.lang.String" db-attribute-path="address_2"/>
+		<obj-attribute name="addressCity" type="java.lang.String" db-attribute-path="address_city"/>
+		<obj-attribute name="addressState" type="java.lang.String" db-attribute-path="address_state"/>
+		<obj-attribute name="addressZip" type="java.lang.String" db-attribute-path="address_zip"/>
+		<obj-attribute name="affiliation" type="java.lang.String" db-attribute-path="affiliation"/>
+		<obj-attribute name="age" type="java.lang.Short" db-attribute-path="age"/>
+		<obj-attribute name="certLevel" type="java.lang.Short" db-attribute-path="cert_level"/>
+		<obj-attribute name="contactId" type="java.lang.Integer" db-attribute-path="contact_id"/>
+		<obj-attribute name="createdDate" type="java.util.Date" db-attribute-path="created_date"/>
+		<obj-attribute name="duesPaid" type="java.lang.String" db-attribute-path="dues_paid"/>
+		<obj-attribute name="duesPaidDate" type="java.util.Date" db-attribute-path="dues_paid_date"/>
+		<obj-attribute name="emailAddress" type="java.lang.String" db-attribute-path="email_address"/>
+		<obj-attribute name="externalUserId" type="java.lang.Integer" db-attribute-path="external_user_id"/>
+		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="first_name"/>
+		<obj-attribute name="homePhone" type="java.lang.String" db-attribute-path="home_phone"/>
+		<obj-attribute name="id" type="java.lang.Long" db-attribute-path="id"/>
+		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="last_name"/>
+		<obj-attribute name="lcoInitials" type="java.lang.String" db-attribute-path="lco_initials"/>
+		<obj-attribute name="memberType" type="java.lang.Short" db-attribute-path="member_type"/>
+		<obj-attribute name="middleInitial" type="java.lang.String" db-attribute-path="middle_initial"/>
+		<obj-attribute name="migrationId" type="java.lang.Integer" db-attribute-path="migration_id"/>
+		<obj-attribute name="mobilePhone" type="java.lang.String" db-attribute-path="mobile_phone"/>
+		<obj-attribute name="narNumber" type="java.lang.String" db-attribute-path="nar_number"/>
+		<obj-attribute name="notes" type="java.lang.String" db-attribute-path="notes"/>
+		<obj-attribute name="paidThru" type="java.lang.String" db-attribute-path="paid_thru"/>
+		<obj-attribute name="paidThruDate" type="java.util.Date" db-attribute-path="paid_thru_date"/>
+		<obj-attribute name="postEmail" type="java.lang.String" db-attribute-path="post_email"/>
+		<obj-attribute name="tripoliNumber" type="java.lang.String" db-attribute-path="tripoli_number"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="user_id"/>
+		<obj-attribute name="username" type="java.lang.String" db-attribute-path="username"/>
+		<obj-attribute name="workPhone" type="java.lang.String" db-attribute-path="work_phone"/>
+	</obj-entity>
+	<obj-entity name="FlyerRocket" className="club.ncr.cayenne.FlyerRocket" dbEntityName="flyer_rocket">
+		<obj-attribute name="flyerUserId" type="java.lang.Integer" db-attribute-path="flyer_user_id"/>
+		<obj-attribute name="maidenFlightDate" type="java.util.Date" db-attribute-path="maiden_flight_date"/>
+		<obj-attribute name="rocketName" type="java.lang.String" db-attribute-path="rocket_name"/>
+		<obj-attribute name="rocketWeight" type="java.lang.Float" db-attribute-path="rocket_weight"/>
+		<obj-attribute name="userNotes" type="java.lang.String" db-attribute-path="user_notes"/>
+		<obj-attribute name="weightUnits" type="java.lang.String" db-attribute-path="weight_units"/>
+	</obj-entity>
+	<obj-entity name="LegacyFlyerRecord" className="club.ncr.cayenne.LegacyFlyerRecord" dbEntityName="legacy_flyer_record">
+		<obj-attribute name="address1" type="java.lang.String" db-attribute-path="address_1"/>
+		<obj-attribute name="address2" type="java.lang.String" db-attribute-path="address_2"/>
+		<obj-attribute name="addressCity" type="java.lang.String" db-attribute-path="address_city"/>
+		<obj-attribute name="addressState" type="java.lang.String" db-attribute-path="address_state"/>
+		<obj-attribute name="addressZip" type="java.lang.String" db-attribute-path="address_zip"/>
+		<obj-attribute name="affiliation" type="java.lang.String" db-attribute-path="affiliation"/>
+		<obj-attribute name="age" type="java.lang.Byte" db-attribute-path="age"/>
+		<obj-attribute name="certLevel" type="java.lang.Byte" db-attribute-path="cert_level"/>
+		<obj-attribute name="createdDate" type="java.util.Date" db-attribute-path="created_date"/>
+		<obj-attribute name="duesPaid" type="java.util.Date" db-attribute-path="dues_paid"/>
+		<obj-attribute name="emailAddress" type="java.lang.String" db-attribute-path="email_address"/>
+		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="first_name"/>
+		<obj-attribute name="homePhone" type="java.lang.String" db-attribute-path="home_phone"/>
+		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="last_name"/>
+		<obj-attribute name="lcoInitials" type="java.lang.String" db-attribute-path="lco_initials"/>
+		<obj-attribute name="memberType" type="java.lang.Byte" db-attribute-path="member_type"/>
+		<obj-attribute name="middleInitial" type="java.lang.String" db-attribute-path="middle_initial"/>
+		<obj-attribute name="mobilePhone" type="java.lang.String" db-attribute-path="mobile_phone"/>
+		<obj-attribute name="narNumber" type="java.lang.String" db-attribute-path="nar_number"/>
+		<obj-attribute name="notes" type="java.lang.String" db-attribute-path="notes"/>
+		<obj-attribute name="paidThru" type="java.util.Date" db-attribute-path="paid_thru"/>
+		<obj-attribute name="postEmail" type="java.lang.String" db-attribute-path="post_email"/>
+		<obj-attribute name="tripoliNumber" type="java.lang.String" db-attribute-path="tripoli_number"/>
+		<obj-attribute name="username" type="java.lang.String" db-attribute-path="username"/>
+		<obj-attribute name="workPhone" type="java.lang.String" db-attribute-path="work_phone"/>
+	</obj-entity>
+	<obj-entity name="LegacyLaunchEvent" className="club.ncr.cayenne.LegacyLaunchEvent" dbEntityName="legacy_launch_event">
+		<obj-attribute name="clubLaunch" type="java.lang.String" db-attribute-path="club_launch"/>
+		<obj-attribute name="createdDate" type="java.util.Date" db-attribute-path="created_date"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="launchDate" type="java.util.Date" db-attribute-path="launch_date"/>
+		<obj-attribute name="location" type="java.lang.String" db-attribute-path="location"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="weather" type="java.lang.String" db-attribute-path="weather"/>
+	</obj-entity>
+	<obj-entity name="LegacyLaunchLog" className="club.ncr.cayenne.LegacyLaunchLog" dbEntityName="legacy_launch_log">
+		<obj-attribute name="altitude" type="java.lang.Long" db-attribute-path="altitude"/>
+		<obj-attribute name="contests" type="java.lang.String" db-attribute-path="contests"/>
+		<obj-attribute name="createdDate" type="java.util.Date" db-attribute-path="created_date"/>
+		<obj-attribute name="eventId" type="java.lang.Integer" db-attribute-path="event_id"/>
+		<obj-attribute name="flightTime" type="java.lang.Float" db-attribute-path="flight_time"/>
+		<obj-attribute name="flyer" type="java.lang.String" db-attribute-path="flyer"/>
+		<obj-attribute name="flyerId" type="java.lang.Integer" db-attribute-path="flyer_id"/>
+		<obj-attribute name="launchNo" type="java.lang.Integer" db-attribute-path="launch_no"/>
+		<obj-attribute name="lcoId" type="java.lang.Integer" db-attribute-path="lco_id"/>
+		<obj-attribute name="lcoInitials" type="java.lang.String" db-attribute-path="lco_initials"/>
+		<obj-attribute name="motor" type="java.lang.String" db-attribute-path="motor"/>
+		<obj-attribute name="motorGroup" type="java.lang.String" db-attribute-path="motor_group"/>
+		<obj-attribute name="motorGroupId" type="java.lang.Byte" db-attribute-path="motor_group_id"/>
+		<obj-attribute name="motorMan" type="java.lang.String" db-attribute-path="motor_man"/>
+		<obj-attribute name="narNo" type="java.lang.Integer" db-attribute-path="nar_no"/>
+		<obj-attribute name="notes" type="java.lang.String" db-attribute-path="notes"/>
+		<obj-attribute name="padNo" type="java.lang.Integer" db-attribute-path="pad_no"/>
+		<obj-attribute name="postFlight" type="java.lang.String" db-attribute-path="post_flight"/>
+		<obj-attribute name="rocket" type="java.lang.String" db-attribute-path="rocket"/>
+		<obj-attribute name="rsoInitials" type="java.lang.String" db-attribute-path="rso_initials"/>
+	</obj-entity>
+	<obj-entity name="LegacyLevelType" className="club.ncr.cayenne.LegacyLevelType" dbEntityName="legacy_level_type">
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="id" type="java.lang.Byte" db-attribute-path="id"/>
+	</obj-entity>
+	<obj-entity name="Motor" className="club.ncr.cayenne.Motor" dbEntityName="motor">
+		<obj-attribute name="brandName" type="java.lang.String" db-attribute-path="brand_name"/>
+		<obj-attribute name="burnTime" type="java.lang.Double" db-attribute-path="burn_time"/>
+		<obj-attribute name="designation" type="java.lang.String" db-attribute-path="Designation"/>
+		<obj-attribute name="externalID" type="java.lang.String" db-attribute-path="ExternalID"/>
+		<obj-attribute name="grossWeight" type="java.lang.Double" db-attribute-path="gross_weight"/>
+		<obj-attribute name="id" type="java.lang.Integer" db-attribute-path="ID"/>
+		<obj-attribute name="lastUpdated" type="java.util.Date" db-attribute-path="LastUpdated"/>
+		<obj-attribute name="length" type="java.lang.Double" db-attribute-path="length"/>
+		<obj-attribute name="thrustAvg" type="java.lang.Double" db-attribute-path="thrust_avg"/>
+		<obj-attribute name="thrustMax" type="java.lang.Double" db-attribute-path="thrust_max"/>
+		<obj-attribute name="totalImpulseNs" type="java.lang.Double" db-attribute-path="total_impulse_ns"/>
+		<obj-attribute name="typeID" type="java.lang.Integer" db-attribute-path="TypeID"/>
+		<obj-attribute name="weight" type="java.lang.Double" db-attribute-path="weight"/>
+	</obj-entity>
+	<obj-entity name="MotorCase" className="club.ncr.cayenne.MotorCase" dbEntityName="motor_case">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+	</obj-entity>
+	<obj-entity name="MotorCertOrg" className="club.ncr.cayenne.MotorCertOrg" dbEntityName="motor_cert_org">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
+	</obj-entity>
+	<obj-entity name="MotorData" className="club.ncr.cayenne.MotorData" dbEntityName="motor_data">
+		<obj-attribute name="data" type="byte[]" db-attribute-path="data"/>
+		<obj-attribute name="dataUrl" type="java.lang.String" db-attribute-path="data_url"/>
+		<obj-attribute name="infoUrl" type="java.lang.String" db-attribute-path="info_url"/>
+		<obj-attribute name="license" type="java.lang.String" db-attribute-path="license"/>
+		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
+		<obj-attribute name="tcFileID" type="java.lang.Integer" db-attribute-path="file_id"/>
+	</obj-entity>
+	<obj-entity name="MotorDataFormat" className="club.ncr.cayenne.MotorDataFormat" dbEntityName="motor_data_format">
+		<obj-attribute name="fileExtension" type="java.lang.String" db-attribute-path="FileExtension"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
+	</obj-entity>
+	<obj-entity name="MotorDiameter" className="club.ncr.cayenne.MotorDiameter" dbEntityName="motor_diameter">
+		<obj-attribute name="diameter" type="java.lang.Integer" db-attribute-path="Diameter"/>
+	</obj-entity>
+	<obj-entity name="MotorImpulse" className="club.ncr.cayenne.MotorImpulse" dbEntityName="motor_impulse">
+		<obj-attribute name="impulse" type="java.lang.String" db-attribute-path="Impulse"/>
+	</obj-entity>
+	<obj-entity name="MotorMfg" className="club.ncr.cayenne.MotorMfg" dbEntityName="motor_mfg">
+		<obj-attribute name="abbreviation" type="java.lang.String" db-attribute-path="abbreviation"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
+	</obj-entity>
+	<obj-entity name="MotorName" className="club.ncr.cayenne.MotorName" dbEntityName="motor_name">
+		<obj-attribute name="id" type="java.lang.Integer" db-attribute-path="ID"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
+	</obj-entity>
+	<obj-entity name="MotorPropellant" className="club.ncr.cayenne.MotorPropellant" dbEntityName="motor_propellant">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
+	</obj-entity>
+	<obj-entity name="MotorType" className="club.ncr.cayenne.MotorType" dbEntityName="motor_type">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+	</obj-entity>
+	<db-relationship name="flight_logs" source="flight_event" target="flight_log" toMany="true">
+		<db-attribute-pair source="id" target="launch_event_id"/>
+	</db-relationship>
+	<db-relationship name="flight_event" source="flight_log" target="flight_event">
+		<db-attribute-pair source="launch_event_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="flyer" source="flight_log" target="flyer_record" toMany="true">
+		<db-attribute-pair source="flyer_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="motor" source="flight_log" target="motor">
+		<db-attribute-pair source="motor_id" target="ID"/>
+	</db-relationship>
+	<db-relationship name="motor_mfg" source="flight_log" target="motor_mfg">
+		<db-attribute-pair source="motor_mfg_id" target="ID"/>
+	</db-relationship>
+	<db-relationship name="rocket" source="flight_log" target="flyer_rocket">
+		<db-attribute-pair source="flyer_rocket_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="flights" source="flyer_record" target="flight_log">
+		<db-attribute-pair source="id" target="flyer_id"/>
+	</db-relationship>
+	<db-relationship name="flight_logs" source="flyer_rocket" target="flight_log" toMany="true">
+		<db-attribute-pair source="id" target="flyer_rocket_id"/>
+	</db-relationship>
+	<db-relationship name="Case" source="motor" target="motor_case">
+		<db-attribute-pair source="case_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="CertificationOrganization" source="motor" target="motor_cert_org">
+		<db-attribute-pair source="CertOrgID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="CommonName" source="motor" target="motor_name">
+		<db-attribute-pair source="NameID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="Data" source="motor" target="motor_data" toMany="true">
+		<db-attribute-pair source="ID" target="motor_id"/>
+	</db-relationship>
+	<db-relationship name="Diameter" source="motor" target="motor_diameter">
+		<db-attribute-pair source="DiameterID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="Impulse" source="motor" target="motor_impulse">
+		<db-attribute-pair source="ImpulseID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="Manufacturer" source="motor" target="motor_mfg">
+		<db-attribute-pair source="ManufacturerID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="Propellant" source="motor" target="motor_propellant">
+		<db-attribute-pair source="PropellantID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="Type" source="motor" target="motor_type">
+		<db-attribute-pair source="TypeID" target="id"/>
+	</db-relationship>
+	<db-relationship name="flights" source="motor" target="flight_log" toMany="true">
+		<db-attribute-pair source="ID" target="motor_id"/>
+	</db-relationship>
+	<db-relationship name="Motors" source="motor_case" target="motor" toMany="true">
+		<db-attribute-pair source="id" target="case_id"/>
+	</db-relationship>
+	<db-relationship name="Motors" source="motor_cert_org" target="motor" toMany="true">
+		<db-attribute-pair source="ID" target="CertOrgID"/>
+	</db-relationship>
+	<db-relationship name="Format" source="motor_data" target="motor_data_format">
+		<db-attribute-pair source="format_id" target="ID"/>
+	</db-relationship>
+	<db-relationship name="Motors" source="motor_data" target="motor">
+		<db-attribute-pair source="motor_id" target="ID"/>
+	</db-relationship>
+	<db-relationship name="MotorData" source="motor_data_format" target="motor_data" toMany="true">
+		<db-attribute-pair source="ID" target="format_id"/>
+	</db-relationship>
+	<db-relationship name="Motors" source="motor_diameter" target="motor" toMany="true">
+		<db-attribute-pair source="ID" target="DiameterID"/>
+	</db-relationship>
+	<db-relationship name="MotorNames" source="motor_impulse" target="motor_name" toMany="true">
+		<db-attribute-pair source="ID" target="ImpulseID"/>
+	</db-relationship>
+	<db-relationship name="Motors" source="motor_impulse" target="motor" toMany="true">
+		<db-attribute-pair source="ID" target="ImpulseID"/>
+	</db-relationship>
+	<db-relationship name="Motors" source="motor_mfg" target="motor" toMany="true">
+		<db-attribute-pair source="ID" target="ManufacturerID"/>
+	</db-relationship>
+	<db-relationship name="flights" source="motor_mfg" target="flight_log" toMany="true">
+		<db-attribute-pair source="ID" target="motor_mfg_id"/>
+	</db-relationship>
+	<db-relationship name="Impulse" source="motor_name" target="motor_impulse">
+		<db-attribute-pair source="ImpulseID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="Motors" source="motor_name" target="motor" toMany="true">
+		<db-attribute-pair source="ID" target="NameID"/>
+	</db-relationship>
+	<db-relationship name="Motors" source="motor_propellant" target="motor" toMany="true">
+		<db-attribute-pair source="ID" target="PropellantID"/>
+	</db-relationship>
+	<db-relationship name="Motors" source="motor_type" target="motor" toMany="true">
+		<db-attribute-pair source="id" target="TypeID"/>
+	</db-relationship>
+	<obj-relationship name="launchLogs" source="FlightEvent" target="FlightLog" deleteRule="Nullify" db-relationship-path="flight_logs"/>
+	<obj-relationship name="flyer" source="FlightLog" target="FlyerRecord" deleteRule="Deny" db-relationship-path="flyer"/>
+	<obj-relationship name="launchEvent" source="FlightLog" target="FlightEvent" deleteRule="Deny" db-relationship-path="flight_event"/>
+	<obj-relationship name="motor" source="FlightLog" target="Motor" deleteRule="Nullify" db-relationship-path="motor"/>
+	<obj-relationship name="motorMfg" source="FlightLog" target="MotorMfg" deleteRule="Nullify" db-relationship-path="motor_mfg"/>
+	<obj-relationship name="rocket" source="FlightLog" target="FlyerRocket" deleteRule="Nullify" db-relationship-path="rocket"/>
+	<obj-relationship name="flights" source="FlyerRecord" target="FlightLog" deleteRule="Nullify" db-relationship-path="flights"/>
+	<obj-relationship name="flightLogs" source="FlyerRocket" target="FlightLog" deleteRule="Deny" db-relationship-path="flight_logs"/>
+	<obj-relationship name="case" source="Motor" target="MotorCase" deleteRule="Nullify" db-relationship-path="Case"/>
+	<obj-relationship name="certificationOrganization" source="Motor" target="MotorCertOrg" deleteRule="Nullify" db-relationship-path="CertificationOrganization"/>
+	<obj-relationship name="commonName" source="Motor" target="MotorName" deleteRule="Nullify" db-relationship-path="CommonName"/>
+	<obj-relationship name="data" source="Motor" target="MotorData" deleteRule="Deny" db-relationship-path="Data"/>
+	<obj-relationship name="diameter" source="Motor" target="MotorDiameter" deleteRule="Nullify" db-relationship-path="Diameter"/>
+	<obj-relationship name="impulse" source="Motor" target="MotorImpulse" deleteRule="Nullify" db-relationship-path="Impulse"/>
+	<obj-relationship name="manufacturer" source="Motor" target="MotorMfg" deleteRule="Nullify" db-relationship-path="Manufacturer"/>
+	<obj-relationship name="propellant" source="Motor" target="MotorPropellant" deleteRule="Nullify" db-relationship-path="Propellant"/>
+	<obj-relationship name="type" source="Motor" target="MotorType" deleteRule="Nullify" db-relationship-path="Type"/>
+	<obj-relationship name="motors" source="MotorCase" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
+	<obj-relationship name="motors" source="MotorCertOrg" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
+	<obj-relationship name="format" source="MotorData" target="MotorDataFormat" deleteRule="Nullify" db-relationship-path="Format"/>
+	<obj-relationship name="motor" source="MotorData" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
+	<obj-relationship name="motorData" source="MotorDataFormat" target="MotorData" deleteRule="Deny" db-relationship-path="MotorData"/>
+	<obj-relationship name="motors" source="MotorDiameter" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
+	<obj-relationship name="motorNames" source="MotorImpulse" target="MotorName" deleteRule="Deny" db-relationship-path="MotorNames"/>
+	<obj-relationship name="motors" source="MotorImpulse" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
+	<obj-relationship name="motors" source="MotorMfg" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
+	<obj-relationship name="impulse" source="MotorName" target="MotorImpulse" deleteRule="Nullify" db-relationship-path="Impulse"/>
+	<obj-relationship name="motors" source="MotorName" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
+	<obj-relationship name="motors" source="MotorPropellant" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
+	<obj-relationship name="motors" source="MotorType" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
+</data-map>
