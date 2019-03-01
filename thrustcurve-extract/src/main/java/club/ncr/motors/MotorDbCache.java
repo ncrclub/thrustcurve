@@ -64,6 +64,10 @@ public class MotorDbCache {
 
 	}
 
+	public Motor getMotor(String id) {
+		return Motor.getByExternalId(id, ctx);
+	}
+
 	public MotorMfg getManufacturer(String name, String abbv) {
 		MotorMfg record= manufacturers.get(name);
 		

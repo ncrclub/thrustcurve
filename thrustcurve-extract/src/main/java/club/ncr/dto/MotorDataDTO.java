@@ -1,35 +1,38 @@
 package club.ncr.dto;
 
 import club.ncr.cayenne.Motor;
+import club.ncr.cayenne.MotorData;
+import org.thrustcurve.api.data.TCMotorData;
 import org.thrustcurve.api.data.TCMotorRecord;
 
-public class MotorDTO {
+public class MotorDataDTO {
 
-    public final MotorManufacturerDTO manufacturer;
     public final String designation;
-    public final String motorCase;
+    public final String manufacturer;
+    public final String url;
+    public final String fileExtension;
     public final String impulse;
     public final Double weight;
     public final Double burnTime;
     public final Double diameter;
-    public final String externalId;
 
-    public MotorDTO(Motor motor) {
-        this.externalId = motor.getExternalID();
-        this.manufacturer= new MotorManufacturerDTO(motor.getManufacturer());
+
+    public MotorDataDTO(Motor motor, MotorData data) {
+        this.url = data.getDataUrl();
+        this.fileExtension = data.getFormat().getFileExtension();
         this.designation= motor.getDesignation();
-        this.motorCase= motor.getCase().getName();
+        this.manufacturer= motor.getManufacturer().getName();
         this.impulse= motor.getImpulse().getImpulse();
         this.weight = motor.getWeight();
         this.burnTime = motor.getBurnTime();
         this.diameter= (double)motor.getDiameter().getDiameter();
     }
 
-    public MotorDTO(TCMotorRecord motor) {
-        this.externalId = motor.getMotorId();
-        this.manufacturer= new MotorManufacturerDTO(motor);
+    public MotorDataDTO(TCMotorRecord motor, TCMotorData data) {
+        this.url = data.getDataUrl();
+        this.fileExtension = data.getFormat();
         this.designation= motor.getDesignation();
-        this.motorCase= motor.getMotorCase();
+        this.manufacturer= motor.getManufacturer();
         this.impulse= motor.getImpulseClass();
         this.weight = motor.getWeight();
         this.burnTime = motor.getBurnTime();
