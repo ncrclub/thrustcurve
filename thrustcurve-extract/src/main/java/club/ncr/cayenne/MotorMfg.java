@@ -11,6 +11,7 @@ import org.thrustcurve.api.json.JsonValue;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 
@@ -47,6 +48,14 @@ public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 		return json;
 	}
 
+
+	public Map<String, Object> asMap() {
+		Map<String, Object> map= new HashMap<>();
+		map.put("name", getName());
+		map.put("abbreviation", getAbbreviation());
+		map.put("motors", getMotors().size());
+		return map;
+	}
 	
 	public int compareTo(MotorMfg o) {
 		if (o == null) { return 1; }

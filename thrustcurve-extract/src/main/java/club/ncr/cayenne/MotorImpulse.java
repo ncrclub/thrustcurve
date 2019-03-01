@@ -7,6 +7,8 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
+import org.thrustcurve.api.json.JsonPrimitive;
+import org.thrustcurve.api.json.JsonValue;
 
 import java.util.HashMap;
 import java.util.List;
@@ -73,5 +75,10 @@ public class MotorImpulse extends _MotorImpulse implements Comparable<MotorImpul
 		
 		return getImpulse().compareToIgnoreCase(i.getImpulse());
 		
+	}
+
+	public JsonValue toJsonValue() {
+		JsonValue json= new JsonPrimitive(getImpulse());
+		return json;
 	}
 }

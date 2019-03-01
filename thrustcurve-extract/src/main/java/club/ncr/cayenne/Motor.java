@@ -1,6 +1,7 @@
 package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._Motor;
+import club.ncr.dto.MotorDTO;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -102,4 +103,7 @@ public class Motor extends _Motor {
 		return json;
 	}
 
+	public MotorDTO asDTO() {
+		return new MotorDTO(this);
+	}
 }
