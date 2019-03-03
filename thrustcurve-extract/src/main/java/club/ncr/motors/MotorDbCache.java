@@ -20,20 +20,30 @@ import sun.misc.BASE64Decoder;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 
 public class MotorDbCache {
 
-	private HashMap<String, MotorMfg> manufacturers= new HashMap<String, MotorMfg>();
-	private HashMap<String, MotorCertOrg> certOrgs= new HashMap<String, MotorCertOrg>();
-	private HashMap<String, MotorDiameter> diameters= new HashMap<String, MotorDiameter>();
-	private HashMap<String, MotorName> names= new HashMap<String, MotorName>();
-	private HashMap<String, MotorImpulse> impulses= new HashMap<String, MotorImpulse>();
-	private HashMap<String, MotorPropellant> propellants= new HashMap<String, MotorPropellant>();
-	private HashMap<String, MotorType> types= new HashMap<String, MotorType>();
-	private HashMap<String, MotorCase> cases= new HashMap<String, MotorCase>();
-	private HashMap<String, MotorDataFormat> formats= new HashMap<String, MotorDataFormat>();
-	
+	private Map<String, MotorMfg> manufacturers= new HashMap<String, MotorMfg>();
+	private Map<String, MotorCertOrg> certOrgs= new HashMap<String, MotorCertOrg>();
+	private Map<Float, MotorDiameter> diameters= new HashMap<>();
+	private Map<String, MotorName> names= new HashMap<String, MotorName>();
+	private Map<String, MotorImpulse> impulses= new HashMap<String, MotorImpulse>();
+	private Map<String, MotorPropellant> propellants= new HashMap<String, MotorPropellant>();
+	private Map<String, MotorType> types= new HashMap<String, MotorType>();
+	private Map<String, MotorCase> cases= new HashMap<String, MotorCase>();
+	private Map<String, MotorDataFormat> formats= new HashMap<String, MotorDataFormat>();
+
+	private List<MotorDiameter> orderedDiameters= new LinkedList<>();
+	private List<MotorImpulse> orderedImpulses= new LinkedList<>();
+	private List<MotorMfg> orderedManufacturers= new LinkedList<>();
+
 	private DataContext ctx;
 	private boolean readOnly= false;
 
@@ -51,16 +61,33 @@ public class MotorDbCache {
 			MotorImpulse.createNew(""+ impulse, ctx);
 		}
 
-		for (MotorMfg mfg : MotorMfg.get(ctx, null)) { manufacturers.put(mfg.getName(), mfg); }
+		for (MotorMfg mfg : MotorMfg.get(ctx, null)) {
+			manufacturers.put(mfg.getName(), mfg);
+			orderedManufacturers.add(manufacturers.get(mfg.getName()));
+		}
+
+		for (MotorDiameter diam : MotorDiameter.get(ctx, null)) {
+			diameters.put(diam.getDiameter(), diam);
+			if (diam.getDiameter() != null) {
+				orderedDiameters.add(diameters.get(diam.getDiameter()));
+			}
+		}
+
+		for (MotorImpulse imp : MotorImpulse.get(ctx, null)) {
+			impulses.put(imp.getImpulse(), imp);
+			orderedImpulses.add(impulses.get(imp.getImpulse()));
+		}
+
 		for (MotorCertOrg org : MotorCertOrg.get(ctx, null)) { certOrgs.put(org.getName(), org); }
-		for (MotorDiameter diam : MotorDiameter.get(ctx, null)) { diameters.put(""+ diam.getDiameter(), diam); }
 		for (MotorName name : MotorName.get(ctx, null)) { names.put(name.getName(), name); }
-		for (MotorImpulse imp : MotorImpulse.get(ctx, null)) { impulses.put(imp.getImpulse(), imp); }
 		for (MotorPropellant prop : MotorPropellant.get(ctx, null)) { propellants.put(prop.getName(), prop); }
 		for (MotorType type : MotorType.get(ctx, null)) { types.put(type.getName(), type); }
 		for (MotorCase motorCase : MotorCase.get(ctx, null)) { cases.put(motorCase.getName(), motorCase); }
 		for (MotorDataFormat format : MotorDataFormat.get(ctx, null)) { formats.put(format.getName(), format); }
-		
+
+		orderedDiameters.sort((a, b) -> (int)(100 * (a.getDiameter() - b.getDiameter())));
+		orderedImpulses.sort((a, b) -> (a.getImpulse().compareTo(b.getImpulse())));
+		orderedManufacturers.sort((a, b) -> (a.getName().compareTo(b.getName())));
 
 	}
 
@@ -90,14 +117,14 @@ public class MotorDbCache {
 		return record;
 	}
 
-	public MotorDiameter getDiameter(int diam) {
-		MotorDiameter record= diameters.get(""+ diam);
-		
+	public MotorDiameter getDiameter(float diam) {
+		MotorDiameter record= diameters.get(diam);
+
 		if (record == null && !readOnly) {
 			record= MotorDiameter.createNew(diam, ctx);
-			diameters.put(""+ diam, record);
+			diameters.put(diam, record);
 		}
-		
+
 		return record;
 	}
 
@@ -173,12 +200,12 @@ public class MotorDbCache {
 	}
 
 	
-	public Collection<MotorMfg> getManufacturers() { return manufacturers.values(); }
+	public Collection<MotorMfg> getManufacturers() { return orderedManufacturers; }
 	public Collection<MotorCase> getMotorCases() { return cases.values(); }
 	public Collection<MotorCertOrg> getCertOrganizations() { return certOrgs.values(); }
-	public Collection<MotorDiameter> getDiameters() { return diameters.values(); }
+	public Collection<MotorDiameter> getDiameters() { return orderedDiameters; }
 	public Collection<MotorDataFormat> getDataFormats() { return formats.values(); }
-	public Collection<MotorImpulse> getImpulses() { return impulses.values(); }
+	public Collection<MotorImpulse> getImpulses() { return orderedImpulses; }
 	public Collection<MotorName> getMotorNames() { return names.values(); }
 	public Collection<MotorPropellant> getPropellants() { return propellants.values(); }
 	public Collection<MotorType> getMotorTypes() { return types.values(); }

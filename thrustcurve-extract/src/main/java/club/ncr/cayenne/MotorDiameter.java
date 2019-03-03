@@ -14,8 +14,7 @@ import java.util.List;
 
 public class MotorDiameter extends _MotorDiameter {
 
-	public static MotorDiameter createNew(Integer diameter, DataContext ctx) {
-		
+	public static MotorDiameter createNew(Float diameter, DataContext ctx) {
 		MotorDiameter record= new MotorDiameter();
 		ctx.registerNewObject(record);
 		record.setDiameter(diameter);

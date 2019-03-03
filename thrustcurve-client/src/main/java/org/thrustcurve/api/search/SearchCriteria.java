@@ -113,7 +113,7 @@ public class SearchCriteria {
 		return this;
 	}
 	
-	public SearchCriteria diameter(Integer value) {
+	public SearchCriteria diameter(Float value) {
 		if (value != null) {
 			addCriteria(new Primitive(CRITERIA_DIAMETER, ""+ value));
 		} else {

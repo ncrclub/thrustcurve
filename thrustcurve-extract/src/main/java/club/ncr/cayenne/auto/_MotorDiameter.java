@@ -18,11 +18,11 @@ public abstract class _MotorDiameter extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "ID";
 
-    public void setDiameter(Integer diameter) {
+    public void setDiameter(Float diameter) {
         writeProperty(DIAMETER_PROPERTY, diameter);
     }
-    public Integer getDiameter() {
-        return (Integer)readProperty(DIAMETER_PROPERTY);
+    public Float getDiameter() {
+        return (Float)readProperty(DIAMETER_PROPERTY);
     }
 
     public void addToMotors(Motor obj) {
