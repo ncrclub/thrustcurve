@@ -29,7 +29,12 @@ public class TCMotorLoad {
 	
 	public TCMotorLoad() {
 	}
-	
+
+	public TCMotorLoad(MotorImpulse impulse) {
+	    nextImpulse= impulse;
+	}
+
+
 	public void execute() {
 		
 		if (!getRunLock()) { return; }
