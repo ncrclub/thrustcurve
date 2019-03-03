@@ -15,7 +15,7 @@ public class MotorDTO {
     public final String impulse;
     public final Double weight;
     public final Double burnTime;
-    public final Double diameter;
+    public final Float diameter;
     public final Double length;
     public final String externalId;
     public final String propellant;
@@ -33,7 +33,7 @@ public class MotorDTO {
         this.impulse= motor.getImpulse().getImpulse();
         this.weight= motor.getWeight();
         this.burnTime= motor.getBurnTime();
-        this.diameter= (double)motor.getDiameter().getDiameter();
+        this.diameter= motor.getDiameter().getDiameter();
         this.propellant= motor.getPropellant().getName();
         this.data= motor.getData().stream().map(d -> new MotorDataDTO(this, d)).collect(Collectors.toList());
     }
@@ -49,7 +49,7 @@ public class MotorDTO {
         this.impulse= motor.getImpulseClass();
         this.weight = motor.getWeight();
         this.burnTime = motor.getBurnTime();
-        this.diameter= Double.parseDouble(motor.getDiameter());
+        this.diameter= Float.parseFloat(motor.getDiameter());
         this.propellant= motor.getPropellant();
         this.data= motor.getData().stream().map(d -> new MotorDataDTO(this, d)).collect(Collectors.toList());
     }
