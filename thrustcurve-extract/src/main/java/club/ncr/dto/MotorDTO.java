@@ -3,6 +3,9 @@ package club.ncr.dto;
 import club.ncr.cayenne.Motor;
 import org.thrustcurve.api.data.TCMotorRecord;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class MotorDTO {
 
     public final MotorManufacturerDTO manufacturer;
@@ -13,6 +16,7 @@ public class MotorDTO {
     public final Double burnTime;
     public final Double diameter;
     public final String externalId;
+    public final List<MotorDataDTO> data;
 
     public MotorDTO(Motor motor) {
         this.externalId = motor.getExternalID();
@@ -23,6 +27,7 @@ public class MotorDTO {
         this.weight = motor.getWeight();
         this.burnTime = motor.getBurnTime();
         this.diameter= (double)motor.getDiameter().getDiameter();
+        this.data= motor.getData().stream().map(d -> new MotorDataDTO(motor, d)).collect(Collectors.toList());
     }
 
     public MotorDTO(TCMotorRecord motor) {
@@ -34,5 +39,6 @@ public class MotorDTO {
         this.weight = motor.getWeight();
         this.burnTime = motor.getBurnTime();
         this.diameter= Double.parseDouble(motor.getDiameter());
+        this.data= motor.getData().stream().map(d -> new MotorDataDTO(motor, d)).collect(Collectors.toList());
     }
 }

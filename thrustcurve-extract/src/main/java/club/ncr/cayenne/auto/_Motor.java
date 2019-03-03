@@ -11,6 +11,8 @@ import club.ncr.cayenne.MotorPropellant;
 import club.ncr.cayenne.MotorType;
 import org.apache.cayenne.CayenneDataObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +60,7 @@ public abstract class _Motor extends CayenneDataObject {
         writeProperty(BURN_TIME_PROPERTY, burnTime);
     }
     public Double getBurnTime() {
-        return (Double)readProperty(BURN_TIME_PROPERTY);
+        return new BigDecimal((Double)readProperty(BURN_TIME_PROPERTY)).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
     }
 
     public void setDesignation(String designation) {

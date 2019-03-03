@@ -5,37 +5,43 @@ import club.ncr.cayenne.MotorData;
 import org.thrustcurve.api.data.TCMotorData;
 import org.thrustcurve.api.data.TCMotorRecord;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class MotorDataDTO {
 
-    public final String designation;
-    public final String manufacturer;
-    public final String url;
+    public final MotorDTO motor;
+    public final String dataUrl;
+    public final String infoUrl;
+    public final String source;
+    public final String license;
     public final String fileExtension;
     public final String impulse;
-    public final Double weight;
     public final Double burnTime;
-    public final Double diameter;
+    public final Float diameter;
 
 
     public MotorDataDTO(Motor motor, MotorData data) {
-        this.url = data.getDataUrl();
+        this.motor= new MotorDTO(motor);
+        this.dataUrl = data.getDataUrl();
+        this.infoUrl = data.getInfoUrl();
+        this.source= data.getSource();
+        this.license= data.getLicense();
         this.fileExtension = data.getFormat().getFileExtension();
-        this.designation= motor.getDesignation();
-        this.manufacturer= motor.getManufacturer().getName();
         this.impulse= motor.getImpulse().getImpulse();
-        this.weight = motor.getWeight();
         this.burnTime = motor.getBurnTime();
-        this.diameter= (double)motor.getDiameter().getDiameter();
+        this.diameter= motor.getDiameter().getDiameter();
     }
 
     public MotorDataDTO(TCMotorRecord motor, TCMotorData data) {
-        this.url = data.getDataUrl();
+        this.motor= new MotorDTO(motor);
+        this.dataUrl = data.getDataUrl();
+        this.infoUrl = data.getInfoUrl();
+        this.source= data.getSource();
+        this.license= data.getLicense();
         this.fileExtension = data.getFormat();
-        this.designation= motor.getDesignation();
-        this.manufacturer= motor.getManufacturer();
         this.impulse= motor.getImpulseClass();
-        this.weight = motor.getWeight();
         this.burnTime = motor.getBurnTime();
-        this.diameter= Double.parseDouble(motor.getDiameter());
+        this.diameter= BigDecimal.valueOf(Float.parseFloat(motor.getDiameter())).setScale(1, RoundingMode.HALF_EVEN).floatValue();
     }
 }

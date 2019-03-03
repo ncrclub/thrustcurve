@@ -12,6 +12,7 @@ import org.thrustcurve.api.json.JsonArray;
 import org.thrustcurve.api.json.JsonObject;
 import org.thrustcurve.api.json.JsonValue;
 
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
