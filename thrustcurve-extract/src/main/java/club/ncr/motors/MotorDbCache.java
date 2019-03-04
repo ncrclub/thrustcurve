@@ -222,7 +222,7 @@ public class MotorDbCache {
 			MotorPropellant prop= getPropellant(record.getPropellant());
 			MotorImpulse impulse= getImpulse(record.getImpulseClass());
 			MotorName name= getCommonName(record.getCommonName(), impulse);
-			MotorDiameter diameter= getDiameter((int)(Double.parseDouble(record.getDiameter())));
+			MotorDiameter diameter= getDiameter(Float.parseFloat(record.getDiameter()));
 			MotorCase motorCase= getMotorCase(record.getMotorCase());
 			MotorType type= getType(record.getType());
 			
