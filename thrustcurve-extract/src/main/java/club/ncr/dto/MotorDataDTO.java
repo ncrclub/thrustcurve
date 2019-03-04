@@ -13,6 +13,20 @@ public class MotorDataDTO {
     public final String fileExtension;
     public final String filename;
 
+    private static String nameOf(MotorDTO motor) {
+        if (motor.designation == null) {
+            return motor.name.replaceAll("[^A-Za-z0-9_.-]", "_");
+        }
+        return motor.designation.replaceAll("[^A-Za-z0-9_.-]", "_");
+    }
+
+    private static String toFilename(MotorDTO motor, String source, String license, String fileExtension) {
+        return nameOf(motor)
+                +"-"+ motor.manufacturer.abbreviation.replaceAll("[^A-Za-z0-9_.-]", "_")
+                +"-"+ source
+                + (license != null ? "-"+ license : "")
+                +"."+ fileExtension;
+    }
 
     // these constructors are only visible to the package on purpose, this is to force the instantiation of a MotorDTO first.
     MotorDataDTO(MotorDTO motor, MotorData data) {
@@ -21,7 +35,7 @@ public class MotorDataDTO {
         this.source= data.getSource();
         this.license= data.getLicense();
         this.fileExtension = data.getFormat().getFileExtension();
-        this.filename = motor.designation.replaceAll("[^A-Za-z0-9_.-]", "_") +"."+ fileExtension;
+        this.filename = toFilename(motor, data.getSource(), data.getLicense(), data.getFormat().getFileExtension());
     }
 
     MotorDataDTO(MotorDTO motor, TCMotorData data) {
@@ -30,6 +44,6 @@ public class MotorDataDTO {
         this.source= data.getSource();
         this.license= data.getLicense();
         this.fileExtension = data.getFormat();
-        this.filename = motor.designation.replaceAll("[^A-Za-z0-9_.-]", "_") +"."+ fileExtension;
+        this.filename = toFilename(motor, data.getSource(), data.getLicense(), data.getFormat());
     }
 }
