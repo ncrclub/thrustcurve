@@ -11,6 +11,7 @@ public class MotorDataDTO {
     public final String source;
     public final String license;
     public final String fileExtension;
+    public final String filename;
 
 
     // these constructors are only visible to the package on purpose, this is to force the instantiation of a MotorDTO first.
@@ -20,6 +21,7 @@ public class MotorDataDTO {
         this.source= data.getSource();
         this.license= data.getLicense();
         this.fileExtension = data.getFormat().getFileExtension();
+        this.filename = motor.designation.replaceAll("[^A-Za-z0-9_.-]", "_") +"."+ fileExtension;
     }
 
     MotorDataDTO(MotorDTO motor, TCMotorData data) {
@@ -28,5 +30,6 @@ public class MotorDataDTO {
         this.source= data.getSource();
         this.license= data.getLicense();
         this.fileExtension = data.getFormat();
+        this.filename = motor.designation.replaceAll("[^A-Za-z0-9_.-]", "_") +"."+ fileExtension;
     }
 }
