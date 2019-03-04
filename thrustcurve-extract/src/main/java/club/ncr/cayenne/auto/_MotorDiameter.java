@@ -22,7 +22,7 @@ public abstract class _MotorDiameter extends CayenneDataObject {
         writeProperty(DIAMETER_PROPERTY, diameter);
     }
     public Float getDiameter() {
-        return (float)readProperty(DIAMETER_PROPERTY);
+        return Float.parseFloat(""+ readProperty(DIAMETER_PROPERTY));
     }
 
     public void addToMotors(Motor obj) {
