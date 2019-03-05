@@ -61,10 +61,6 @@ public class MotorDbCache {
 			MotorImpulse.createNew(""+ impulse, ctx);
 		}
 
-		for (MotorMfg mfg : MotorMfg.get(ctx, null)) {
-			manufacturers.put(mfg.getName(), mfg);
-			orderedManufacturers.add(manufacturers.get(mfg.getName()));
-		}
 
 		for (MotorDiameter diam : MotorDiameter.get(ctx, null)) {
 			diameters.put(diam.getDiameter(), diam);
@@ -79,15 +75,11 @@ public class MotorDbCache {
 		}
 
 		for (MotorCertOrg org : MotorCertOrg.get(ctx, null)) { certOrgs.put(org.getName(), org); }
-		for (MotorName name : MotorName.get(ctx, null)) { names.put(name.getName(), name); }
-		for (MotorPropellant prop : MotorPropellant.get(ctx, null)) { propellants.put(prop.getName(), prop); }
 		for (MotorType type : MotorType.get(ctx, null)) { types.put(type.getName(), type); }
-		for (MotorCase motorCase : MotorCase.get(ctx, null)) { cases.put(motorCase.getName(), motorCase); }
 		for (MotorDataFormat format : MotorDataFormat.get(ctx, null)) { formats.put(format.getName(), format); }
 
 		orderedDiameters.sort((a, b) -> (int)(100 * (a.getDiameter() - b.getDiameter())));
 		orderedImpulses.sort((a, b) -> (a.getImpulse().compareTo(b.getImpulse())));
-		orderedManufacturers.sort((a, b) -> (a.getName().compareTo(b.getName())));
 
 	}
 
@@ -96,6 +88,14 @@ public class MotorDbCache {
 	}
 
 	public MotorMfg getManufacturer(String name, String abbv) {
+	    if (orderedManufacturers.isEmpty()) {
+			for (MotorMfg mfg : MotorMfg.get(ctx, null)) {
+				manufacturers.put(mfg.getName(), mfg);
+				orderedManufacturers.add(manufacturers.get(mfg.getName()));
+			}
+			orderedManufacturers.sort((a, b) -> (a.getName().compareTo(b.getName())));
+		}
+
 		MotorMfg record= manufacturers.get(name);
 		
 		if (record == null && !readOnly) {
@@ -129,6 +129,11 @@ public class MotorDbCache {
 	}
 
 	public MotorName getCommonName(String name, MotorImpulse impulse) {
+	    if (names.isEmpty()) {
+			for (MotorName motorName : MotorName.get(ctx, null)) {
+				names.put(motorName.getName(), motorName);
+			}
+		}
 		MotorName record= names.get(name);
 		
 		if (record == null && !readOnly) {
@@ -151,7 +156,12 @@ public class MotorDbCache {
 	}
 
 	public MotorPropellant getPropellant(String name) {
-		
+	    if (propellants.isEmpty()) {
+			for (MotorPropellant prop : MotorPropellant.get(ctx, null)) {
+				propellants.put(prop.getName(), prop);
+			}
+		}
+
 		MotorPropellant record= propellants.get(name);
 		
 		if (record == null && !readOnly) {
@@ -175,7 +185,12 @@ public class MotorDbCache {
 	}
 
 	public MotorCase getMotorCase(String name) {
-		
+	    if (cases.isEmpty()) {
+			for (MotorCase motorCase : MotorCase.get(ctx, null)) {
+				cases.put(motorCase.getName(), motorCase);
+			}
+		}
+
 		MotorCase record= cases.get(name);
 		
 		if (record == null && !readOnly) {
