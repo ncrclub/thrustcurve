@@ -3,7 +3,7 @@ package club.ncr.dto;
 import club.ncr.cayenne.MotorMfg;
 import org.thrustcurve.api.data.TCMotorRecord;
 
-public class MotorManufacturerDTO {
+public class MotorManufacturerDTO implements Comparable<MotorManufacturerDTO> {
 
     public final String name;
     public final String abbreviation;
@@ -18,4 +18,8 @@ public class MotorManufacturerDTO {
         this.abbreviation = motor.getManufacturerAbbv();
     }
 
+    @Override
+    public int compareTo(MotorManufacturerDTO o) {
+        return name.compareTo(o.name);
+    }
 }

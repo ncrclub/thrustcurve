@@ -6,7 +6,7 @@ import org.thrustcurve.api.data.TCMotorRecord;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MotorDTO {
+public class MotorDTO implements Comparable<MotorDTO> {
 
     public final String name;
     public final String brandName;
@@ -16,6 +16,8 @@ public class MotorDTO {
     public final String impulse;
     public final Double weight;
     public final Double burnTime;
+    public final Double averageThrust;
+    public final Double maxThrust;
     public final Float diameter;
     public final Double length;
     public final String externalId;
@@ -49,6 +51,8 @@ public class MotorDTO {
         this.burnTime= motor.getBurnTime();
         this.diameter= motor.getDiameter().getDiameter();
         this.propellant= motor.getPropellant().getName();
+        this.averageThrust = motor.getThrustAvg();
+        this.maxThrust = motor.getThrustMax();
         this.data= motor.getData().stream()
                 .filter(d -> d != null)
                 .filter(d -> d.getFormat() != null)
@@ -72,11 +76,27 @@ public class MotorDTO {
         this.burnTime = motor.getBurnTime();
         this.diameter= Float.parseFloat(motor.getDiameter());
         this.propellant= motor.getPropellant();
+        this.averageThrust = motor.getAverageThrust();
+        this.maxThrust = motor.getMaxThrust();
         this.data= motor.getData().stream()
                 .filter(d -> d != null)
                 .filter(d -> d.getFormat() != null)
                 .map(d -> new MotorDataDTO(this, d))
                 .filter(d -> d.filename != null)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int compareTo(MotorDTO o) {
+        int diff;
+
+        if ((diff = manufacturer.compareTo(o.manufacturer)) != 0) { return diff; }
+        else if ((diff = impulse.compareTo(o.impulse)) != 0) { return diff; }
+        else if ((diff = (int)(maxThrust - o.maxThrust)) != 0) { return diff; }
+        else if ((diff = (int)(diameter - o.diameter)) != 0) { return diff; }
+        else if ((diff = (int)(weight - o.weight)) != 0) { return diff; }
+        else if ((diff = (int)(burnTime - o.burnTime)) != 0) { return diff; }
+
+        return diff;
     }
 }
