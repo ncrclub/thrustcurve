@@ -83,8 +83,8 @@ public class MotorDbCache {
 
 	}
 
-	public Motor getMotor(String id) {
-		return Motor.getByExternalId(id, ctx);
+	public Motor getMotor(String externalId) {
+		return Motor.getByExternalId(externalId, ctx);
 	}
 
 	public MotorMfg getManufacturer(String name, String abbv) {
