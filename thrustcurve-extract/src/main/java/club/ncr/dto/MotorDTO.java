@@ -14,6 +14,7 @@ public class MotorDTO implements Comparable<MotorDTO> {
     public final String identifier;
     public final String motorCase;
     public final String impulse;
+    public final Double totalImpulse;
     public final Double weight;
     public final Double burnTime;
     public final Double averageThrust;
@@ -48,6 +49,7 @@ public class MotorDTO implements Comparable<MotorDTO> {
         this.motorCase= motor.getCase().getName();
         this.impulse= motor.getImpulse().getImpulse();
         this.weight= motor.getWeight();
+        this.totalImpulse = motor.getTotalImpulseNs();
         this.burnTime= motor.getBurnTime();
         this.diameter= motor.getDiameter().getDiameter();
         this.propellant= motor.getPropellant().getName();
@@ -72,6 +74,7 @@ public class MotorDTO implements Comparable<MotorDTO> {
         this.length= motor.getLength();
         this.motorCase= motor.getMotorCase();
         this.impulse= motor.getImpulseClass();
+        this.totalImpulse = motor.getTotalImpulse();
         this.weight = motor.getWeight();
         this.burnTime = motor.getBurnTime();
         this.diameter= Float.parseFloat(motor.getDiameter());
@@ -90,12 +93,13 @@ public class MotorDTO implements Comparable<MotorDTO> {
     public int compareTo(MotorDTO o) {
         int diff;
 
+        if ((diff = (int)(diameter - o.diameter)) != 0) { return diff; }
+        if ((diff = impulse.compareTo(o.impulse)) != 0) { return diff; }
+        if ((diff = name.compareTo(o.name)) != 0) { return diff; }
         if ((diff = manufacturer.compareTo(o.manufacturer)) != 0) { return diff; }
-        else if ((diff = impulse.compareTo(o.impulse)) != 0) { return diff; }
-        else if ((diff = (int)(maxThrust - o.maxThrust)) != 0) { return diff; }
-        else if ((diff = (int)(diameter - o.diameter)) != 0) { return diff; }
-        else if ((diff = (int)(weight - o.weight)) != 0) { return diff; }
-        else if ((diff = (int)(burnTime - o.burnTime)) != 0) { return diff; }
+        if ((diff = (int)(maxThrust - o.maxThrust)) != 0) { return diff; }
+        if ((diff = (int)(weight - o.weight)) != 0) { return diff; }
+        if ((diff = (int)(burnTime - o.burnTime)) != 0) { return diff; }
 
         return diff;
     }
