@@ -45,8 +45,8 @@ public class Motor extends _Motor {
 		}
 		return map;
 	}
-	
-	
+
+
 	public static Motor createNew(String externalId, MotorMfg manufacturer, MotorName name, MotorType type, MotorImpulse impulse, MotorDiameter diameter, MotorPropellant propellant, MotorCertOrg certOrg) {
 		
 		DataContext ctx= (DataContext)manufacturer.getObjectContext();

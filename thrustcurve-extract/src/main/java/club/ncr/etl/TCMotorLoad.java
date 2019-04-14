@@ -4,7 +4,6 @@ import club.ncr.cayenne.MotorDiameter;
 import club.ncr.cayenne.MotorImpulse;
 import club.ncr.motors.MotorDbCache;
 import club.ncr.cayenne.MotorMfg;
-import org.apache.cayenne.access.DataContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thrustcurve.TCApiClient;
@@ -12,9 +11,7 @@ import org.thrustcurve.api.search.SearchCriteria;
 import org.thrustcurve.api.search.SearchResults;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,18 +21,11 @@ public class TCMotorLoad {
     private MotorDbCache cache;
 
 	private boolean runlock;
-	
-	static private MotorImpulse nextImpulse= null;
-	
+
 	public TCMotorLoad() {
 	}
 
-	public TCMotorLoad(MotorImpulse impulse) {
-	    nextImpulse= impulse;
-	}
-
-
-	public void execute() {
+	public void execute(String impulse) {
 		
 		if (!getRunLock()) { return; }
 		
@@ -43,12 +33,13 @@ public class TCMotorLoad {
 		
 		cache= new MotorDbCache("cayenne-ncrclub.xml");
 		
-		MotorImpulse imp = nextImpulse == null ? getNextImpulse(null) : nextImpulse;
+		MotorImpulse imp = cache.getImpulse(impulse);
+
 		if (imp == null) {
 			LOG.error("No Motor Impulses.");
 			return;
 		}
-		nextImpulse= getNextImpulse(imp);
+
 
 		SearchCriteria criteria= new SearchCriteria()
 				.impulseClass(imp.getImpulse())
@@ -58,7 +49,7 @@ public class TCMotorLoad {
 			
 		if (results.size() == 0) {
 
-		} if (results.size() > 0 && results.size() < 20) {
+		} if (results.size() < 20) {
 			LOG.info("Updated "+ results.size() +" motor records. ["+ imp.getImpulse() +"]");
 		} else if (results.size() >= 20) {
 
@@ -91,7 +82,6 @@ public class TCMotorLoad {
 						if (results.size() > 0) {
 							LOG.info("Updated "+ results.size() +" motor records. "+ mfg.getName() +" ["+ imp.getImpulse() +","+ diam.getDiameter() +"mm]");
 						}
-								
 					}
 				} else {
 					LOG.info("No motors found to update for "+ imp.getImpulse() +","+ diam.getDiameter() +"mm");
