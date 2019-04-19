@@ -18,16 +18,13 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.thrustcurve.api.data.TCMotorData;
 import org.thrustcurve.api.data.TCMotorRecord;
 import org.thrustcurve.api.search.SearchResults;
-import sun.misc.BASE64Decoder;
 
-import java.io.IOException;
+import java.util.Base64;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 public class MotorDbCache {
@@ -416,10 +413,7 @@ public class MotorDbCache {
 				
 				motor.addToData(md);
 				md.setMotor(motor);
-				try {
-					md.setData(new BASE64Decoder().decodeBuffer(data.getData()));
-				} catch (IOException iox) {
-				}
+				md.setData(Base64.getDecoder().decode(data.getData()));
 				md.setFormat(format);
 				md.setDataUrl(data.getDataUrl());
 				md.setInfoUrl(data.getInfoUrl());
