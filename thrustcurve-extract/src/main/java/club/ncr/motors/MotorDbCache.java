@@ -413,7 +413,9 @@ public class MotorDbCache {
 				
 				motor.addToData(md);
 				md.setMotor(motor);
-				md.setData(Base64.getDecoder().decode(data.getData()));
+				if (data.getData() != null) {
+					md.setData(Base64.getDecoder().decode(data.getData()));
+				}
 				md.setFormat(format);
 				md.setDataUrl(data.getDataUrl());
 				md.setInfoUrl(data.getInfoUrl());
