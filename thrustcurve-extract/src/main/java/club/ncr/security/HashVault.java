@@ -5,19 +5,11 @@ import java.util.Base64;
 public class HashVault {
 
     public static final String read(String key) {
-        String value = decypher(key);
-        value = Crypto.decode(value);
-        value = unsalted(value);
-        return value;
+        return unescape(unsalted(Crypto.decode(decypher(key))));
     }
 
     public static final String write(String value) {
-        System.out.println("write");
-        String escaped = escape(value);
-        String salted = salted(escaped);
-        String encoded = Crypto.encode(salted);
-        String key = cypher(encoded);
-        return key;
+        return cypher(Crypto.encode(salted(escape(value))));
     }
 
     private static String decypher(String key) {
