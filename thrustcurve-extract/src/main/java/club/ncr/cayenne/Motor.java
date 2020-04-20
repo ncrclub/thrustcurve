@@ -2,6 +2,7 @@ package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._Motor;
 import club.ncr.dto.MotorDTO;
+import com.mysql.jdbc.CommunicationsException;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -35,7 +36,12 @@ public class Motor extends _Motor {
 			query.andQualifier(filter);
 		}
 		query.addOrdering(new Ordering(Motor.COMMON_NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE));
-		return (List<Motor>)ctx.performQuery(query);
+		try {
+			return (List<Motor>) ctx.performQuery(query);
+		} catch (Exception e) {
+			// try again
+			return (List<Motor>) ctx.performQuery(query);
+		}
 	}
 	
 	public static HashMap<String, Motor> getMap(DataContext ctx, Expression filter) {
