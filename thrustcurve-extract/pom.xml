@@ -5,7 +5,7 @@
     <parent>
         <artifactId>thrustcurve</artifactId>
         <groupId>org.ncrocketry</groupId>
-        <version>2020.04.002</version>
+        <version>2020.05.003</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.ncrocketry</groupId>
             <artifactId>thrustcurve-client</artifactId>
-            <version>2020.04.002</version>
+            <version>2020.05.003</version>
         </dependency>
     </dependencies>
 </project>
