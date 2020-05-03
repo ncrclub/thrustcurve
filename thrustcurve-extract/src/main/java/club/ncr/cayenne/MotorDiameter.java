@@ -28,7 +28,7 @@ public class MotorDiameter extends _MotorDiameter {
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorDiameter.DIAMETER_PROPERTY, SortOrder.ASCENDING));
+		query.addOrdering(new Ordering(MotorDiameter.DIAMETER.getName(), SortOrder.ASCENDING));
 		return (List<MotorDiameter>)ctx.performQuery(query);
 	}
 	

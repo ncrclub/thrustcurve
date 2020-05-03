@@ -29,7 +29,7 @@ public class MotorName extends _MotorName implements Comparable {
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorName.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE));
+		query.addOrdering(new Ordering(MotorName.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
 		return (List<MotorName>)ctx.performQuery(query);
 		
 		

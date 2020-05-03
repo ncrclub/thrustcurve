@@ -26,7 +26,7 @@ public class MotorType extends _MotorType {
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorType.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE));
+		query.addOrdering(new Ordering(MotorType.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
 		return (List<MotorType>)ctx.performQuery(query);
 	}
 	

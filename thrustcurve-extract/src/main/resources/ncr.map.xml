@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap http://cayenne.apache.org/schema/10/modelMap.xsd"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
 	 project-version="10">
 	<property name="defaultPackage" value="club.ncr.cayenne"/>
 	<property name="defaultSchema" value="ncr"/>
@@ -206,6 +206,7 @@
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
 	</db-entity>
 	<db-entity name="motor_impulse" schema="ncr">
+		<db-attribute name="Classification" type="INTEGER"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
 		<db-attribute name="Impulse" type="VARCHAR" length="1"/>
 	</db-entity>
@@ -222,6 +223,7 @@
 	<db-entity name="motor_propellant" schema="ncr">
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
 		<db-attribute name="Name" type="VARCHAR" length="32"/>
+		<db-attribute name="Type" type="VARCHAR" length="32"/>
 	</db-entity>
 	<db-entity name="motor_type" schema="ncr">
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
@@ -389,6 +391,7 @@
 		<obj-attribute name="diameter" type="java.lang.Float" db-attribute-path="Diameter"/>
 	</obj-entity>
 	<obj-entity name="MotorImpulse" className="club.ncr.cayenne.MotorImpulse" dbEntityName="motor_impulse">
+		<obj-attribute name="classification" type="int" db-attribute-path="Classification"/>
 		<obj-attribute name="impulse" type="java.lang.String" db-attribute-path="Impulse"/>
 	</obj-entity>
 	<obj-entity name="MotorMfg" className="club.ncr.cayenne.MotorMfg" dbEntityName="motor_mfg">
@@ -401,6 +404,7 @@
 	</obj-entity>
 	<obj-entity name="MotorPropellant" className="club.ncr.cayenne.MotorPropellant" dbEntityName="motor_propellant">
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
+		<obj-attribute name="type" type="java.lang.String" db-attribute-path="Type"/>
 	</obj-entity>
 	<obj-entity name="MotorType" className="club.ncr.cayenne.MotorType" dbEntityName="motor_type">
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>

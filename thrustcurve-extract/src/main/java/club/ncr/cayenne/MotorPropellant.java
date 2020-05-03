@@ -26,7 +26,7 @@ public class MotorPropellant extends _MotorPropellant {
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorPropellant.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE));
+		query.addOrdering(new Ordering(MotorPropellant.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
 		return (List<MotorPropellant>)ctx.performQuery(query);
 	}
 	

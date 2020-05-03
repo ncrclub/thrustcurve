@@ -3,6 +3,7 @@ package club.ncr.cayenne;
 import club.ncr.cayenne.auto._Motor;
 import club.ncr.dto.MotorDTO;
 import com.mysql.jdbc.CommunicationsException;
+import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -22,7 +23,7 @@ public class Motor extends _Motor {
 	
 	public static Motor getByExternalId(String id, DataContext ctx) {
 		
-		List<Motor> list= get(ctx, ExpressionFactory.matchExp(Motor.EXTERNAL_ID_PROPERTY, id));
+		List<Motor> list= get(ctx, ExpressionFactory.matchExp(Motor.EXTERNAL_ID.getName(), id));
 		
 		if (list.size() == 0) { return null; }
 		
@@ -35,7 +36,7 @@ public class Motor extends _Motor {
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(Motor.COMMON_NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE));
+		query.addOrdering(new Ordering(Motor.COMMON_NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
 		try {
 			return (List<Motor>) ctx.performQuery(query);
 		} catch (Exception e) {
@@ -54,9 +55,9 @@ public class Motor extends _Motor {
 
 
 	public static Motor createNew(String externalId, MotorMfg manufacturer, MotorName name, MotorType type, MotorImpulse impulse, MotorDiameter diameter, MotorPropellant propellant, MotorCertOrg certOrg) {
-		
-		DataContext ctx= (DataContext)manufacturer.getObjectContext();
-		
+
+		DataContext ctx= (DataContext)BaseContext.getThreadObjectContext();
+
 		Motor m= new Motor();
 		MotorData data= new MotorData();
 		

@@ -53,7 +53,7 @@ public class MotorDbCache {
 	    if (this.runtime == null) {
             this.runtime = ServerRuntime.builder().addConfig(cayenneConfigFile).build();
         }
-		this.ctx= (DataContext)runtime.getContext();
+		this.ctx= (DataContext)runtime.newContext();
 
 		// prime the impulses
 		for (char impulse= 'A'; impulse <= 'R'; impulse++) {
@@ -266,10 +266,10 @@ public class MotorDbCache {
 		MotorType type= getType("research");
 		MotorCertOrg certOrg= getCertOrganization(null);
 
-		Expression where = ExpressionFactory.matchExp(Motor.IMPULSE_PROPERTY, impulse)
-				.andExp(ExpressionFactory.matchExp(Motor.DIAMETER_PROPERTY, diameter))
-				.andExp(ExpressionFactory.matchExp(Motor.TYPE_PROPERTY, type))
-				.andExp(ExpressionFactory.matchExp(Motor.COMMON_NAME_PROPERTY, name))
+		Expression where = ExpressionFactory.matchExp(Motor.IMPULSE.getName(), impulse)
+				.andExp(ExpressionFactory.matchExp(Motor.DIAMETER.getName(), diameter))
+				.andExp(ExpressionFactory.matchExp(Motor.TYPE.getName(), type))
+				.andExp(ExpressionFactory.matchExp(Motor.COMMON_NAME.getName(), name))
 				;
 
 		Motor motor = Motor.get(ctx, where).stream().findFirst().orElse(null);

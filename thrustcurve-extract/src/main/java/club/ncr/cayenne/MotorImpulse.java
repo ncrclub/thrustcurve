@@ -17,7 +17,7 @@ public class MotorImpulse extends _MotorImpulse implements Comparable<MotorImpul
 
 	public static MotorImpulse createNew(String impulseClass, DataContext ctx) {
 		
-		List<MotorImpulse> exists= get(ctx, ExpressionFactory.matchExp(MotorImpulse.IMPULSE_PROPERTY, impulseClass));
+		List<MotorImpulse> exists= get(ctx, ExpressionFactory.matchExp(MotorImpulse.IMPULSE.getName(), impulseClass));
 		
 		if (exists == null || exists.isEmpty()) {
 			
@@ -39,7 +39,7 @@ public class MotorImpulse extends _MotorImpulse implements Comparable<MotorImpul
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorImpulse.IMPULSE_PROPERTY, SortOrder.ASCENDING_INSENSITIVE));
+		query.addOrdering(new Ordering(MotorImpulse.IMPULSE.getName(), SortOrder.ASCENDING_INSENSITIVE));
 		return (List<MotorImpulse>)ctx.performQuery(query);
 	}
 	

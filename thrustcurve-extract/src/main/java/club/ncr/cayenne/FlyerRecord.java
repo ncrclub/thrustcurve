@@ -15,8 +15,8 @@ public class FlyerRecord extends _FlyerRecord {
 		
 		SelectQuery query= new SelectQuery(FlyerRecord.class, matchExp);
 		
-		query.addOrdering(new Ordering(FlyerRecord.LAST_NAME_PROPERTY, SortOrder.ASCENDING));
-		query.addOrdering(new Ordering(FlyerRecord.FIRST_NAME_PROPERTY, SortOrder.ASCENDING));
+		query.addOrdering(new Ordering(FlyerRecord.LAST_NAME.getName(), SortOrder.ASCENDING));
+		query.addOrdering(new Ordering(FlyerRecord.FIRST_NAME.getName(), SortOrder.ASCENDING));
 		
 		List<FlyerRecord> list= ctx.performQuery(query);
 		
