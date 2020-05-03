@@ -2,7 +2,6 @@ package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._Motor;
 import club.ncr.dto.MotorDTO;
-import com.mysql.jdbc.CommunicationsException;
 import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
@@ -14,7 +13,6 @@ import org.thrustcurve.api.json.JsonArray;
 import org.thrustcurve.api.json.JsonObject;
 import org.thrustcurve.api.json.JsonValue;
 
-import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
