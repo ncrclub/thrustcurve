@@ -12,10 +12,11 @@ import java.util.List;
 
 public class MotorPropellant extends _MotorPropellant {
 
-	public static MotorPropellant createNew(String propellant, DataContext ctx) {
+	public static MotorPropellant createNew(String propellant, String type, DataContext ctx) {
 		MotorPropellant record= new MotorPropellant();
 		ctx.registerNewObject(record);
 		record.setName(propellant);
+		record.setType(type);
 		ctx.commitChanges();
 		return record;
 		

@@ -164,7 +164,13 @@ public class MotorDbCache {
 		MotorPropellant record= propellants.get(name);
 		
 		if (record == null && !readOnly) {
-			record= MotorPropellant.createNew(name, ctx);
+			String type = "AP";
+		    if ("black powder".equalsIgnoreCase(name)) {
+		    	type = "BP";
+			} else if (name.toLowerCase().contains("nitrous")) {
+		    	type = "HYBRID";
+			}
+			record= MotorPropellant.createNew(name, type, ctx);
 			propellants.put(name, record);
 		}
 		
