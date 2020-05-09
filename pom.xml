@@ -7,7 +7,7 @@
 
     <artifactId>thrustcurve</artifactId>
     <groupId>org.ncrocketry</groupId>
-    <version>2020.05.011-alpha</version>
+    <version>2020.05.012</version>
     <modelVersion>4.0.0</modelVersion>
 
     <modules>
