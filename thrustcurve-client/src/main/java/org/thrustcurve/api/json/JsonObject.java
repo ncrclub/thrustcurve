@@ -53,6 +53,7 @@ public class JsonObject extends JsonValue {
 	public void set(String name, String value) { set(new JsonMember(name, value)); }
 	public void set(String name, Integer value) { set(new JsonMember(name, value)); }
 	public void set(String name, Long value) { set(new JsonMember(name, value)); }
+	public void set(String name, Float value) { set(new JsonMember(name, value)); }
 	public void set(String name, Double value) { set(new JsonMember(name, value)); }
 	public void set(String name, Boolean value) { set(new JsonMember(name, value)); }
 	public void set(String name, Short value) { set(new JsonMember(name, (int)value)); }

@@ -26,7 +26,7 @@ public class MotorCertOrg extends _MotorCertOrg {
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorCertOrg.NAME_PROPERTY, SortOrder.ASCENDING));
+		query.addOrdering(new Ordering(MotorCertOrg.NAME.getName(), SortOrder.ASCENDING));
 		return (List<MotorCertOrg>)ctx.performQuery(query);
 	}
 	

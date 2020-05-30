@@ -20,7 +20,6 @@ public class Crypto {
 	
 	public static final String RNG = "SHA1PRNG";
 	private static final String[] alphabet= new String[] {
-			// "\"", "'",
 			  " ", "!", ")", "#", "$", "%", "&", "}", "(", "~"		// 0  - 9
 			, "*", "+", ",", "-", ".", "/", "0", "1", "2", "3"		// 10 - 19
 			, "4", "5", "6", "7", "8", "9", ":", ";", "<", "="		// 20 - 29
@@ -45,7 +44,7 @@ public class Crypto {
 	}
 	
 	public static final SecurityCodec getCodecByClass(String classPath) {
-		
+
 		DynamicClassKit dck= new DynamicClassKit();
 		
 		try {
@@ -98,15 +97,6 @@ public class Crypto {
 		return (text);
 	}
 	
-	
-// 	public static final String getAlphabet(int codec) {
-// 		SecurityCodec c= getCodec(codec);
-// 		return c.getAlphabet(alphabet);
-// 	}
-	
-
-	
-	
 	public static String generate(String name, String tabooChars) {
 		int r= 0;
 		String a= "";
@@ -135,7 +125,6 @@ public class Crypto {
 			
 			if (taboo.get(((char)i)+"") != null) {
 				// don't include this taboo character in the alphabet
-				// System.err.println("Not including: "+ (char)i);
 				continue;
 			}
 			p.put((i - 32)+"", ""+ esc + ((char)i) + "");
@@ -147,16 +136,7 @@ public class Crypto {
 		int n= 1;
 		while (p.size() > 0) {
 			int i= rnd.nextInt(129);
-			if (((String)p.get(i+"")) == null) { continue; }
-			
-//			if (n == 1) {
-//				a= "c["+ i +"]";
-//			} else {
-//				a+= " + c["+ i +"]";
-//				if (p.size() % 90 == 0 || p.size() % 55 == 0 || p.size() % 43 == 0) {
-//					r+= i * (rnd.nextInt(4) + 4);
-//				}
-//			}
+			if (p.get(i+"") == null) { continue; }
 			
 			if (n == 1) {
 				a= (String)p.get(i+"");
@@ -166,11 +146,7 @@ public class Crypto {
 					r+= i * (rnd.nextInt(4) + 5) * (rnd.nextInt(8) + 1);
 				}
 			}
-			
 			p.remove(i+"");
-			
-			// if (n % 10 == 0) { a+= "\n\t\t\t"; }
-			
 			n++;
 		}	
 		
@@ -195,12 +171,7 @@ public class Crypto {
 	
 	
 	public static void main(String[] args) {
-		
-		
 		String code= generate("NoCoRocketry", "\r\n\t\"\\'");
-		
-		
 		System.out.println(code);
-		
 	}
 }

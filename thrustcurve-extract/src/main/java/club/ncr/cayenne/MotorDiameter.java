@@ -14,8 +14,7 @@ import java.util.List;
 
 public class MotorDiameter extends _MotorDiameter {
 
-	public static MotorDiameter createNew(Integer diameter, DataContext ctx) {
-		
+	public static MotorDiameter createNew(Float diameter, DataContext ctx) {
 		MotorDiameter record= new MotorDiameter();
 		ctx.registerNewObject(record);
 		record.setDiameter(diameter);
@@ -29,7 +28,7 @@ public class MotorDiameter extends _MotorDiameter {
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorDiameter.DIAMETER_PROPERTY, SortOrder.ASCENDING));
+		query.addOrdering(new Ordering(MotorDiameter.DIAMETER.getName(), SortOrder.ASCENDING));
 		return (List<MotorDiameter>)ctx.performQuery(query);
 	}
 	

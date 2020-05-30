@@ -15,14 +15,10 @@ public class SearchResults implements Iterable<TCMotorRecord>{
 	private List<TCMotorRecord> records;
 	
 	public SearchResults(XmlTagList results) {
-		
 		records= new ArrayList<TCMotorRecord>();
-		
 		for (XmlTag tag : results.seek("search-response.results.result")) {
 			records.add(new TCMotorRecord(tag));
 		}
-		
-		
 	}
 
 	public Iterator<TCMotorRecord> iterator() {
@@ -69,7 +65,7 @@ public class SearchResults implements Iterable<TCMotorRecord>{
 	public TCMotorRecord getMotorById(String id) {
 		
 		TCMotorRecord motor= null;
-		
+
 		for (TCMotorRecord m : records) {
 			if (m.getMotorId().equals(id)) {
 				return m;
@@ -79,4 +75,10 @@ public class SearchResults implements Iterable<TCMotorRecord>{
 		return motor;
 		
 	}
+
+	public SearchResults append(SearchResults more) {
+		this.records.addAll(more.records);
+		return this;
+	}
+
 }

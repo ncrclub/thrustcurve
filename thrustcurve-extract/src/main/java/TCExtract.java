@@ -6,7 +6,7 @@ public class TCExtract {
         TCMotorLoad loader= new TCMotorLoad();
 
         for (char impulse= 'A'; impulse < 'T'; impulse++) {
-            loader.execute();
+            loader.execute(""+ impulse);
         }
     }
 }

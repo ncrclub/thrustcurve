@@ -29,7 +29,7 @@ public class MotorCase extends _MotorCase {
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorCase.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE));
+		query.addOrdering(new Ordering(MotorCase.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
 		return (List<MotorCase>)ctx.performQuery(query);
 	}
 	

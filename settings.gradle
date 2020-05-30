@@ -1,0 +1,8 @@
+rootProject.name = 'thrustcurve'
+include ':thrustcurve-client'
+include ':thrustcurve-extract'
+include ':examples'
+
+project(':thrustcurve-client').projectDir = "$rootDir/thrustcurve-client" as File
+project(':thrustcurve-extract').projectDir = "$rootDir/thrustcurve-extract" as File
+project(':examples').projectDir = "$rootDir/thrustcurve-examples" as File

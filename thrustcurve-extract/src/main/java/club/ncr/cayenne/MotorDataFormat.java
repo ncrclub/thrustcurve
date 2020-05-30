@@ -33,7 +33,7 @@ public class MotorDataFormat extends _MotorDataFormat {
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorDataFormat.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE));
+		query.addOrdering(new Ordering(MotorDataFormat.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
 		return (List<MotorDataFormat>)ctx.performQuery(query);
 	}
 	

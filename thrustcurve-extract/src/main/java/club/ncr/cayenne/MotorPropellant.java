@@ -12,10 +12,11 @@ import java.util.List;
 
 public class MotorPropellant extends _MotorPropellant {
 
-	public static MotorPropellant createNew(String propellant, DataContext ctx) {
+	public static MotorPropellant createNew(String propellant, String type, DataContext ctx) {
 		MotorPropellant record= new MotorPropellant();
 		ctx.registerNewObject(record);
 		record.setName(propellant);
+		record.setType(type);
 		ctx.commitChanges();
 		return record;
 		
@@ -26,7 +27,7 @@ public class MotorPropellant extends _MotorPropellant {
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorPropellant.NAME_PROPERTY, SortOrder.ASCENDING_INSENSITIVE));
+		query.addOrdering(new Ordering(MotorPropellant.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
 		return (List<MotorPropellant>)ctx.performQuery(query);
 	}
 	

@@ -16,7 +16,7 @@ public class TCMotorData {
 	
 	public String getMotorId() { return getValue("motor-id"); }
 
-	public String getFileId() { return getValue("simfile-id"); }
+	public int getFileId() { return Integer.parseInt(getValue("simfile-id")); }
 	public String getFormat() { return getValue("format"); }
 	public String getSource() { return getValue("source"); }
 	public String getLicense() { return getValue("license"); }

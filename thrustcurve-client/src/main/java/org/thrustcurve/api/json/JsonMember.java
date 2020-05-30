@@ -12,6 +12,7 @@ public class JsonMember {
 	public JsonMember(String name, String value) { this(name, new JsonPrimitive(value)); }
 	public JsonMember(String name, Integer value) { this(name, new JsonPrimitive(value)); }
 	public JsonMember(String name, Long value) { this(name, new JsonPrimitive(value)); }
+	public JsonMember(String name, Float value) { this(name, new JsonPrimitive(value)); }
 	public JsonMember(String name, Double value) { this(name, new JsonPrimitive(value)); }
 	public JsonMember(String name, Boolean value) { this(name, new JsonPrimitive(value)); }
 	

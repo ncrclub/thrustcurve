@@ -14,7 +14,7 @@ public class RunMe {
 
         SearchCriteria criteria= new SearchCriteria()
                 .impulseClass("K")
-                .diameter(54)
+                .diameter(54.0f)
                 .manufacturer("aerotech")
                 .maxResults(3);
 

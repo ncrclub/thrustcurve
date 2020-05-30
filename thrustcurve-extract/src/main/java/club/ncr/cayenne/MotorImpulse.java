@@ -7,6 +7,8 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
+import org.thrustcurve.api.json.JsonPrimitive;
+import org.thrustcurve.api.json.JsonValue;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,13 +17,27 @@ public class MotorImpulse extends _MotorImpulse implements Comparable<MotorImpul
 
 	public static MotorImpulse createNew(String impulseClass, DataContext ctx) {
 		
-		List<MotorImpulse> exists= get(ctx, ExpressionFactory.matchExp(MotorImpulse.IMPULSE_PROPERTY, impulseClass));
+		List<MotorImpulse> exists= get(ctx, ExpressionFactory.matchExp(MotorImpulse.IMPULSE.getName(), impulseClass));
+
+		int classification = 0;
+
+		switch (impulseClass) {
+			case "A": case "B": case "C": case "D": case "E": case "F": case "G":
+				classification = 1;
+			    break;
+			case "H": case "I": case "J": case "K": case "L":
+				classification = 2;
+				break;
+			default:
+				classification = 3;
+			    break;
+		}
 		
 		if (exists == null || exists.isEmpty()) {
-			
 			MotorImpulse record= new MotorImpulse();
 			ctx.registerNewObject(record);
 			record.setImpulse(impulseClass);
+			record.setClassification(classification);
 			ctx.commitChanges();
 			return record;
 			
@@ -37,7 +53,7 @@ public class MotorImpulse extends _MotorImpulse implements Comparable<MotorImpul
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorImpulse.IMPULSE_PROPERTY, SortOrder.ASCENDING_INSENSITIVE));
+		query.addOrdering(new Ordering(MotorImpulse.IMPULSE.getName(), SortOrder.ASCENDING_INSENSITIVE));
 		return (List<MotorImpulse>)ctx.performQuery(query);
 	}
 	
@@ -73,5 +89,10 @@ public class MotorImpulse extends _MotorImpulse implements Comparable<MotorImpul
 		
 		return getImpulse().compareToIgnoreCase(i.getImpulse());
 		
+	}
+
+	public JsonValue toJsonValue() {
+		JsonValue json= new JsonPrimitive(getImpulse());
+		return json;
 	}
 }
