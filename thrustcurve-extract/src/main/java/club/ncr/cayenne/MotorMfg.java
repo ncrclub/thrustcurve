@@ -1,6 +1,7 @@
 package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._MotorMfg;
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.Ordering;
@@ -30,7 +31,11 @@ public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 			query.andQualifier(filter);
 		}
 		query.addOrdering(new Ordering(MotorMfg.NAME.getName(), SortOrder.ASCENDING));
-		return (List<MotorMfg>)ctx.performQuery(query);
+		try {
+			return (List<MotorMfg>) ctx.performQuery(query);
+		} catch (CayenneRuntimeException err) {
+			return (List<MotorMfg>) ctx.performQuery(query);
+		}
 	}
 	
 	public static HashMap<String, MotorMfg> getNameMap(DataContext ctx, Expression filter) {

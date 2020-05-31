@@ -22,6 +22,7 @@ import org.thrustcurve.api.data.TCMotorRecord;
 import org.thrustcurve.api.search.SearchResults;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.*;
 
 
@@ -218,7 +219,9 @@ public class MotorDbCache {
 	}
 
 	
-	public Collection<MotorMfg> getManufacturers() { return orderedManufacturers; }
+	public Collection<MotorMfg> getManufacturers() {
+	    return MotorMfg.getNameMap(ctx, MotorMfg.NAME.isNotNull()).values();
+	}
 	public Collection<MotorCase> getMotorCases() { return cases.values(); }
 	public Collection<MotorCertOrg> getCertOrganizations() { return certOrgs.values(); }
 	public Collection<MotorDiameter> getDiameters() { return orderedDiameters; }
@@ -378,7 +381,7 @@ public class MotorDbCache {
 		research(16132.40d, 29323.10d, 6.40d, 33724.82d, 5495.88d, 6234.78d, 885.60d, "O", 161f);
 	}
 	
-	public void update(SearchResults results) {
+	public void update(SearchResults results, PrintStream out) {
 
 
 		for (TCMotorRecord record : results) {
@@ -409,7 +412,7 @@ public class MotorDbCache {
 			motor.setLength(record.getLength());
 			motor.setCase(motorCase);
 			motor.setLastUpdated(new Date());
-			System.out.println("Motor Update: "+ motor.getImpulse().getImpulse() +" "+ motor.getBrandName() +" "+ motor.getDesignation() +" "+ motor.getLastUpdated());
+			out.println("Motor Update: "+ motor.getImpulse().getImpulse() +" "+ motor.getBrandName() +" "+ motor.getDesignation() +" "+ motor.getLastUpdated());
 
 			// log.info(record.toXml());
 			for (TCMotorData data : record.getData()) {

@@ -11,6 +11,7 @@ import org.thrustcurve.api.search.SearchCriteria;
 import org.thrustcurve.api.search.SearchResults;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +26,7 @@ public class TCMotorLoad {
 	public TCMotorLoad() {
 	}
 
-	public void execute(String impulse) {
+	public void execute(String impulse, PrintStream out) {
 		
 		if (!getRunLock()) { return; }
 		
@@ -45,7 +46,7 @@ public class TCMotorLoad {
 				.impulseClass(imp.getImpulse())
 				.maxResults(20);
 
-		SearchResults results= update(criteria);
+		SearchResults results= update(criteria, out);
 			
 		if (results.size() == 0) {
 
@@ -60,7 +61,7 @@ public class TCMotorLoad {
 				criteria.diameter(diam.getDiameter());
 				criteria.maxResults(49);
 
-				results= update(criteria);
+				results= update(criteria, out);
 				if (results == null) {
 
 				} else if (results.size() > 0 && results.size() < 49) {
@@ -77,7 +78,7 @@ public class TCMotorLoad {
 						criteria.manufacturer(mfg.getName());
 						criteria.maxResults(100);
 
-						results= update(criteria);
+						results= update(criteria, out);
 
 						if (results == null) {
 							LOG.info("null results for "+ mfg.getName() +" ["+ imp.getImpulse() +","+ diam.getDiameter() +"mm]");
@@ -126,7 +127,7 @@ public class TCMotorLoad {
 		return null;
 	}
 
-	private SearchResults update(SearchCriteria criteria) {
+	private SearchResults update(SearchCriteria criteria, PrintStream out) {
 		TCApiClient api;
 		try {
 			api= new TCApiClient();
@@ -139,7 +140,7 @@ public class TCMotorLoad {
 					return null;
 				}
 				
-				cache.update(searchResults);
+				cache.update(searchResults, out);
 				
 				return searchResults;
 				
