@@ -1,10 +1,130 @@
-# ThrustCurve Java API Library
-## Northern Colorado Rocketry
+## Thrustcurve.org
 
-> https://ncrocketry.club
+All credit due to the individuals who maintain the Thrustcurve.org service as the best source for hobby rocket motor data.
+
 
 > http://thrustcurve.org
 
+### Thrustcurve/NCR JSON API V1
+**Motor Diameters**
+> https://ncrocketry.club/flight/thrustcurve/api/v1/list/diameters
+
+List of all motor diameters (mm).
+```
+[6.0,10.5,13.0,18.0,...,81.0,98.0,132.0,152.0,161.0]
+```
+
+**Motor Impulses**
+> https://ncrocketry.club/flight/thrustcurve/api/v1/list/impulses
+
+List of all motor impulses.
+```
+["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R"]
+```
+
+**Motor Manufacturers**
+> https://ncrocketry.club/flight/thrustcurve/api/v1/list/manufacturers
+
+List of Manufacturers name and abbreviation.
+```
+[
+ {"name":"AeroTech","abbreviation":"AeroTech"},
+ {"name":"Alpha Hybrids","abbreviation":"Alpha"},
+ {"name":"Animal Motor Works","abbreviation":"AMW"},
+ {"name":"Apogee Components","abbreviation":"Apogee"},
+ {"name":"Cesaroni Technology","abbreviation":"Cesaroni"},
+ {"name":"Contrail Rockets","abbreviation":"Contrail"},
+ {"name":"Ellis Mountain","abbreviation":"Ellis"},
+ {"name":"Estes Industries","abbreviation":"Estes"},
+ {"name":"Gorilla Rocket Motors","abbreviation":"Gorilla"},
+ {"name":"Hypertek","abbreviation":"Hypertek"},
+ {"name":"Kosdon TRM","abbreviation":"Kosdon"},
+ {"name":"Kosdon by AeroTech","abbreviation":"KBA"},
+ {"name":"Loki Research","abbreviation":"Loki"},
+ {"name":"Propulsion Polymers","abbreviation":"PP"},
+ {"name":"Public Missiles, Ltd.","abbreviation":"PML"},
+ {"name":"Quest Aerospace","abbreviation":"Quest"},
+ {"name":"R.A.T.T. Works","abbreviation":"RATT"},
+ {"name":"Raketenmodellbau Klima","abbreviation":"Klima"},
+ {"name":"Research","abbreviation":"Research"},
+ {"name":"Roadrunner Rocketry","abbreviation":"Roadrunner"},
+ {"name":"Rocketvision Flight-Star","abbreviation":"RV"},
+ {"name":"Sky Ripper Systems","abbreviation":"SkyR"},
+ {"name":"Southern Cross Rocketry","abbreviation":"SCR"},
+ {"name":"West Coast Hybrids","abbreviation":"WCH"}
+]
+```
+
+### Thrustcurve/NCR JSON API V2 (Search)
+
+**Search Parameters**
+> name
+>
+Motor name or designation.
+
+> diameter
+>
+Motor diameter (mm).
+
+> mfg
+
+Motor manufacturer name or abbreviation.
+
+> impulse
+
+Motor impulse class (A-O).
+
+> with_data=true
+
+Return data file information for motors if it exists.
+
+**Search by Diameter**
+> `/flight/thrustcurve/api/v2/search/diameter/{diameter}`
+
+> https://ncrocketry.club/flight/thrustcurve/api/v2/search/diameter/38?impulse=J&mfg=cesaroni
+
+**Search by Impulse**
+> `/flight/thrustcurve/api/v2/search/impulse/{impulse}`
+
+> https://ncrocketry.club/flight/thrustcurve/api/v2/search/impulse/I?diameter=38&mfg=cesaroni
+
+Sample
+> http://localhost:8080/flight/thrustcurve/api/v2/search/diameter/38?impulse=J&mfg=cesaroni&name=J94
+```$xslt
+[
+  {"name":"J94",
+   "brandName":"644-J94-P",
+   "designation":"644J94-P",
+   "identifier":"644J94-P [Cesaroni]",
+   "motorCase":"Pro38-5G",
+   "impulse":"J",
+   "totalImpulse":644.0,
+   "weight":372.9,"burnTime":6.82,
+   "averageThrust":94.4,
+   "maxThrust":172.5,
+   "diameter":38.0,
+   "length":367.0,
+   "externalId":"1046",
+   "propellant":"Mellow",
+   "manufacturer":{
+      "name":"Cesaroni Technology",
+      "abbreviation":"Cesaroni"
+   },
+   "data":[]
+  }
+]
+```
+
+## Northern Colorado Rocketry
+NCR provides JSON endpoints to query the NCR motor database.
+
+### NCR Motor Database
+The NCR Motor Database is a combination of the Thrustcurve data and motor data maintained by the club launch log administrators.
+
+### NCR Motors API V1
+> https://ncrocketry.club/flight/api/v1/motors
+
+# Thrustcurve Java Client SDK Library
 ## Example
 ```
     public static void main(String[] args) throws Exception {
