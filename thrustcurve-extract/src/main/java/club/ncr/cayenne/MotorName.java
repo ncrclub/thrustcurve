@@ -65,4 +65,8 @@ public class MotorName extends _MotorName implements Comparable {
 		return -1;
 	}
 
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 }

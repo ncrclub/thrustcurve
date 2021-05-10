@@ -2,11 +2,14 @@ package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._Motor;
 import club.ncr.dto.MotorDTO;
+import club.ncr.dto.MotorDataDTO;
+import club.ncr.util.CayenneKit;
 import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.query.Orderings;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 import org.thrustcurve.api.json.JsonArray;
@@ -82,6 +85,10 @@ public class Motor extends _Motor {
 		return m;
 	}
 
+	public static SelectQuery select(Expression eq, Orderings then) {
+		return CayenneKit.select(Motor.class, eq, then);
+	}
+
 	public JsonValue toJsonValue() {
 		JsonObject json= new JsonObject();
 		
@@ -109,7 +116,8 @@ public class Motor extends _Motor {
 		return json;
 	}
 
-	public MotorDTO asDTO() {
-		return new MotorDTO(this);
+	public MotorDTO asDTO(boolean withData) {
+		return new MotorDTO(this, withData);
 	}
+
 }

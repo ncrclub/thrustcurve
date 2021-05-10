@@ -15,6 +15,8 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thrustcurve.TCApiClient;
 import org.thrustcurve.ThrustCurveAPI;
 import org.thrustcurve.api.data.TCMotorData;
@@ -40,16 +42,19 @@ public class MotorDbCache {
 
 	private List<MotorDiameter> orderedDiameters= new LinkedList<>();
 	private List<MotorImpulse> orderedImpulses= new LinkedList<>();
-	private List<MotorMfg> orderedManufacturers= new LinkedList<>();
+	private Set<MotorMfg> orderedManufacturers= new TreeSet<>();
 
-	private DataContext ctx;
+	private final DataContext ctx;
 	private boolean readOnly= false;
 
 	private static ServerRuntime runtime;
 
+	private static final Logger LOG = LoggerFactory.getLogger(MotorDbCache.class);
+
 	public MotorDbCache(String cayenneConfigFile) {
 
 	    if (this.runtime == null) {
+	        LOG.info("initializing config "+ cayenneConfigFile);
             this.runtime = ServerRuntime.builder().addConfig(cayenneConfigFile).build();
         }
 		this.ctx= (DataContext)runtime.newContext();
@@ -67,9 +72,16 @@ public class MotorDbCache {
 			}
 		}
 
+		loadMotorCases(ctx);
+
 		for (MotorImpulse imp : MotorImpulse.get(ctx, null)) {
 			impulses.put(imp.getImpulse(), imp);
 			orderedImpulses.add(impulses.get(imp.getImpulse()));
+		}
+
+		for (MotorMfg mfg : MotorMfg.get(ctx, null)) {
+			manufacturers.put(mfg.getName(), mfg);
+			orderedManufacturers.add(mfg);
 		}
 
 		for (MotorCertOrg org : MotorCertOrg.get(ctx, null)) { certOrgs.put(org.getName(), org); }
@@ -81,24 +93,27 @@ public class MotorDbCache {
 
 	}
 
+	private void loadMotorCases(DataContext ctx) {
+		for (MotorCase motorCase : MotorCase.get(ctx, null)) {
+			cases.put(motorCase.getName() +"-"+ motorCase.getMotorManufacturer() +"-"+ motorCase.getMotorDiameter(), motorCase);
+		}
+	}
+
 	public Motor getMotor(String externalId) {
 		return Motor.getByExternalId(externalId, ctx);
 	}
 
-	public MotorMfg getManufacturer(String name, String abbv) {
-	    if (orderedManufacturers.isEmpty()) {
-			for (MotorMfg mfg : MotorMfg.get(ctx, null)) {
-				manufacturers.put(mfg.getName(), mfg);
-				orderedManufacturers.add(manufacturers.get(mfg.getName()));
-			}
-			orderedManufacturers.sort((a, b) -> (a.getName().compareTo(b.getName())));
-		}
+	public List<Motor> all() {
+		return Motor.get(ctx, null);
+	}
 
+	public MotorMfg getManufacturer(String name, String abbv) {
 		MotorMfg record= manufacturers.get(name);
 		
 		if (record == null && !readOnly) {
 			record= MotorMfg.createNew(name, abbv, ctx);
 			manufacturers.put(name, record);
+			orderedManufacturers.add(record);
 		}
 		
 		return record;
@@ -188,17 +203,11 @@ public class MotorDbCache {
 		return record;
 	}
 
-	public MotorCase getMotorCase(String name) {
-	    if (cases.isEmpty()) {
-			for (MotorCase motorCase : MotorCase.get(ctx, null)) {
-				cases.put(motorCase.getName(), motorCase);
-			}
-		}
-
-		MotorCase record= cases.get(name);
+	public MotorCase getMotorCase(String name, MotorMfg mfg, MotorDiameter diameter) {
+		MotorCase record= cases.get(name +"-"+ mfg +"-"+ diameter);
 		
 		if (record == null && !readOnly) {
-			record= MotorCase.createNew(name, ctx);
+			record= MotorCase.createNew(name, mfg, diameter, ctx);
 			cases.put(name, record);
 		}
 		
@@ -220,7 +229,7 @@ public class MotorDbCache {
 
 	
 	public Collection<MotorMfg> getManufacturers() {
-	    return MotorMfg.getNameMap(ctx, MotorMfg.NAME.isNotNull()).values();
+	    return Collections.unmodifiableSet(orderedManufacturers);
 	}
 	public Collection<MotorCase> getMotorCases() { return cases.values(); }
 	public Collection<MotorCertOrg> getCertOrganizations() { return certOrgs.values(); }
@@ -269,7 +278,7 @@ public class MotorDbCache {
 		MotorMfg mfg= getManufacturer("Research", "Research");
 		MotorPropellant prop= getPropellant("Research");
 		MotorName name= getCommonName(impulse.getImpulse() +" Research", impulse);
-		MotorCase motorCase= getMotorCase("Research");
+		MotorCase motorCase= getMotorCase("Research", null, null);
 		MotorType type= getType("research");
 		MotorCertOrg certOrg= getCertOrganization(null);
 
@@ -301,6 +310,78 @@ public class MotorDbCache {
 			motor.setThrustMax(thrustMax);
 			motor.setTotalImpulseNs(totalImpulse);
 			motor.setDesignation("Research-"+ imp +"-"+ diam);
+			motor.setLength(length);
+			motor.setCase(motorCase);
+
+			ctx.commitChanges();
+		}
+		return motor;
+	}
+
+	/**
+	 <pre>
+	 weight    gross_weight	total_impulse_ns	thrust_avg	thrust_max	length	 impulse diameter
+	 2.53      4.34           1.54                2.48        6.56        53.12    A       6
+	 5.86      8.30           4.57                4.56        11.54       71.00    B       10.5
+	 9.01      8.76           9.15                6.35        17.01       68.35    C       18
+	 14.18     29.74          18.05               10.34       21.87       73.84    D       18
+	 25.73     50.66          33.96               19.81       30.42       80.61    E       24
+	 34.92     77.84          61.53               43.83       63.53       102.71   F       29
+	 64.39     166.49         120.95              85.62       140.29      167.47	 G       29
+	 131.56    308.12         238.43              198.14       264.24      272.92	 H       38
+	 260.19    473.71         472.26              274.34       365.81      370.43	 I       54
+	 454.27    878.01         896.98              417.52       585.24      515.26	 J       54
+	 1010.54   2003.38        1908.90             700.79       977.69      540.33	 K       54
+	 1959.88   3350.87        3697.10             1057.97       1163.28     702.09	 L       75
+	 3625.47   5774.30        7058.64             1823.34       2278.61     872.45	 M       98
+	 7493.22   11752.30       14277.46            3110.12       3729.56     1070.94  N       98
+	 14454.09  28741.14       29945.05            6451.97       8418.04     1137.73  O      161
+	 </pre>
+	 *
+	 *
+	 * @param weight
+	 * @param grossWeight
+	 * @param totalImpulse
+	 * @param thrustAvg
+	 * @param thrustMax
+	 * @param length
+	 * @param imp
+	 * @param diam
+	 * @return
+	 */
+	public Motor custom(MotorName name, String brandName, MotorType type, MotorMfg mfg, MotorPropellant prop, MotorCase motorCase, double weight, double grossWeight, double burnTime, double totalImpulse, double thrustAvg, double thrustMax, double length, String imp, float diam) {
+		MotorImpulse impulse = getImpulse(imp);
+		MotorDiameter diameter = getDiameter(diam);
+		MotorCertOrg certOrg= getCertOrganization(null);
+
+		Expression where = ExpressionFactory.matchExp(Motor.IMPULSE.getName(), impulse)
+				.andExp(ExpressionFactory.matchExp(Motor.DIAMETER.getName(), diameter))
+				.andExp(ExpressionFactory.matchExp(Motor.TYPE.getName(), type))
+				.andExp(ExpressionFactory.matchExp(Motor.COMMON_NAME.getName(), name))
+				;
+
+		Motor motor = Motor.get(ctx, where).stream().findFirst().orElse(null);
+
+		if (motor == null) {
+			motor = Motor.createNew(
+					"custom:"+ imp + totalImpulse +"ns_"+ mfg.getAbbreviation() +"_"+ diam +"mm"
+					, mfg
+					, name
+					, type
+					, impulse
+					, diameter
+					, prop
+					, certOrg
+			);
+
+			motor.setBurnTime(burnTime);
+			motor.setGrossWeight(grossWeight);
+			motor.setBrandName(brandName);
+			motor.setWeight(weight);
+			motor.setThrustAvg(thrustAvg);
+			motor.setThrustMax(thrustMax);
+			motor.setTotalImpulseNs(totalImpulse);
+			motor.setDesignation(name +"-"+ diam);
 			motor.setLength(length);
 			motor.setCase(motorCase);
 
@@ -392,7 +473,7 @@ public class MotorDbCache {
 			MotorImpulse impulse= getImpulse(record.getImpulseClass());
 			MotorName name= getCommonName(record.getCommonName(), impulse);
 			MotorDiameter diameter= getDiameter(Float.parseFloat(record.getDiameter()));
-			MotorCase motorCase= getMotorCase(record.getMotorCase());
+			MotorCase motorCase= getMotorCase(record.getMotorCase(), mfg, diameter);
 			MotorType type= getType(record.getType());
 			
 			Motor motor= Motor.getByExternalId(record.getMotorId(), ctx);
@@ -436,4 +517,13 @@ public class MotorDbCache {
 		this.readOnly= readOnly;
 	}
 
+	public List<MotorMfg> findManufacturer(String manufacturer) {
+		if (manufacturer == null || "".equals(manufacturer)) {
+			return Collections.emptyList();
+		}
+		Expression filter = MotorMfg.NAME.containsIgnoreCase(manufacturer)
+				.orExp(MotorMfg.ABBREVIATION.containsIgnoreCase(manufacturer));
+
+		return MotorMfg.get(ctx, filter);
+	}
 }

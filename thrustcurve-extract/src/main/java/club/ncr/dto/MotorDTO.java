@@ -3,6 +3,7 @@ package club.ncr.dto;
 import club.ncr.cayenne.Motor;
 import org.thrustcurve.api.data.TCMotorRecord;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ public class MotorDTO implements Comparable<MotorDTO> {
         return motor.getDesignation() +" ["+ motor.getManufacturerAbbv() +"]";
     }
 
-    public MotorDTO(Motor motor) {
+    public MotorDTO(Motor motor, boolean withData) {
         this.name= firstNotNull(motor.getCommonName().getName(), motor.getBrandName());
         this.brandName= firstNotNull(motor.getBrandName(), motor.getDesignation());
         this.identifier= toIdentifier(motor);
@@ -55,16 +56,20 @@ public class MotorDTO implements Comparable<MotorDTO> {
         this.propellant= motor.getPropellant().getName();
         this.averageThrust = motor.getThrustAvg();
         this.maxThrust = motor.getThrustMax();
-        this.data= motor.getData().stream()
-                .filter(d -> d != null)
-                .filter(d -> d.getFormat() != null)
-                .filter(d -> d.getFormat().getFileExtension() != null)
-                .map(d -> new MotorDataDTO(this, d))
-                .filter(d -> d.filename != null)
-                .collect(Collectors.toList());
+        if (withData) {
+            this.data = motor.getData().stream()
+                    .filter(d -> d != null)
+                    .filter(d -> d.getFormat() != null)
+                    .filter(d -> d.getFormat().getFileExtension() != null)
+                    .map(d -> new MotorDataDTO(this, d))
+                    .filter(d -> d.filename != null)
+                    .collect(Collectors.toList());
+        } else {
+            this.data = Collections.emptyList();
+        }
     }
 
-    public MotorDTO(TCMotorRecord motor) {
+    public MotorDTO(TCMotorRecord motor, boolean withData) {
         this.name= firstNotNull(motor.getCommonName(), motor.getBrandName());
         this.brandName= firstNotNull(motor.getBrandName(), motor.getDesignation());
         this.identifier= toIdentifier(motor);
@@ -81,12 +86,16 @@ public class MotorDTO implements Comparable<MotorDTO> {
         this.propellant= motor.getPropellant();
         this.averageThrust = motor.getAverageThrust();
         this.maxThrust = motor.getMaxThrust();
-        this.data= motor.getData().stream()
+        if (withData) {
+            this.data= motor.getData().stream()
                 .filter(d -> d != null)
                 .filter(d -> d.getFormat() != null)
                 .map(d -> new MotorDataDTO(this, d))
                 .filter(d -> d.filename != null)
                 .collect(Collectors.toList());
+        } else {
+            this.data = Collections.emptyList();
+        }
     }
 
     @Override

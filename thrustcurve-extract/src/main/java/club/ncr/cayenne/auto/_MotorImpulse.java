@@ -9,6 +9,7 @@ import org.apache.cayenne.BaseDataObject;
 import org.apache.cayenne.exp.Property;
 
 import club.ncr.cayenne.Motor;
+import club.ncr.cayenne.MotorCaseImpulse;
 import club.ncr.cayenne.MotorName;
 
 /**
@@ -25,12 +26,14 @@ public abstract class _MotorImpulse extends BaseDataObject {
 
     public static final Property<Integer> CLASSIFICATION = Property.create("classification", Integer.class);
     public static final Property<String> IMPULSE = Property.create("impulse", String.class);
+    public static final Property<List<MotorCaseImpulse>> MOTOR_CASE_IMPULSES = Property.create("motorCaseImpulses", List.class);
     public static final Property<List<MotorName>> MOTOR_NAMES = Property.create("motorNames", List.class);
     public static final Property<List<Motor>> MOTORS = Property.create("motors", List.class);
 
     protected Integer classification;
     protected String impulse;
 
+    protected Object motorCaseImpulses;
     protected Object motorNames;
     protected Object motors;
 
@@ -55,6 +58,19 @@ public abstract class _MotorImpulse extends BaseDataObject {
     public String getImpulse() {
         beforePropertyRead("impulse");
         return this.impulse;
+    }
+
+    public void addToMotorCaseImpulses(MotorCaseImpulse obj) {
+        addToManyTarget("motorCaseImpulses", obj, true);
+    }
+
+    public void removeFromMotorCaseImpulses(MotorCaseImpulse obj) {
+        removeToManyTarget("motorCaseImpulses", obj, true);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<MotorCaseImpulse> getMotorCaseImpulses() {
+        return (List<MotorCaseImpulse>)readProperty("motorCaseImpulses");
     }
 
     public void addToMotorNames(MotorName obj) {
@@ -94,6 +110,8 @@ public abstract class _MotorImpulse extends BaseDataObject {
                 return this.classification;
             case "impulse":
                 return this.impulse;
+            case "motorCaseImpulses":
+                return this.motorCaseImpulses;
             case "motorNames":
                 return this.motorNames;
             case "motors":
@@ -115,6 +133,9 @@ public abstract class _MotorImpulse extends BaseDataObject {
                 break;
             case "impulse":
                 this.impulse = (String)val;
+                break;
+            case "motorCaseImpulses":
+                this.motorCaseImpulses = val;
                 break;
             case "motorNames":
                 this.motorNames = val;
@@ -140,6 +161,7 @@ public abstract class _MotorImpulse extends BaseDataObject {
         super.writeState(out);
         out.writeObject(this.classification);
         out.writeObject(this.impulse);
+        out.writeObject(this.motorCaseImpulses);
         out.writeObject(this.motorNames);
         out.writeObject(this.motors);
     }
@@ -149,6 +171,7 @@ public abstract class _MotorImpulse extends BaseDataObject {
         super.readState(in);
         this.classification = (Integer)in.readObject();
         this.impulse = (String)in.readObject();
+        this.motorCaseImpulses = in.readObject();
         this.motorNames = in.readObject();
         this.motors = in.readObject();
     }
