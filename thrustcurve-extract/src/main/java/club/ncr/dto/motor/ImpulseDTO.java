@@ -1,4 +1,4 @@
-package org.ncr.dto.motor;
+package club.ncr.dto.motor;
 
 public enum ImpulseDTO {
 

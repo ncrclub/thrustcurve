@@ -2,7 +2,7 @@ package club.ncr.dto;
 
 import club.ncr.Tuple;
 import club.ncr.cayenne.*;
-import org.ncr.dto.motor.ImpulseDTO;
+import club.ncr.dto.motor.ImpulseDTO;
 
 import java.util.Set;
 import java.util.stream.Collectors;
