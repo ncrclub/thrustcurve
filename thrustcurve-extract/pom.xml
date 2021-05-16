@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.ncrocketry</groupId>
             <artifactId>thrustcurve-client</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+	    <version>${project.version}</version>
         </dependency>
     </dependencies>
 
