@@ -1,6 +1,7 @@
 package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._MotorName;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.Ordering;
@@ -23,13 +24,15 @@ public class MotorName extends _MotorName implements Comparable {
 		
 	}
 	
-	public static List<MotorName> get(DataContext ctx, Expression filter) {
+	public static List<MotorName> get(ObjectContext ctx, Expression filter) {
 	
 		SelectQuery query= new SelectQuery(MotorName.class);
 		if (filter != null) {
 			query.andQualifier(filter);
 		}
-		query.addOrdering(new Ordering(MotorName.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
+		query
+			.addOrderings(MotorImpulse.IMPULSE.asc()
+			.then(MotorName.NAME.ascInsensitive()));
 		return (List<MotorName>)ctx.performQuery(query);
 		
 		
@@ -49,16 +52,18 @@ public class MotorName extends _MotorName implements Comparable {
 			Motor motor= (Motor) o;
 			return compareTo(motor.getCommonName());
 		} else if (o instanceof MotorName) {
-			MotorName name= (MotorName) o;
+			MotorName other= (MotorName) o;
 			
-			int impulse= getImpulse().compareTo(name.getImpulse());
+			int diff= getImpulse().compareTo(other.getImpulse());
 			
-			if (impulse == 0) {
-				int eq= getName().compareTo(name.getName());
-				
-				return eq;
+			if (diff == 0) {
+			    try {
+					return Integer.parseInt(getName().substring(1)) - Integer.parseInt(other.getName().substring(1));
+				} catch (NumberFormatException nfx) {
+			    	return getName().compareTo(other.getName());
+				}
 			} else {
-				return impulse;
+				return diff;
 			}
 			
 		}

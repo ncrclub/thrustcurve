@@ -11,7 +11,7 @@
 			<driver value="com.mysql.jdbc.Driver"/>
 			<url value="jdbc:mysql://hostname/databse"/>
 			<connectionPool min="1" max="5"/>
-			<login password="2CAw" encoderClass="DbCrypto" encoderKey="Rt6h76"/>
+			<login password="iETR" encoderClass="DbCrypto" encoderKey="Rt6h76"/>
 		</data-source>
 	</node>
 </domain>

@@ -179,9 +179,8 @@
 		<db-attribute name="weight" type="DOUBLE"/>
 	</db-entity>
 	<db-entity name="motor_case">
-		<db-attribute name="diameter_id" type="INTEGER"/>
+		<db-attribute name="diameter_id" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
-		<db-attribute name="manufacturer_id" type="INTEGER"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
 	</db-entity>
 	<db-entity name="motor_case_impulse">
@@ -471,9 +470,6 @@
 	<db-relationship name="MotorDiameter" source="motor_case" target="motor_diameter">
 		<db-attribute-pair source="diameter_id" target="ID"/>
 	</db-relationship>
-	<db-relationship name="MotorManufacturer" source="motor_case" target="motor_mfg">
-		<db-attribute-pair source="manufacturer_id" target="ID"/>
-	</db-relationship>
 	<db-relationship name="motorCaseImpulses" source="motor_case" target="motor_case_impulse" toMany="true">
 		<db-attribute-pair source="id" target="case_id"/>
 	</db-relationship>
@@ -513,9 +509,6 @@
 	<db-relationship name="Motors" source="motor_mfg" target="motor" toMany="true">
 		<db-attribute-pair source="ID" target="manufacturer_id"/>
 	</db-relationship>
-	<db-relationship name="MotorCases" source="motor_mfg" target="motor_case" toMany="true">
-		<db-attribute-pair source="ID" target="manufacturer_id"/>
-	</db-relationship>
 	<db-relationship name="Impulse" source="motor_name" target="motor_impulse">
 		<db-attribute-pair source="ImpulseID" target="ID"/>
 	</db-relationship>
@@ -544,10 +537,9 @@
 	<obj-relationship name="manufacturer" source="Motor" target="MotorMfg" deleteRule="Nullify" db-relationship-path="Manufacturer"/>
 	<obj-relationship name="propellant" source="Motor" target="MotorPropellant" deleteRule="Nullify" db-relationship-path="Propellant"/>
 	<obj-relationship name="type" source="Motor" target="MotorType" deleteRule="Nullify" db-relationship-path="Type"/>
-	<obj-relationship name="motorDiameter" source="MotorCase" target="MotorDiameter" deleteRule="Nullify" db-relationship-path="MotorDiameter"/>
-	<obj-relationship name="motorManufacturer" source="MotorCase" target="MotorMfg" deleteRule="Nullify" db-relationship-path="MotorManufacturer"/>
-	<obj-relationship name="motors" source="MotorCase" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
 	<obj-relationship name="motorCaseImpulses" source="MotorCase" target="MotorCaseImpulse" deleteRule="Deny" db-relationship-path="motorCaseImpulses"/>
+	<obj-relationship name="motorDiameter" source="MotorCase" target="MotorDiameter" deleteRule="Nullify" db-relationship-path="MotorDiameter"/>
+	<obj-relationship name="motors" source="MotorCase" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
 	<obj-relationship name="motorCase" source="MotorCaseImpulse" target="MotorCase" deleteRule="Deny" db-relationship-path="MotorCase"/>
 	<obj-relationship name="motorImpulse" source="MotorCaseImpulse" target="MotorImpulse" deleteRule="Deny" db-relationship-path="MotorImpulse"/>
 	<obj-relationship name="motors" source="MotorCertOrg" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
@@ -559,7 +551,6 @@
 	<obj-relationship name="motorCaseImpulses" source="MotorImpulse" target="MotorCaseImpulse" deleteRule="Deny" db-relationship-path="MotorCaseImpulses"/>
 	<obj-relationship name="motorNames" source="MotorImpulse" target="MotorName" deleteRule="Deny" db-relationship-path="MotorNames"/>
 	<obj-relationship name="motors" source="MotorImpulse" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
-	<obj-relationship name="motorCases" source="MotorMfg" target="MotorCase" deleteRule="Deny" db-relationship-path="MotorCases"/>
 	<obj-relationship name="motors" source="MotorMfg" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
 	<obj-relationship name="impulse" source="MotorName" target="MotorImpulse" deleteRule="Nullify" db-relationship-path="Impulse"/>
 	<obj-relationship name="motors" source="MotorName" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>

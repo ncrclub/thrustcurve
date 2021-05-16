@@ -77,6 +77,11 @@ public class MotorImpulse extends _MotorImpulse implements Comparable<MotorImpul
 		return getImpulse().equalsIgnoreCase(impulse.getImpulse());
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(getImpulse());
+	}
+
 	public int compareTo(MotorImpulse i) {
 		if (i == null) { return 1; }
 		
@@ -126,10 +131,19 @@ public class MotorImpulse extends _MotorImpulse implements Comparable<MotorImpul
 	}
 	public List<MotorCase> getMotorCases(float diameter) {
 		return super.getMotorCaseImpulses().stream()
-				.filter(c -> c.getMotorCase().getMotorDiameter().getDiameter() == diameter)
 				.map(c -> c.getMotorCase())
+				.filter(c -> c.getMotorDiameter().getDiameter() == diameter)
 				.sorted(Comparator.comparing(a -> a.getName()))
 				.collect(Collectors.toList());
 	}
 
+
+	@Override
+	public List<MotorName> getMotorNames() {
+		// MotorName.get(this.getObjectContext(), MotorImpulse.IMPULSE.eq(getImpulse()));
+		List<MotorName> names = new ArrayList<>();
+		names.addAll(super.getMotorNames());
+		Collections.sort(names, MotorName::compareTo);
+		return names;
+	}
 }

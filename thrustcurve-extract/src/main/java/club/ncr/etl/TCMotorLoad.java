@@ -47,6 +47,11 @@ public class TCMotorLoad {
 				.maxResults(20);
 
 		SearchResults results= update(criteria, out);
+
+		if (results == null) {
+			LOG.error("Data Query Returned null.");
+
+		}
 			
 		if (results.size() == 0) {
 

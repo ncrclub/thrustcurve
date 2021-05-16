@@ -2,9 +2,7 @@ package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._Motor;
 import club.ncr.dto.MotorDTO;
-import club.ncr.dto.MotorDataDTO;
 import club.ncr.util.CayenneKit;
-import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -55,33 +53,26 @@ public class Motor extends _Motor {
 	}
 
 
-	public static Motor createNew(String externalId, MotorMfg manufacturer, MotorName name, MotorType type, MotorImpulse impulse, MotorDiameter diameter, MotorPropellant propellant, MotorCertOrg certOrg) {
-
-		DataContext ctx= (DataContext)BaseContext.getThreadObjectContext();
+	public static Motor createNew(DataContext ctx, String externalId, MotorMfg manufacturer, MotorName name, MotorType type, MotorImpulse impulse, MotorDiameter diameter, MotorCase motorCase, MotorPropellant propellant, MotorCertOrg certOrg) {
 
 		Motor m= new Motor();
-		MotorData data= new MotorData();
-		
+
 		ctx.registerNewObject(m);
-		// ctx.registerNewObject(data);
-		// data.setMotor(m);
-		// m.addToData(data);
-		// data.setDataSource(source);
-		
+
+		m.setCreatedDate(new Date());
 		m.setLastUpdated(new Date());
-		
 		m.setExternalId(externalId);
 		m.setPropellant(propellant);
 		m.setManufacturer(manufacturer);
 		m.setImpulse(impulse);
 		m.setDiameter(diameter);
+		m.setCase(motorCase);
 		m.setCommonName(name);
 		m.setCertificationOrganization(certOrg);
-
 		m.setType(type);
-		
-		
+
 		ctx.commitChanges();
+
 		return m;
 	}
 
@@ -120,4 +111,66 @@ public class Motor extends _Motor {
 		return new MotorDTO(this, withData);
 	}
 
+	public void update(
+			Double burnTime,
+			Double grossWeight,
+			String brandName,
+			Double weight,
+			Double averageThrust,
+			Double maxThrust,
+			Double totalImpulse,
+			String designation,
+			Double length
+	) {
+		boolean updated = false;
+
+		if (burnTime != null && getBurnTime() != burnTime) {
+			setBurnTime(burnTime);
+			updated = true;
+		}
+
+		if (grossWeight != null && getGrossWeight() != grossWeight) {
+			setGrossWeight(grossWeight);
+			updated = true;
+		}
+
+		if (brandName != null && !brandName.equals(getBrandName())) {
+			setBrandName(brandName);
+			updated = true;
+		}
+
+		if (weight != null && getWeight() != weight) {
+			setWeight(weight);
+			updated = true;
+		}
+
+		if (averageThrust != null && getThrustAvg() != averageThrust) {
+			setThrustAvg(averageThrust);
+			updated = true;
+		}
+
+		if (maxThrust != null && getThrustMax() != maxThrust) {
+			setThrustMax(maxThrust);
+			updated = true;
+		}
+
+		if (totalImpulse != null && getTotalImpulseNs() != totalImpulse) {
+			setTotalImpulseNs(totalImpulse);
+			updated = true;
+		}
+
+		if (designation != null && !designation.equals(getDesignation())) {
+			setDesignation(designation);
+			updated = true;
+		}
+
+		if (length != null && getLength() != length) {
+			setLength(length);
+			updated = true;
+		}
+
+		if (updated) {
+			setLastUpdated(new Date());
+		}
+	}
 }

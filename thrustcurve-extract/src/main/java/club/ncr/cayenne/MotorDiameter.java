@@ -62,11 +62,6 @@ public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDia
 		return cases;
 	}
 
-	public List<MotorCase> getMotorCases(MotorMfg manufacturer) {
-		return (MotorCase.get(getObjectContext(), MotorCase.MOTOR_DIAMETER.eq(this)
-				.andExp(MotorCase.MOTOR_MANUFACTURER.eq(manufacturer).andExp(MotorCase.MOTOR_DIAMETER.isNull()))));
-	}
-
 	public Collection<Motor> getMotors(List<MotorMfg> motorMfgs, MotorImpulse impulse) {
 		SelectQuery query = Motor.select(Motor.DIAMETER.eq(this),  new Orderings().then(Motor.TOTAL_IMPULSE_NS.asc()).then(Motor.COMMON_NAME.ascInsensitive()));
 
@@ -81,7 +76,13 @@ public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDia
 
 	@Override
 	public String toString() {
-		return getDiameter() + "mm";
+		Float d = getDiameter();
+		int i = d.intValue();
+		if (d != i) {
+			return d + "mm";
+		} else {
+			return i + "mm";
+		}
 	}
 
 	@Override

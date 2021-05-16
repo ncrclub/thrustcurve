@@ -15,18 +15,20 @@ import java.util.List;
 public class MotorCase extends _MotorCase implements Comparable<MotorCase> {
 
 	
-	public static MotorCase createNew(String name, MotorMfg mfg, MotorDiameter diameter, DataContext ctx) {
+	public static MotorCase createNew(String name, MotorMfg mfg, MotorDiameter diameter, MotorImpulse impulse, DataContext ctx) {
 		MotorCase record= new MotorCase();
 		ctx.registerNewObject(record);
 		record.setName(name);
 
-        record.setMotorManufacturer(mfg);
 		record.setMotorDiameter(diameter);
+
+		MotorCaseImpulse mci = new MotorCaseImpulse();
+		mci.setMotorImpulse(impulse);
+		record.addToMotorCaseImpulses(mci);
 
 		ctx.commitChanges();
 		
 		return record;
-		
 	}
 
 	public static List<MotorCase> get(ObjectContext ctx, Expression filter) {
@@ -53,4 +55,9 @@ public class MotorCase extends _MotorCase implements Comparable<MotorCase> {
 		}
 	    return getName().compareTo(o.getName());
 	}
+
+	public String uuid() {
+		return getName() + "-"+ getMotorDiameter().toString();
+	}
+
 }
