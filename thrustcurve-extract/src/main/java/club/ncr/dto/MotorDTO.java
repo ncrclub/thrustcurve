@@ -90,7 +90,7 @@ public class MotorDTO implements Comparable<MotorDTO> {
         this.burnTime = motor.getBurnTime();
         this.diameter= Float.parseFloat(motor.getDiameter());
         this.cert_org = motor.getCertificationOrganization();
-        this.motor_case = new MotorCaseDTO(motor.getMotorCase(), this.diameter);
+        this.motor_case = new MotorCaseDTO(motor.getMotorCase(), this.diameter, this.manufacturer);
         this.propellant= new PropellantDTO(motor.getPropellant(), motor.getType());
         this.averageThrust = motor.getAverageThrust();
         this.maxThrust = motor.getMaxThrust();

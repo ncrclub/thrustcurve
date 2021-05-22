@@ -28,7 +28,7 @@ public abstract class _MotorCase extends BaseDataObject {
     public static final Property<Integer> ID = Property.create("id", Integer.class);
     public static final Property<String> NAME = Property.create("name", String.class);
     public static final Property<List<MotorCaseImpulse>> MOTOR_CASE_IMPULSES = Property.create("motorCaseImpulses", List.class);
-    public static final Property<MotorCaseMfg> MOTOR_CASE_MANUFACTURER = Property.create("motorCaseManufacturer", MotorCaseMfg.class);
+    public static final Property<List<MotorCaseMfg>> MOTOR_CASE_MANUFACTURER = Property.create("motorCaseManufacturer", List.class);
     public static final Property<MotorDiameter> MOTOR_DIAMETER = Property.create("motorDiameter", MotorDiameter.class);
     public static final Property<List<Motor>> MOTORS = Property.create("motors", List.class);
 
@@ -73,12 +73,17 @@ public abstract class _MotorCase extends BaseDataObject {
         return (List<MotorCaseImpulse>)readProperty("motorCaseImpulses");
     }
 
-    public void setMotorCaseManufacturer(MotorCaseMfg motorCaseManufacturer) {
-        setToOneTarget("motorCaseManufacturer", motorCaseManufacturer, true);
+    public void addToMotorCaseManufacturer(MotorCaseMfg obj) {
+        addToManyTarget("motorCaseManufacturer", obj, true);
     }
 
-    public MotorCaseMfg getMotorCaseManufacturer() {
-        return (MotorCaseMfg)readProperty("motorCaseManufacturer");
+    public void removeFromMotorCaseManufacturer(MotorCaseMfg obj) {
+        removeToManyTarget("motorCaseManufacturer", obj, true);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<MotorCaseMfg> getMotorCaseManufacturer() {
+        return (List<MotorCaseMfg>)readProperty("motorCaseManufacturer");
     }
 
     public void setMotorDiameter(MotorDiameter motorDiameter) {

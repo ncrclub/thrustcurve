@@ -482,7 +482,7 @@
 	<db-relationship name="motorCaseImpulses" source="motor_case" target="motor_case_impulse" toMany="true">
 		<db-attribute-pair source="id" target="case_id"/>
 	</db-relationship>
-	<db-relationship name="motorCaseManufacturer" source="motor_case" target="motor_case_mfg">
+	<db-relationship name="motorCaseManufacturer" source="motor_case" target="motor_case_mfg" toMany="true">
 		<db-attribute-pair source="id" target="case_id"/>
 	</db-relationship>
 	<db-relationship name="MotorCase" source="motor_case_impulse" target="motor_case">

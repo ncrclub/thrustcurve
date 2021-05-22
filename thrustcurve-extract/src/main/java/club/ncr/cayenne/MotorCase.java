@@ -48,11 +48,13 @@ public class MotorCase extends _MotorCase implements Comparable<MotorCase> {
 
 		MotorCaseImpulse mci = new MotorCaseImpulse();
 		mci.setMotorImpulse(impulse);
+		mci.setMotorCase(record);
 		record.addToMotorCaseImpulses(mci);
 
 		MotorCaseMfg mcm = new MotorCaseMfg();
 		mcm.setMotorManufacturer(mfg);
 		mcm.setMotorCase(record);
+		record.addToMotorCaseManufacturer(mcm);
 
 		ctx.commitChanges();
 		

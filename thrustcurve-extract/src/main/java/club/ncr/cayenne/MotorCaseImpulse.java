@@ -21,8 +21,12 @@ public class MotorCaseImpulse extends _MotorCaseImpulse {
             query.andQualifier(MotorCaseImpulse.MOTOR_IMPULSE.eq(MotorImpulse.get(ctx, impulse)));
         }
 
-        return ((List<MotorCaseImpulse>)ctx.performQuery(query)).stream()
+        List<MotorCaseImpulse> all = ((List<MotorCaseImpulse>) ctx.performQuery(query));
+
+        List<MotorCaseImpulse> filtered = all.stream()
                 .filter(mci -> diameter == null || mci.getMotorCase().getMotorDiameter().getDiameter() == diameter)
                 .collect(Collectors.toList());
+
+        return filtered;
     }
 }

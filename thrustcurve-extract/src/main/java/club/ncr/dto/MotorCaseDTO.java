@@ -3,7 +3,9 @@ package club.ncr.dto;
 import club.ncr.cayenne.*;
 import org.thrustcurve.api.data.TCMotorData;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 public class MotorCaseDTO implements Comparable<MotorCaseDTO> {
@@ -11,22 +13,25 @@ public class MotorCaseDTO implements Comparable<MotorCaseDTO> {
     public final Integer id;
     public final String name;
     public final Float diameter;
+    public final MotorManufacturerDTO mfg;
 
-    public MotorCaseDTO(MotorCase motorCase) {
+    public MotorCaseDTO(MotorCase motorCase, MotorManufacturerDTO mfg) {
         this.id = motorCase.getId();
         this.name = motorCase.getName();
         MotorDiameter diameter = motorCase.getMotorDiameter();
         this.diameter = diameter == null ? null : diameter.getDiameter();
+        this.mfg = mfg;
     }
 
     public MotorCaseDTO(Motor motor) {
-        this(motor.getCase());
+        this(motor.getCase(), new MotorManufacturerDTO(motor.getManufacturer()));
     }
 
-    public MotorCaseDTO(String name, float diameter) {
+    public MotorCaseDTO(String name, float diameter, MotorManufacturerDTO mfg) {
         this.id = null;
         this.name = name;
         this.diameter = diameter;
+        this.mfg = mfg;
     }
 
     @Override

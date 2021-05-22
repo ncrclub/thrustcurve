@@ -2,6 +2,7 @@ package club.ncr.motors;
 
 import club.ncr.cayenne.*;
 import club.ncr.dto.MotorCaseDTO;
+import club.ncr.dto.MotorManufacturerDTO;
 import club.ncr.dto.motor.ImpulseDTO;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
@@ -55,9 +56,14 @@ public class MotorDbCache {
 		asyncRefresh();
 	}
 
-	public MotorDbCache asyncRefresh() {
-		this.async = new Thread(() -> refresh());
-		this.async.start();
+	public synchronized MotorDbCache asyncRefresh() {
+		if (this.async == null) {
+			this.async = new Thread(() -> refresh());
+			this.async.start();
+		} else if (!this.async.isAlive()){
+			this.async = new Thread(() -> refresh());
+			this.async.start();
+		}
 		return this;
 	}
 
@@ -105,7 +111,10 @@ public class MotorDbCache {
 				for (Float diameter : i.getMotorDiameters()) {
 					diams.add(diameter);
 					for (MotorCase motorCase : i.getMotorCases(diameter)) {
-						cases.put(motorCase.uuid(), new MotorCaseDTO(motorCase));
+						for (MotorCaseMfg mcm : motorCase.getMotorCaseManufacturer()) {
+
+							cases.put(motorCase.uuid(), new MotorCaseDTO(motorCase, new MotorManufacturerDTO(mcm.getMotorManufacturer())));
+						}
 					}
 				}
 
@@ -292,15 +301,37 @@ public class MotorDbCache {
 	public Collection<MotorCaseDTO> getMotorCases() { return cases.values(); }
 	public List<MotorCaseDTO> getMotorCases(Float diameter, ImpulseDTO impulse) {
 		return MotorCaseImpulse.get(ctx, impulse, diameter)
-				.stream().map(c -> new MotorCaseDTO(c.getMotorCase()))
-				.collect(Collectors.toList());
+				.stream()
+				.flatMap(ci -> ci.getMotorCase().getMotorCaseManufacturer()
+						.stream()
+						.map(mcm -> new MotorCaseDTO(ci.getMotorCase(), new MotorManufacturerDTO(mcm.getMotorManufacturer())))
+				).collect(Collectors.toList());
 	}
 	public List<MotorCaseDTO> getMotorCases(Float diameter, ImpulseDTO impulse, String manufacturer) {
-		return MotorCaseImpulse.get(ctx, impulse, diameter)
-				.stream()
-				.filter(c -> c.getMotorCase().getMotorCaseManufacturer().getMotorManufacturer().getAbbreviation().equals(manufacturer))
-				.map(c -> new MotorCaseDTO(c.getMotorCase()))
-				.collect(Collectors.toList());
+		List<MotorCaseImpulse> all = MotorCaseImpulse.get(ctx, impulse, diameter);
+		List<MotorCaseDTO> filtered = new ArrayList<>();
+
+		for (MotorCaseImpulse mci : all) {
+			MotorCase motorCase = mci.getMotorCase();
+			List<MotorCaseMfg> caseMfgs = motorCase.getMotorCaseManufacturer();
+
+			if (caseMfgs != null && !caseMfgs.isEmpty()) {
+				for (MotorCaseMfg mcm : caseMfgs) {
+					if (manufacturer == null || "".equals(manufacturer)
+						|| manufacturer.equalsIgnoreCase(mcm.getMotorManufacturer().getAbbreviation())
+						|| manufacturer.equalsIgnoreCase(mcm.getMotorManufacturer().getName())
+						|| mcm.getMotorManufacturer().getAbbreviation().toLowerCase().contains(manufacturer.toLowerCase())
+					) {
+						filtered.add(new MotorCaseDTO(motorCase, new MotorManufacturerDTO(mcm.getMotorManufacturer())));
+					}
+				}
+			} else {
+			    LOG.warn("No manufacturer(s) for case id="+ motorCase.getId() +" name='"+ motorCase.getName() +"'");
+			}
+		}
+
+		return filtered;
+
 	}
 	public Collection<MotorCertOrg> getCertOrganizations() { return certOrgs.values(); }
 	public Collection<MotorDiameter> getDiameters() { return diameters.values(); }
