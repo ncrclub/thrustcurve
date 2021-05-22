@@ -45,7 +45,7 @@ public class Motor extends _Motor {
 	}
 	
 	public static HashMap<String, Motor> getMap(DataContext ctx, Expression filter) {
-		HashMap<String, Motor> map= new HashMap<String, Motor>();
+		HashMap<String, Motor> map= new HashMap<>();
 		for (Motor motor : get(ctx, filter)) {
 			map.put(motor.getManufacturer().getName() +"/"+ motor.getCommonName() +"/"+ motor.getDiameter().getDiameter() +"/"+ motor.getPropellant().getName(), motor);
 		}
@@ -53,12 +53,13 @@ public class Motor extends _Motor {
 	}
 
 
-	public static Motor createNew(DataContext ctx, String externalId, MotorMfg manufacturer, MotorName name, MotorType type, MotorImpulse impulse, MotorDiameter diameter, MotorCase motorCase, MotorPropellant propellant, MotorCertOrg certOrg) {
+	public static Motor createNew(DataContext ctx, String source, String externalId, MotorMfg manufacturer, MotorName name, MotorType type, MotorImpulse impulse, MotorDiameter diameter, MotorCase motorCase, MotorPropellant propellant, MotorCertOrg certOrg) {
 
 		Motor m= new Motor();
 
 		ctx.registerNewObject(m);
 
+		m.setSource(source);
 		m.setCreatedDate(new Date());
 		m.setLastUpdated(new Date());
 		m.setExternalId(externalId);

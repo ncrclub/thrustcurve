@@ -1,16 +1,8 @@
 package club.ncr.motors;
 
-import club.ncr.cayenne.Motor;
-import club.ncr.cayenne.MotorCase;
-import club.ncr.cayenne.MotorCertOrg;
-import club.ncr.cayenne.MotorData;
-import club.ncr.cayenne.MotorDataFormat;
-import club.ncr.cayenne.MotorDiameter;
-import club.ncr.cayenne.MotorImpulse;
-import club.ncr.cayenne.MotorMfg;
-import club.ncr.cayenne.MotorName;
-import club.ncr.cayenne.MotorPropellant;
-import club.ncr.cayenne.MotorType;
+import club.ncr.cayenne.*;
+import club.ncr.dto.MotorCaseDTO;
+import club.ncr.dto.motor.ImpulseDTO;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.exp.Expression;
@@ -23,95 +15,138 @@ import org.thrustcurve.api.search.SearchResults;
 
 import java.io.PrintStream;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class MotorDbCache {
 
-	private Map<String, MotorMfg> manufacturers= new HashMap<String, MotorMfg>();
-	private Map<String, MotorCertOrg> certOrgs= new HashMap<String, MotorCertOrg>();
-	private Map<Float, MotorDiameter> diameters= new HashMap<>();
-	private Map<String, MotorName> names= new TreeMap<>();
-	private Map<MotorImpulse, Set<MotorName>> orderedNamesByImpulse= new TreeMap<>();
-	private Map<String, MotorImpulse> impulses= new HashMap<String, MotorImpulse>();
-	private Map<String, MotorPropellant> propellants= new HashMap<String, MotorPropellant>();
-	private Map<String, MotorType> types= new HashMap<String, MotorType>();
-	private Map<String, MotorCase> cases= new HashMap<String, MotorCase>();
-	private Map<String, MotorDataFormat> formats= new HashMap<String, MotorDataFormat>();
-
-	private List<MotorDiameter> orderedDiameters= new LinkedList<>();
-	private List<MotorImpulse> orderedImpulses= new LinkedList<>();
-	private Set<MotorMfg> orderedManufacturers= new TreeSet<>();
+	private Map<String, MotorMfg> manufacturers= new TreeMap<>();
+	private Map<String, MotorCertOrg> certOrgs= new HashMap<>();
+	private Map<Float, MotorDiameter> diameters= new TreeMap<>();
+	private Map<String, MotorName> motorNames = new TreeMap<>();
+	private Map<ImpulseDTO, Set<Float>> diametersByImpulse= new TreeMap<>();
+	private Map<ImpulseDTO, Set<MotorName>> namesByImpulse = new TreeMap<>();
+	private Map<ImpulseDTO, MotorImpulse> impulses= new TreeMap<>();
+	private Map<String, MotorPropellant> propellants= new TreeMap<>();
+	private Map<String, MotorType> types= new TreeMap<>();
+	private Map<String, MotorCaseDTO> cases= new TreeMap<>();
+	private Map<String, MotorDataFormat> formats= new TreeMap<>();
 
 	private final DataContext ctx;
-	private boolean readOnly= false;
+	private boolean autoCreate = false;
 
 	private static ServerRuntime runtime;
 
 	private static final Logger LOG = LoggerFactory.getLogger(MotorDbCache.class);
 
+	private Thread async;
+	private long lastRefresh;
+	private final long MAX_AGE = 60 * 60 * 1000;
+
 	public MotorDbCache(String cayenneConfigFile) {
 
-	    if (this.runtime == null) {
-	        LOG.info("initializing config "+ cayenneConfigFile);
-            this.runtime = ServerRuntime.builder().addConfig(cayenneConfigFile).build();
-        }
-		this.ctx= (DataContext)runtime.newContext();
+		if (this.runtime == null) {
+			LOG.info("initializing config " + cayenneConfigFile);
+			this.runtime = ServerRuntime.builder().addConfig(cayenneConfigFile).build();
+		}
+		this.ctx = (DataContext) runtime.newContext();
+
+		asyncRefresh();
+	}
+
+	public MotorDbCache asyncRefresh() {
+		this.async = new Thread(() -> refresh());
+		this.async.start();
+		return this;
+	}
+
+	public void refresh() {
+		Map<String, MotorMfg> manufacturers= new TreeMap<>();
+		Map<String, MotorCertOrg> certOrgs= new HashMap<>();
+		Map<Float, MotorDiameter> diameters= new TreeMap<>();
+		Map<String, MotorName> motorNames = new TreeMap<>();
+		Map<ImpulseDTO, Set<Float>> diametersByImpulse= new TreeMap<>();
+		Map<ImpulseDTO, Set<MotorName>> namesByImpulse = new TreeMap<>();
+		Map<ImpulseDTO, MotorImpulse> impulses= new TreeMap<>();
+		Map<String, MotorPropellant> propellants= new TreeMap<>();
+		Map<String, MotorType> types= new TreeMap<>();
+		Map<String, MotorCaseDTO> cases= new TreeMap<>();
+		Map<String, MotorDataFormat> formats= new TreeMap<>();
+
 
 		// prime the impulses
-		for (char impulse= 'A'; impulse <= 'R'; impulse++) {
-			MotorImpulse.createNew(""+ impulse, ctx);
-		}
-
-
-		for (MotorDiameter diam : MotorDiameter.get(ctx, null)) {
-			diameters.put(diam.getDiameter(), diam);
-			if (diam.getDiameter() != null) {
-				orderedDiameters.add(diameters.get(diam.getDiameter()));
-			}
-		}
-
-		loadMotorCases(ctx);
-
-		for (MotorImpulse imp : MotorImpulse.get(ctx, null)) {
-			impulses.put(imp.getImpulse(), imp);
-			orderedImpulses.add(impulses.get(imp.getImpulse()));
-
-			for (Float diameter : imp.getMotorDiameters()) {
-				for (MotorCase motorCase : imp.getMotorCases(diameter)) {
-					cases.put(motorCase.uuid(), motorCase);
-				}
-			}
-
-			for (MotorName motorName : imp.getMotorNames()) {
-				Set<MotorName> names = orderedNamesByImpulse.getOrDefault(imp, new TreeSet<>());
-				if (names.isEmpty()) {
-					orderedNamesByImpulse.put(imp, names);
-				}
-				names.add(motorName);
-				this.names.put(motorName.getName(), motorName);
-			}
+		for (ImpulseDTO impulse : ImpulseDTO.values()) {
+			MotorImpulse i = MotorImpulse.getOrCreate(ctx, ""+ impulse);
+			impulses.put(impulse, i);
+			diametersByImpulse.put(impulse, new TreeSet<>());
 		}
 
 		for (MotorMfg mfg : MotorMfg.get(ctx, null)) {
 			manufacturers.put(mfg.getName(), mfg);
-			orderedManufacturers.add(mfg);
 		}
 
+		for (MotorDiameter diam : MotorDiameter.get(ctx, null)) {
+			diameters.put(diam.getDiameter(), diam);
+		}
+
+		for (MotorPropellant prop : MotorPropellant.get(ctx, null)) {
+			propellants.put(prop.getName(), prop);
+		}
 
 		for (MotorCertOrg org : MotorCertOrg.get(ctx, null)) { certOrgs.put(org.getName(), org); }
 		for (MotorType type : MotorType.get(ctx, null)) { types.put(type.getName(), type); }
 		for (MotorDataFormat format : MotorDataFormat.get(ctx, null)) { formats.put(format.getName(), format); }
 
-		orderedDiameters.sort((a, b) -> (int)(100 * (a.getDiameter() - b.getDiameter())));
-		orderedImpulses.sort((a, b) -> (a.getImpulse().compareTo(b.getImpulse())));
+		MotorImpulse.getAll(ctx).stream()
+			.forEach(i -> {
+				Set<Float> diams = diametersByImpulse.get(i.getDto());
 
-	}
+				for (Float diameter : i.getMotorDiameters()) {
+					diams.add(diameter);
+					for (MotorCase motorCase : i.getMotorCases(diameter)) {
+						cases.put(motorCase.uuid(), new MotorCaseDTO(motorCase));
+					}
+				}
 
-	private void loadMotorCases(DataContext ctx) {
+				for (MotorName motorName : i.getMotorNames()) {
+					Set<MotorName> names = namesByImpulse.getOrDefault(i.getDto(), new TreeSet<>());
+					if (names.isEmpty()) {
+						namesByImpulse.put(i.getDto(), names);
+					}
+					names.add(motorName);
+					motorNames.put(motorName.getName(), motorName);
+				}
+			}
+		);
+
+		this.manufacturers= manufacturers;
+		this.certOrgs= certOrgs;
+		this.diameters= diameters;
+		this.motorNames = motorNames;
+		this.diametersByImpulse= diametersByImpulse;
+		this.namesByImpulse = namesByImpulse;
+		this.impulses= impulses;
+		this.propellants= propellants;
+		this.types= types;
+		this.cases= cases;
+		this.formats= formats;
+		this.lastRefresh = System.currentTimeMillis();
+
 	}
 
 	public Motor getMotor(String externalId) {
 		return Motor.getByExternalId(externalId, ctx);
+	}
+
+	private void checkCache(boolean async) {
+		if (System.currentTimeMillis() - lastRefresh > MAX_AGE) {
+			if (async) {
+				asyncRefresh();
+			} else {
+				refresh();
+			}
+		}
 	}
 
 	public List<Motor> all() {
@@ -119,21 +154,22 @@ public class MotorDbCache {
 	}
 
 	public MotorMfg getManufacturer(String name, String abbv) {
+		checkCache(false);
 		MotorMfg record= manufacturers.get(name);
 		
-		if (record == null && !readOnly) {
+		if (record == null && autoCreate) {
 			record= MotorMfg.createNew(name, abbv, ctx);
 			manufacturers.put(name, record);
-			orderedManufacturers.add(record);
 		}
 		
 		return record;
 	}
 	
 	public MotorCertOrg getCertOrganization(String org) {
+		checkCache(false);
 		MotorCertOrg record= certOrgs.get(org);
 		
-		if (record == null && !readOnly) {
+		if (record == null && autoCreate) {
 			record= MotorCertOrg.createNew(org, ctx);
 			certOrgs.put(org, record);
 		}
@@ -142,9 +178,10 @@ public class MotorDbCache {
 	}
 
 	public MotorDiameter getDiameter(float diam) {
+		checkCache(false);
 		MotorDiameter record= diameters.get(diam);
 
-		if (record == null && !readOnly) {
+		if (record == null && autoCreate) {
 			record= MotorDiameter.createNew(diam, ctx);
 			diameters.put(diam, record);
 		}
@@ -153,36 +190,48 @@ public class MotorDbCache {
 	}
 
 	public MotorName getCommonName(String name, MotorImpulse impulse) {
-		MotorName record= names.get(name);
-		if (record == null && !readOnly) {
+		checkCache(false);
+		MotorName record= motorNames.get(name);
+		if (record == null && autoCreate) {
 			record= MotorName.createNew(name, impulse, ctx);
-			orderedNamesByImpulse.get(impulse).add(record);
-			names.put(name, record);
+			Set names = namesByImpulse.getOrDefault(impulse.getDto(), new TreeSet<>());
+			if (names.isEmpty()) {
+			    namesByImpulse.put(impulse.getDto(), names);
+			}
+			names.add(record);
+			motorNames.put(name, record);
 		}
 		return record;
 	}
 
+	public MotorImpulse getImpulse(ImpulseDTO impulse) {
+		checkCache(false);
+		return this.impulses.get(impulse);
+	}
+
 	public MotorImpulse getImpulse(String impulse) {
-		MotorImpulse record= impulses.get(impulse);
+		checkCache(false);
+		ImpulseDTO dto = ImpulseDTO.valueOf(impulse);
+		MotorImpulse record= impulses.get(ImpulseDTO.valueOf(impulse));
 		
-		if (record == null && !readOnly) {
-			record= MotorImpulse.createNew(impulse, ctx);
-			impulses.put(impulse, record);
+		if (record == null) {
+			if (autoCreate && record == null) {
+				record = MotorImpulse.getOrCreate(ctx, impulse);
+            } else {
+				record = MotorImpulse.get(ctx, impulse);
+			}
+			impulses.put(dto, record);
 		}
 		
 		return record;
 	}
 
 	public MotorPropellant getPropellant(String name) {
-	    if (propellants.isEmpty()) {
-			for (MotorPropellant prop : MotorPropellant.get(ctx, null)) {
-				propellants.put(prop.getName(), prop);
-			}
-		}
+		checkCache(false);
 
 		MotorPropellant record= propellants.get(name);
 		
-		if (record == null && !readOnly) {
+		if (record == null && autoCreate) {
 			String type = "AP";
 		    if ("black powder".equalsIgnoreCase(name)) {
 		    	type = "BP";
@@ -200,7 +249,7 @@ public class MotorDbCache {
 		
 		MotorType record= types.get(name);
 		
-		if (record == null && !readOnly) {
+		if (record == null && autoCreate) {
 			record= MotorType.createNew(name, ctx);
 			types.put(name, record);
 		}
@@ -208,23 +257,26 @@ public class MotorDbCache {
 		return record;
 	}
 
-	public MotorCase getMotorCase(String name, MotorMfg mfg, MotorDiameter diameter, MotorImpulse impulse) {
-		MotorCase record= cases.get(name +"-"+ mfg +"-"+ diameter +"-"+ impulse);
+	/*
+	public MotorCaseDTO getMotorCase(String name, MotorMfg mfg, MotorDiameter diameter, MotorImpulse impulse) {
+		MotorCaseDTO record= cases.get(name +"-"+ mfg +"-"+ diameter +"-"+ impulse);
 		
-		if (record == null && !readOnly) {
-			record= MotorCase.createNew(name, mfg, diameter, impulse, ctx);
+		if (record == null && autoCreate) {
+			MotorCase c = MotorCase.getOrCreate(name, mfg, diameter, impulse, ctx);
+			record = new MotorCaseDTO(c);
 			cases.put(name +"-"+ mfg +"-"+ diameter +"-"+ impulse, record);
 		}
 		
 		return record;
 	}
+	 */
 
 
 	public MotorDataFormat getMotorDataFormat(String name) {
 		
 		MotorDataFormat record= formats.get(name);
 		
-		if (record == null && !readOnly) {
+		if (record == null && autoCreate) {
 			record= MotorDataFormat.createNew(name, null, ctx);
 			formats.put(name, record);
 		}
@@ -234,15 +286,33 @@ public class MotorDbCache {
 
 	
 	public Collection<MotorMfg> getManufacturers() {
-	    return Collections.unmodifiableSet(orderedManufacturers);
+		checkCache(false);
+	    return manufacturers.values();
 	}
-	public Collection<MotorCase> getMotorCases() { return cases.values(); }
+	public Collection<MotorCaseDTO> getMotorCases() { return cases.values(); }
+	public List<MotorCaseDTO> getMotorCases(Float diameter, ImpulseDTO impulse) {
+		return MotorCaseImpulse.get(ctx, impulse, diameter)
+				.stream().map(c -> new MotorCaseDTO(c.getMotorCase()))
+				.collect(Collectors.toList());
+	}
+	public List<MotorCaseDTO> getMotorCases(Float diameter, ImpulseDTO impulse, String manufacturer) {
+		return MotorCaseImpulse.get(ctx, impulse, diameter)
+				.stream()
+				.filter(c -> c.getMotorCase().getMotorCaseManufacturer().getMotorManufacturer().getAbbreviation().equals(manufacturer))
+				.map(c -> new MotorCaseDTO(c.getMotorCase()))
+				.collect(Collectors.toList());
+	}
 	public Collection<MotorCertOrg> getCertOrganizations() { return certOrgs.values(); }
-	public Collection<MotorDiameter> getDiameters() { return orderedDiameters; }
+	public Collection<MotorDiameter> getDiameters() { return diameters.values(); }
+	public Set<Float> getDiameters(ImpulseDTO impulse) {
+		checkCache(false);
+		return diametersByImpulse.get(impulse);
+	}
 	public Collection<MotorDataFormat> getDataFormats() { return formats.values(); }
-	public Collection<MotorImpulse> getImpulses() { return orderedImpulses; }
-	public Collection<MotorName> getMotorNames() { return names.values(); }
-	public Collection<MotorName> getMotorNames(MotorImpulse impulse) { return orderedNamesByImpulse.get(impulse); }
+	public ImpulseDTO[] getImpulses() { return ImpulseDTO.values(); }
+	public Stream<ImpulseDTO> streamImpulses() { return Arrays.stream(ImpulseDTO.values()); }
+	public Collection<MotorName> getMotorNames() { return motorNames.values(); }
+	public Collection<MotorName> getMotorNames(ImpulseDTO impulse) { return namesByImpulse.get(impulse); }
 	public Collection<MotorPropellant> getPropellants() { return propellants.values(); }
 	public Collection<MotorType> getMotorTypes() { return types.values(); }
 
@@ -279,12 +349,12 @@ public class MotorDbCache {
      * @return
      */
 	public Motor research(double weight, double grossWeight, double burnTime, double totalImpulse, double thrustAvg, double thrustMax, double length, String imp, float diam) {
-		MotorImpulse impulse = getImpulse(imp);
+		MotorImpulse impulse = MotorImpulse.getOrCreate(ctx, imp);
 		MotorDiameter diameter = getDiameter(diam);
 		MotorMfg mfg= getManufacturer("Research", "Research");
 		MotorPropellant prop= getPropellant("Research");
 		MotorName name= getCommonName(impulse.getImpulse() +" Research", impulse);
-		MotorCase motorCase= getMotorCase("Research", null, diameter, impulse);
+		MotorCase motorCase = MotorCase.getOrCreate("Research", mfg, diameter, impulse, ctx);
 		MotorType type= getType("research");
 		MotorCertOrg certOrg= getCertOrganization(null);
 
@@ -298,13 +368,14 @@ public class MotorDbCache {
 
 		if (motor == null) {
 			motor = Motor.createNew(
-					ctx, "R" + impulse.getImpulse() +"_"+ diam
+					ctx, "research", "R" + impulse.getImpulse() +"_"+ diam
 					, mfg
 					, name
 					, type
 					, impulse
 					, diameter
-					, motorCase, prop
+					, motorCase
+					, prop
 					, certOrg
 			);
 
@@ -356,7 +427,7 @@ public class MotorDbCache {
 	 * @return
 	 */
 	public Motor custom(MotorName name, String brandName, MotorType type, MotorMfg mfg, MotorPropellant prop, MotorCase motorCase, double weight, double grossWeight, double burnTime, double totalImpulse, double thrustAvg, double thrustMax, double length, String imp, float diam) {
-		MotorImpulse impulse = getImpulse(imp);
+		MotorImpulse impulse = MotorImpulse.getOrCreate(ctx, imp);
 		MotorDiameter diameter = getDiameter(diam);
 		MotorCertOrg certOrg= getCertOrganization(null);
 
@@ -371,6 +442,7 @@ public class MotorDbCache {
 		if (motor == null) {
 			motor = Motor.createNew(
 					ctx,
+					"custom",
 					imp + thrustAvg +":"+ diam +"mm:"+ mfg.getAbbreviation().toLowerCase()
 					, mfg
 					, name
@@ -472,22 +544,35 @@ public class MotorDbCache {
 	
 	public void update(SearchResults results, PrintStream out) {
 
+		Map<String, MotorImpulse> impulses = MotorImpulse.getMap(ctx, null);
 
 		for (TCMotorRecord record : results) {
 			
 			MotorMfg mfg= getManufacturer(record.getManufacturer(), record.getManufacturerAbbv());
 			MotorCertOrg certOrg= getCertOrganization(record.getCertificationOrganization());
-			MotorPropellant prop= getPropellant(record.getPropellant());
-			MotorImpulse impulse= getImpulse(record.getImpulseClass());
-			MotorName name= getCommonName(record.getCommonName(), impulse);
+
+			MotorPropellant prop= null;
+			MotorCase motorCase= null;
+			MotorImpulse impulse= impulses.get(record.getImpulseClass());
 			MotorDiameter diameter= getDiameter(Float.parseFloat(record.getDiameter()));
-			MotorCase motorCase= getMotorCase(record.getMotorCase(), mfg, diameter, impulse);
+
+			// 2021-05-17 fix/prevent bad data
+			// caught what looks like a mixed-up field/value for propellant/motor_case
+			if ("".equals(record.getPropellant()) && MotorPropellant.exists(ctx, record.getMotorCase())) {
+				prop= getPropellant(record.getMotorCase());
+				motorCase= MotorCase.getOrCreate(record.getPropellant(), mfg, diameter, impulse, ctx);
+			} else {
+				prop= getPropellant(record.getPropellant());
+				motorCase= MotorCase.getOrCreate(record.getMotorCase(), mfg, diameter, impulse, ctx);
+			}
+
+			MotorName name= getCommonName(record.getCommonName(), impulse);
 			MotorType type= getType(record.getType());
 			
 			Motor motor= Motor.getByExternalId(record.getMotorId(), ctx);
 			
 			if (motor == null) {
-				motor= Motor.createNew(ctx, record.getMotorId(), mfg, name, type, impulse, diameter, motorCase, prop, certOrg);
+				motor= Motor.createNew(ctx, "thrustcurve", record.getMotorId(), mfg, name, type, impulse, diameter, motorCase, prop, certOrg);
 			}
 
 			motor.update(
@@ -521,8 +606,8 @@ public class MotorDbCache {
 		}
 	}
 	
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly= readOnly;
+	public void setAutoCreate(boolean autoCreate) {
+		this.autoCreate = autoCreate;
 	}
 
 	public List<MotorMfg> findManufacturer(String manufacturer) {
@@ -533,5 +618,11 @@ public class MotorDbCache {
 				.orExp(MotorMfg.ABBREVIATION.containsIgnoreCase(manufacturer));
 
 		return MotorMfg.get(ctx, filter);
+	}
+
+
+	public List<MotorCaseImpulse> getMotorCaseImpulses(ImpulseDTO impulse, Float diameter) {
+
+		return MotorCaseImpulse.get(ctx, impulse, diameter);
 	}
 }

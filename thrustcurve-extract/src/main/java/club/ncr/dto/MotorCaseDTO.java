@@ -8,10 +8,12 @@ import java.util.Objects;
 
 public class MotorCaseDTO implements Comparable<MotorCaseDTO> {
 
+    public final Integer id;
     public final String name;
     public final Float diameter;
 
     public MotorCaseDTO(MotorCase motorCase) {
+        this.id = motorCase.getId();
         this.name = motorCase.getName();
         MotorDiameter diameter = motorCase.getMotorDiameter();
         this.diameter = diameter == null ? null : diameter.getDiameter();
@@ -19,6 +21,12 @@ public class MotorCaseDTO implements Comparable<MotorCaseDTO> {
 
     public MotorCaseDTO(Motor motor) {
         this(motor.getCase());
+    }
+
+    public MotorCaseDTO(String name, float diameter) {
+        this.id = null;
+        this.name = name;
+        this.diameter = diameter;
     }
 
     @Override

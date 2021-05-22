@@ -172,6 +172,7 @@
 		<db-attribute name="manufacturer_id" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="name_id" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="propellant_id" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="source" type="VARCHAR" isMandatory="true" length="32"/>
 		<db-attribute name="thrust_avg" type="DOUBLE"/>
 		<db-attribute name="thrust_max" type="DOUBLE"/>
 		<db-attribute name="total_impulse_ns" type="DOUBLE"/>
@@ -187,6 +188,11 @@
 		<db-attribute name="case_id" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
 		<db-attribute name="impulse_id" type="INTEGER" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="motor_case_mfg">
+		<db-attribute name="case_id" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="manufacturer_id" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="motor_cert_org">
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="11"/>
@@ -370,15 +376,18 @@
 		<obj-attribute name="grossWeight" type="double" db-attribute-path="gross_weight"/>
 		<obj-attribute name="lastUpdated" type="java.util.Date" db-attribute-path="last_updated"/>
 		<obj-attribute name="length" type="double" db-attribute-path="length"/>
+		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
 		<obj-attribute name="thrustAvg" type="double" db-attribute-path="thrust_avg"/>
 		<obj-attribute name="thrustMax" type="double" db-attribute-path="thrust_max"/>
 		<obj-attribute name="totalImpulseNs" type="double" db-attribute-path="total_impulse_ns"/>
 		<obj-attribute name="weight" type="double" db-attribute-path="weight"/>
 	</obj-entity>
 	<obj-entity name="MotorCase" className="club.ncr.cayenne.MotorCase" dbEntityName="motor_case">
+		<obj-attribute name="id" type="int" db-attribute-path="id"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
 	<obj-entity name="MotorCaseImpulse" className="club.ncr.cayenne.MotorCaseImpulse" dbEntityName="motor_case_impulse"/>
+	<obj-entity name="MotorCaseMfg" className="club.ncr.cayenne.MotorCaseMfg" dbEntityName="motor_case_mfg"/>
 	<obj-entity name="MotorCertOrg" className="club.ncr.cayenne.MotorCertOrg" dbEntityName="motor_cert_org">
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
 	</obj-entity>
@@ -473,11 +482,20 @@
 	<db-relationship name="motorCaseImpulses" source="motor_case" target="motor_case_impulse" toMany="true">
 		<db-attribute-pair source="id" target="case_id"/>
 	</db-relationship>
+	<db-relationship name="motorCaseManufacturer" source="motor_case" target="motor_case_mfg">
+		<db-attribute-pair source="id" target="case_id"/>
+	</db-relationship>
 	<db-relationship name="MotorCase" source="motor_case_impulse" target="motor_case">
 		<db-attribute-pair source="case_id" target="id"/>
 	</db-relationship>
 	<db-relationship name="MotorImpulse" source="motor_case_impulse" target="motor_impulse">
 		<db-attribute-pair source="impulse_id" target="ID"/>
+	</db-relationship>
+	<db-relationship name="MotorCase" source="motor_case_mfg" target="motor_case">
+		<db-attribute-pair source="case_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="MotorManufacturer" source="motor_case_mfg" target="motor_mfg">
+		<db-attribute-pair source="manufacturer_id" target="ID"/>
 	</db-relationship>
 	<db-relationship name="Motors" source="motor_cert_org" target="motor" toMany="true">
 		<db-attribute-pair source="ID" target="cert_org_id"/>
@@ -509,6 +527,9 @@
 	<db-relationship name="Motors" source="motor_mfg" target="motor" toMany="true">
 		<db-attribute-pair source="ID" target="manufacturer_id"/>
 	</db-relationship>
+	<db-relationship name="motorCases" source="motor_mfg" target="motor_case_mfg" toMany="true">
+		<db-attribute-pair source="ID" target="manufacturer_id"/>
+	</db-relationship>
 	<db-relationship name="Impulse" source="motor_name" target="motor_impulse">
 		<db-attribute-pair source="ImpulseID" target="ID"/>
 	</db-relationship>
@@ -538,10 +559,13 @@
 	<obj-relationship name="propellant" source="Motor" target="MotorPropellant" deleteRule="Nullify" db-relationship-path="Propellant"/>
 	<obj-relationship name="type" source="Motor" target="MotorType" deleteRule="Nullify" db-relationship-path="Type"/>
 	<obj-relationship name="motorCaseImpulses" source="MotorCase" target="MotorCaseImpulse" deleteRule="Deny" db-relationship-path="motorCaseImpulses"/>
+	<obj-relationship name="motorCaseManufacturer" source="MotorCase" target="MotorCaseMfg" deleteRule="Deny" db-relationship-path="motorCaseManufacturer"/>
 	<obj-relationship name="motorDiameter" source="MotorCase" target="MotorDiameter" deleteRule="Nullify" db-relationship-path="MotorDiameter"/>
 	<obj-relationship name="motors" source="MotorCase" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
 	<obj-relationship name="motorCase" source="MotorCaseImpulse" target="MotorCase" deleteRule="Deny" db-relationship-path="MotorCase"/>
 	<obj-relationship name="motorImpulse" source="MotorCaseImpulse" target="MotorImpulse" deleteRule="Deny" db-relationship-path="MotorImpulse"/>
+	<obj-relationship name="motorCase" source="MotorCaseMfg" target="MotorCase" deleteRule="Nullify" db-relationship-path="MotorCase"/>
+	<obj-relationship name="motorManufacturer" source="MotorCaseMfg" target="MotorMfg" deleteRule="Nullify" db-relationship-path="MotorManufacturer"/>
 	<obj-relationship name="motors" source="MotorCertOrg" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
 	<obj-relationship name="format" source="MotorData" target="MotorDataFormat" deleteRule="Nullify" db-relationship-path="Format"/>
 	<obj-relationship name="motor" source="MotorData" target="Motor" deleteRule="Nullify" db-relationship-path="Motor"/>
@@ -551,6 +575,7 @@
 	<obj-relationship name="motorCaseImpulses" source="MotorImpulse" target="MotorCaseImpulse" deleteRule="Deny" db-relationship-path="MotorCaseImpulses"/>
 	<obj-relationship name="motorNames" source="MotorImpulse" target="MotorName" deleteRule="Deny" db-relationship-path="MotorNames"/>
 	<obj-relationship name="motors" source="MotorImpulse" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
+	<obj-relationship name="motorCases" source="MotorMfg" target="MotorCaseMfg" deleteRule="Deny" db-relationship-path="motorCases"/>
 	<obj-relationship name="motors" source="MotorMfg" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>
 	<obj-relationship name="impulse" source="MotorName" target="MotorImpulse" deleteRule="Nullify" db-relationship-path="Impulse"/>
 	<obj-relationship name="motors" source="MotorName" target="Motor" deleteRule="Deny" db-relationship-path="Motors"/>

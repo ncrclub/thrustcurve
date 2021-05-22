@@ -1,5 +1,9 @@
 package club.ncr.dto.motor;
 
+import club.ncr.cayenne.MotorCase;
+import club.ncr.cayenne.MotorDiameter;
+import club.ncr.cayenne.MotorImpulse;
+
 public enum ImpulseDTO {
 
     //quarter_A("1/4A", 2.5/4),
@@ -51,6 +55,16 @@ public enum ImpulseDTO {
             }
         }
         return Z;
+    }
+
+    public static ImpulseDTO valueOf(MotorImpulse impulse) {
+        if (impulse == null) { return null; }
+        return valueOf(impulse.getImpulse());
+    }
+
+    @Override
+    public String toString() {
+        return impulse;
     }
 
 }

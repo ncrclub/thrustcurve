@@ -40,6 +40,7 @@ public abstract class _Motor extends BaseDataObject {
     public static final Property<Double> GROSS_WEIGHT = Property.create("grossWeight", Double.class);
     public static final Property<Date> LAST_UPDATED = Property.create("lastUpdated", Date.class);
     public static final Property<Double> LENGTH = Property.create("length", Double.class);
+    public static final Property<String> SOURCE = Property.create("source", String.class);
     public static final Property<Double> THRUST_AVG = Property.create("thrustAvg", Double.class);
     public static final Property<Double> THRUST_MAX = Property.create("thrustMax", Double.class);
     public static final Property<Double> TOTAL_IMPULSE_NS = Property.create("totalImpulseNs", Double.class);
@@ -63,6 +64,7 @@ public abstract class _Motor extends BaseDataObject {
     protected Double grossWeight;
     protected Date lastUpdated;
     protected Double length;
+    protected String source;
     protected Double thrustAvg;
     protected Double thrustMax;
     protected Double totalImpulseNs;
@@ -166,6 +168,16 @@ public abstract class _Motor extends BaseDataObject {
             return 0;
         }
         return this.length;
+    }
+
+    public void setSource(String source) {
+        beforePropertyWrite("source", this.source, source);
+        this.source = source;
+    }
+
+    public String getSource() {
+        beforePropertyRead("source");
+        return this.source;
     }
 
     public void setThrustAvg(double thrustAvg) {
@@ -333,6 +345,8 @@ public abstract class _Motor extends BaseDataObject {
                 return this.lastUpdated;
             case "length":
                 return this.length;
+            case "source":
+                return this.source;
             case "thrustAvg":
                 return this.thrustAvg;
             case "thrustMax":
@@ -396,6 +410,9 @@ public abstract class _Motor extends BaseDataObject {
                 break;
             case "length":
                 this.length = (Double)val;
+                break;
+            case "source":
+                this.source = (String)val;
                 break;
             case "thrustAvg":
                 this.thrustAvg = (Double)val;
@@ -463,6 +480,7 @@ public abstract class _Motor extends BaseDataObject {
         out.writeObject(this.grossWeight);
         out.writeObject(this.lastUpdated);
         out.writeObject(this.length);
+        out.writeObject(this.source);
         out.writeObject(this.thrustAvg);
         out.writeObject(this.thrustMax);
         out.writeObject(this.totalImpulseNs);
@@ -490,6 +508,7 @@ public abstract class _Motor extends BaseDataObject {
         this.grossWeight = (Double)in.readObject();
         this.lastUpdated = (Date)in.readObject();
         this.length = (Double)in.readObject();
+        this.source = (String)in.readObject();
         this.thrustAvg = (Double)in.readObject();
         this.thrustMax = (Double)in.readObject();
         this.totalImpulseNs = (Double)in.readObject();

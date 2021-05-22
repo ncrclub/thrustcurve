@@ -10,6 +10,7 @@ import org.apache.cayenne.exp.Property;
 
 import club.ncr.cayenne.Motor;
 import club.ncr.cayenne.MotorCaseImpulse;
+import club.ncr.cayenne.MotorCaseMfg;
 import club.ncr.cayenne.MotorDiameter;
 
 /**
@@ -24,16 +25,30 @@ public abstract class _MotorCase extends BaseDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 
+    public static final Property<Integer> ID = Property.create("id", Integer.class);
     public static final Property<String> NAME = Property.create("name", String.class);
     public static final Property<List<MotorCaseImpulse>> MOTOR_CASE_IMPULSES = Property.create("motorCaseImpulses", List.class);
+    public static final Property<MotorCaseMfg> MOTOR_CASE_MANUFACTURER = Property.create("motorCaseManufacturer", MotorCaseMfg.class);
     public static final Property<MotorDiameter> MOTOR_DIAMETER = Property.create("motorDiameter", MotorDiameter.class);
     public static final Property<List<Motor>> MOTORS = Property.create("motors", List.class);
 
+    protected int id;
     protected String name;
 
     protected Object motorCaseImpulses;
+    protected Object motorCaseManufacturer;
     protected Object motorDiameter;
     protected Object motors;
+
+    public void setId(int id) {
+        beforePropertyWrite("id", this.id, id);
+        this.id = id;
+    }
+
+    public int getId() {
+        beforePropertyRead("id");
+        return this.id;
+    }
 
     public void setName(String name) {
         beforePropertyWrite("name", this.name, name);
@@ -56,6 +71,14 @@ public abstract class _MotorCase extends BaseDataObject {
     @SuppressWarnings("unchecked")
     public List<MotorCaseImpulse> getMotorCaseImpulses() {
         return (List<MotorCaseImpulse>)readProperty("motorCaseImpulses");
+    }
+
+    public void setMotorCaseManufacturer(MotorCaseMfg motorCaseManufacturer) {
+        setToOneTarget("motorCaseManufacturer", motorCaseManufacturer, true);
+    }
+
+    public MotorCaseMfg getMotorCaseManufacturer() {
+        return (MotorCaseMfg)readProperty("motorCaseManufacturer");
     }
 
     public void setMotorDiameter(MotorDiameter motorDiameter) {
@@ -86,10 +109,14 @@ public abstract class _MotorCase extends BaseDataObject {
         }
 
         switch(propName) {
+            case "id":
+                return this.id;
             case "name":
                 return this.name;
             case "motorCaseImpulses":
                 return this.motorCaseImpulses;
+            case "motorCaseManufacturer":
+                return this.motorCaseManufacturer;
             case "motorDiameter":
                 return this.motorDiameter;
             case "motors":
@@ -106,11 +133,17 @@ public abstract class _MotorCase extends BaseDataObject {
         }
 
         switch (propName) {
+            case "id":
+                this.id = val == null ? 0 : (int)val;
+                break;
             case "name":
                 this.name = (String)val;
                 break;
             case "motorCaseImpulses":
                 this.motorCaseImpulses = val;
+                break;
+            case "motorCaseManufacturer":
+                this.motorCaseManufacturer = val;
                 break;
             case "motorDiameter":
                 this.motorDiameter = val;
@@ -134,8 +167,10 @@ public abstract class _MotorCase extends BaseDataObject {
     @Override
     protected void writeState(ObjectOutputStream out) throws IOException {
         super.writeState(out);
+        out.writeInt(this.id);
         out.writeObject(this.name);
         out.writeObject(this.motorCaseImpulses);
+        out.writeObject(this.motorCaseManufacturer);
         out.writeObject(this.motorDiameter);
         out.writeObject(this.motors);
     }
@@ -143,8 +178,10 @@ public abstract class _MotorCase extends BaseDataObject {
     @Override
     protected void readState(ObjectInputStream in) throws IOException, ClassNotFoundException {
         super.readState(in);
+        this.id = in.readInt();
         this.name = (String)in.readObject();
         this.motorCaseImpulses = in.readObject();
+        this.motorCaseManufacturer = in.readObject();
         this.motorDiameter = in.readObject();
         this.motors = in.readObject();
     }

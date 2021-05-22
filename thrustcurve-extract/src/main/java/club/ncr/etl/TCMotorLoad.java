@@ -2,6 +2,7 @@ package club.ncr.etl;
 
 import club.ncr.cayenne.MotorDiameter;
 import club.ncr.cayenne.MotorImpulse;
+import club.ncr.dto.motor.ImpulseDTO;
 import club.ncr.motors.MotorDbCache;
 import club.ncr.cayenne.MotorMfg;
 import org.slf4j.Logger;
@@ -33,14 +34,14 @@ public class TCMotorLoad {
 		try {
 		
 		cache= new MotorDbCache("cayenne-ncrclub.xml");
-		
+		cache.setAutoCreate(true);
+
 		MotorImpulse imp = cache.getImpulse(impulse);
 
 		if (imp == null) {
 			LOG.error("No Motor Impulses.");
 			return;
 		}
-
 
 		SearchCriteria criteria= new SearchCriteria()
 				.impulseClass(imp.getImpulse())
@@ -50,13 +51,10 @@ public class TCMotorLoad {
 
 		if (results == null) {
 			LOG.error("Data Query Returned null.");
-
-		}
-			
-		if (results.size() == 0) {
-
-		} if (results.size() < 20) {
-			LOG.info("Updated "+ results.size() +" motor records. ["+ imp.getImpulse() +"]");
+		} else if (results.size() == 0) {
+			LOG.info("No results.");
+		} else if (results.size() < 20) {
+			LOG.info("Updated "+ results.size() +" motor records. ["+ imp +"]");
 		} else if (results.size() >= 20) {
 
 			Collection<MotorDiameter> diameters = cache.getDiameters();
@@ -71,7 +69,7 @@ public class TCMotorLoad {
 
 				} else if (results.size() > 0 && results.size() < 49) {
 
-					LOG.info("Updated "+ results.size() +" motor records. ["+ imp.getImpulse() +","+ diam.getDiameter() +"mm]");
+					LOG.info("Updated "+ results.size() +" motor records. ["+ imp +","+ diam.getDiameter() +"mm]");
 
 				} else if (results.size() >= 49) {
 
@@ -86,13 +84,13 @@ public class TCMotorLoad {
 						results= update(criteria, out);
 
 						if (results == null) {
-							LOG.info("null results for "+ mfg.getName() +" ["+ imp.getImpulse() +","+ diam.getDiameter() +"mm]");
+							LOG.info("null results for "+ mfg.getName() +" ["+ imp +","+ diam.getDiameter() +"mm]");
 						} else if (results.size() > 0) {
-							LOG.info("Updated "+ results.size() +" motor records. "+ mfg.getName() +" ["+ imp.getImpulse() +","+ diam.getDiameter() +"mm]");
+							LOG.info("Updated "+ results.size() +" motor records. "+ mfg.getName() +" ["+ imp +","+ diam.getDiameter() +"mm]");
 						}
 					}
 				} else {
-					LOG.info("No motors found to update for "+ imp.getImpulse() +","+ diam.getDiameter() +"mm");
+					LOG.info("No motors found to update for "+ imp +","+ diam.getDiameter() +"mm");
 				}
 						
 			}
@@ -109,20 +107,20 @@ public class TCMotorLoad {
 			
 	}
 
-	protected MotorImpulse getNextImpulse(MotorImpulse currentImpulse) {
-		List<MotorImpulse> impulseArray= cache.getImpulses().stream().sorted().collect(Collectors.toList());
+	protected ImpulseDTO getNextImpulse(ImpulseDTO currentImpulse) {
+		ImpulseDTO[] impulseArray= cache.getImpulses();
 
-		if (currentImpulse == null && impulseArray.size() > 0) {
-			return impulseArray.get(0);
+		if (currentImpulse == null && impulseArray.length > 0) {
+			return impulseArray[0];
 		} else {
 			
-			for (int i= 0; i < impulseArray.size(); i++) {
-				MotorImpulse impulse= impulseArray.get(i);
+			for (int i= 0; i < impulseArray.length; i++) {
+				ImpulseDTO impulse= impulseArray[i];
 				if (impulse.equals(currentImpulse)) {
-					if (i == impulseArray.size() - 1) {
+					if (i == impulseArray.length - 1) {
 						return null;
 					} else {
-						return impulseArray.get(i+1);
+						return impulseArray[i+1];
 					}
 				}
 			}
@@ -144,7 +142,7 @@ public class TCMotorLoad {
 					LOG.error("No results found for search "+ criteria);
 					return null;
 				}
-				
+
 				cache.update(searchResults, out);
 				
 				return searchResults;

@@ -1,6 +1,7 @@
 package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._MotorMfg;
+import club.ncr.dto.motor.ImpulseDTO;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
@@ -12,6 +13,7 @@ import org.thrustcurve.api.json.JsonObject;
 import org.thrustcurve.api.json.JsonValue;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static club.ncr.util.CayenneKit.select;
 
@@ -77,10 +79,10 @@ public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 		return getAbbreviation() == null ? getName() : getAbbreviation();
 	}
 
-	public Collection<Motor> getMotors(MotorImpulse impulse, MotorDiameter diameter) {
+	public Collection<Motor> getMotors(ImpulseDTO impulse, MotorDiameter diameter) {
 		SelectQuery query = Motor.select(Motor.MANUFACTURER.eq(this),  new Orderings().then(Motor.TOTAL_IMPULSE_NS.asc()).then(Motor.COMMON_NAME.ascInsensitive()));
 		if (impulse != null) {
-			query.andQualifier(Motor.IMPULSE.eq(impulse));
+			query.andQualifier(Motor.IMPULSE.eq(MotorImpulse.get(this.getObjectContext(), impulse)));
 		}
 		if (diameter != null) {
 			query.andQualifier(Motor.DIAMETER.eq(diameter));
@@ -88,7 +90,15 @@ public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 		return getObjectContext().performQuery(query);
 	}
 
-	public Collection<MotorDiameter> getDiameters(MotorMfg mfg, MotorImpulse imp) {
+	public List<MotorCase> getMotorCases(ImpulseDTO impulse, MotorDiameter diameter) {
+	    return getMotors(impulse, diameter).stream()
+				.map(m -> m.getCase())
+                .filter(c -> c.getMotorDiameter().equals(diameter))
+				.distinct()
+				.collect(Collectors.toList());
+	}
+
+	public List<MotorDiameter> getDiameters(MotorMfg mfg, MotorImpulse imp) {
 		SelectQuery query;
 		if (mfg == null && imp == null) {
 			query = MotorDiameter.select(Motor.MANUFACTURER.eq(mfg), null);
@@ -102,4 +112,22 @@ public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 		}
 		return getObjectContext().performQuery(query);
 	}
+
+	@Override
+	public boolean equals(Object o) {
+	    if (o == null) { return false; }
+	    if (o instanceof MotorMfg) {
+	        MotorMfg other = (MotorMfg) o;
+	        if (this.getName().equals(other.getName())) {
+	        	return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getName());
+	}
+
 }

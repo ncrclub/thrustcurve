@@ -13,9 +13,9 @@ public class MotorDTO implements Comparable<MotorDTO> {
     public final String brandName;
     public final String designation;
     public final String identifier;
-    public final String motorCase;
+    public final MotorCaseDTO motor_case;
     public final String impulse;
-    public final Double totalImpulse;
+    public final Double total_impulse_ns;
     public final Double weight;
     public final Double burnTime;
     public final Double averageThrust;
@@ -23,9 +23,12 @@ public class MotorDTO implements Comparable<MotorDTO> {
     public final Float diameter;
     public final Double length;
     public final String externalId;
-    public final String propellant;
+    public final String cert_org;
+    public final PropellantDTO propellant;
+    public final String type;
     public final MotorManufacturerDTO manufacturer;
     public final List<MotorDataDTO> data;
+    public final String lastUpdated;
 
     private static String firstNotNull(String s1, String s2) {
         return (s1 != null ? s1 : s2);
@@ -43,17 +46,20 @@ public class MotorDTO implements Comparable<MotorDTO> {
         this.name= firstNotNull(motor.getCommonName().getName(), motor.getBrandName());
         this.brandName= firstNotNull(motor.getBrandName(), motor.getDesignation());
         this.identifier= toIdentifier(motor);
-        this.length= motor.getLength();
+        this.type = motor.getType().getName();
         this.externalId = motor.getExternalId();
         this.manufacturer= new MotorManufacturerDTO(motor.getManufacturer());
+        this.lastUpdated = motor.getLastUpdated().toString();
         this.designation= motor.getDesignation();
-        this.motorCase= motor.getCase().getName();
+        this.length= motor.getLength();
         this.impulse= motor.getImpulse().getImpulse();
         this.weight= motor.getWeight();
-        this.totalImpulse = motor.getTotalImpulseNs();
+        this.total_impulse_ns = motor.getTotalImpulseNs();
         this.burnTime= motor.getBurnTime();
         this.diameter= motor.getDiameter().getDiameter();
-        this.propellant= motor.getPropellant().getName();
+        this.cert_org = motor.getCertificationOrganization().getName();
+        this.motor_case = new MotorCaseDTO(motor);
+        this.propellant= new PropellantDTO(motor.getPropellant());
         this.averageThrust = motor.getThrustAvg();
         this.maxThrust = motor.getThrustMax();
         if (withData) {
@@ -73,19 +79,22 @@ public class MotorDTO implements Comparable<MotorDTO> {
         this.name= firstNotNull(motor.getCommonName(), motor.getBrandName());
         this.brandName= firstNotNull(motor.getBrandName(), motor.getDesignation());
         this.identifier= toIdentifier(motor);
+        this.type = motor.getType();
         this.externalId = motor.getMotorId();
         this.manufacturer= new MotorManufacturerDTO(motor);
         this.designation= motor.getDesignation();
         this.length= motor.getLength();
-        this.motorCase= motor.getMotorCase();
         this.impulse= motor.getImpulseClass();
-        this.totalImpulse = motor.getTotalImpulse();
+        this.total_impulse_ns = motor.getTotalImpulse();
         this.weight = motor.getWeight();
         this.burnTime = motor.getBurnTime();
         this.diameter= Float.parseFloat(motor.getDiameter());
-        this.propellant= motor.getPropellant();
+        this.cert_org = motor.getCertificationOrganization();
+        this.motor_case = new MotorCaseDTO(motor.getMotorCase(), this.diameter);
+        this.propellant= new PropellantDTO(motor.getPropellant(), motor.getType());
         this.averageThrust = motor.getAverageThrust();
         this.maxThrust = motor.getMaxThrust();
+        this.lastUpdated = motor.getUpdated();
         if (withData) {
             this.data= motor.getData().stream()
                 .filter(d -> d != null)

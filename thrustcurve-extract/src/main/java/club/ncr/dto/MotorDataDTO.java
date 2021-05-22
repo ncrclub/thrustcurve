@@ -12,6 +12,7 @@ public class MotorDataDTO {
     public final String license;
     public final String fileExtension;
     public final String filename;
+    public final String format;
 
     private static String nameOf(MotorDTO motor) {
         if (motor.designation == null) {
@@ -36,6 +37,7 @@ public class MotorDataDTO {
         this.license= data.getLicense();
         this.fileExtension = data.getFormat().getFileExtension();
         this.filename = toFilename(motor, data.getSource(), data.getLicense(), data.getFormat().getFileExtension());
+        this.format = data.getFormat().getName();
     }
 
     MotorDataDTO(MotorDTO motor, TCMotorData data) {
@@ -45,5 +47,6 @@ public class MotorDataDTO {
         this.license= data.getLicense();
         this.fileExtension = data.getFormat();
         this.filename = toFilename(motor, data.getSource(), data.getLicense(), data.getFormat());
+        this.format = data.getFormat();
     }
 }

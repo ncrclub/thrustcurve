@@ -1,6 +1,7 @@
 package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._MotorDiameter;
+import club.ncr.dto.motor.ImpulseDTO;
 import club.ncr.util.CayenneKit;
 import club.ncr.motors.QueryFilters;
 import org.apache.cayenne.ObjectContext;
@@ -62,13 +63,13 @@ public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDia
 		return cases;
 	}
 
-	public Collection<Motor> getMotors(List<MotorMfg> motorMfgs, MotorImpulse impulse) {
+	public Collection<Motor> getMotors(List<MotorMfg> motorMfgs, ImpulseDTO impulse) {
 		SelectQuery query = Motor.select(Motor.DIAMETER.eq(this),  new Orderings().then(Motor.TOTAL_IMPULSE_NS.asc()).then(Motor.COMMON_NAME.ascInsensitive()));
 
 		QueryFilters.motorManufacturers(motorMfgs, query);
 
 		if (impulse != null) {
-			query.andQualifier(Motor.IMPULSE.eq(impulse));
+			query.andQualifier(Motor.IMPULSE.eq(MotorImpulse.get(this.getObjectContext(), impulse)));
 		}
 		return getObjectContext().performQuery(query);
 	}
@@ -99,7 +100,7 @@ public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDia
 	@Override
 	public boolean equals(Object obj) {
 	    if (obj instanceof MotorDiameter) {
-	    	return getDiameter().equals(((MotorDiameter) obj).getDiameter());
+	    	return getDiameter() == ((MotorDiameter) obj).getDiameter();
 		}
 	    return false;
 	}
