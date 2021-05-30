@@ -4,6 +4,7 @@ import club.ncr.cayenne.auto._MotorImpulse;
 import club.ncr.dto.motor.ImpulseDTO;
 import club.ncr.motors.QueryFilters;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.configuration.CayenneRuntime;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;

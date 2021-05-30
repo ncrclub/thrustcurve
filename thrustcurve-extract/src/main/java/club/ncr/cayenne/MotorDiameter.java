@@ -5,7 +5,6 @@ import club.ncr.dto.motor.ImpulseDTO;
 import club.ncr.util.CayenneKit;
 import club.ncr.motors.QueryFilters;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.Orderings;
@@ -21,7 +20,7 @@ import java.util.List;
 
 public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDiameter> {
 
-	public static MotorDiameter createNew(Float diameter, DataContext ctx) {
+	public static MotorDiameter createNew(Float diameter, ObjectContext ctx) {
 		MotorDiameter record= new MotorDiameter();
 		ctx.registerNewObject(record);
 		record.setDiameter(diameter);

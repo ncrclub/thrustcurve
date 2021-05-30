@@ -1,12 +1,8 @@
 package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._MotorData;
-import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.cayenne.query.Ordering;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
 import org.thrustcurve.ThrustCurveAPI;
 import org.thrustcurve.api.data.TCMotorData;
 import org.thrustcurve.api.json.JsonObject;
@@ -17,7 +13,7 @@ import java.util.List;
 
 public class MotorData extends _MotorData {
 
-	public static MotorData getByFileId(DataContext ctx, int fileId) {
+	public static MotorData getByFileId(ObjectContext ctx, int fileId) {
 		SelectQuery query= new SelectQuery(MotorData.class);
 
 		query.andQualifier(MotorData.TC_FILE_ID.eq(fileId));
@@ -48,7 +44,7 @@ public class MotorData extends _MotorData {
 		setSource(data.getSource());
 	}
 
-	public static MotorData createNew(Motor motor, MotorDataFormat format, TCMotorData data, DataContext ctx) {
+	public static MotorData createNew(Motor motor, MotorDataFormat format, TCMotorData data, ObjectContext ctx) {
 		MotorData record= new MotorData();
 		ctx.registerNewObject(record);
 

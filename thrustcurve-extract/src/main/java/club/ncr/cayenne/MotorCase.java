@@ -2,20 +2,18 @@ package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._MotorCase;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class MotorCase extends _MotorCase implements Comparable<MotorCase> {
 
 	
-	public static MotorCase getOrCreate(String name, MotorMfg mfg, MotorDiameter diameter, MotorImpulse impulse, DataContext ctx) {
+	public static MotorCase getOrCreate(String name, MotorMfg mfg, MotorDiameter diameter, MotorImpulse impulse, ObjectContext ctx) {
 
 	    MotorCase exists = MotorCase.get(ctx, MotorCase.NAME.eq(name))
 				.stream()
@@ -70,7 +68,7 @@ public class MotorCase extends _MotorCase implements Comparable<MotorCase> {
 		return (List<MotorCase>)ctx.performQuery(query);
 	}
 	
-	public static HashMap<String, MotorCase> getMap(DataContext ctx, Expression filter) {
+	public static HashMap<String, MotorCase> getMap(ObjectContext ctx, Expression filter) {
 		HashMap<String, MotorCase> map= new HashMap<String, MotorCase>();
 		for (MotorCase obj : get(ctx, filter)) {
 			map.put(obj.getName(), obj);

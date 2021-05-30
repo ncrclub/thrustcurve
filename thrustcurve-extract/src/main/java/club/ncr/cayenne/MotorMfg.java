@@ -3,7 +3,7 @@ package club.ncr.cayenne;
 import club.ncr.cayenne.auto._MotorMfg;
 import club.ncr.dto.motor.ImpulseDTO;
 import org.apache.cayenne.CayenneRuntimeException;
-import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.Orderings;
@@ -19,7 +19,7 @@ import static club.ncr.util.CayenneKit.select;
 
 public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 
-	public static MotorMfg createNew(String manufacturer, String abbreviation, DataContext ctx) {
+	public static MotorMfg createNew(String manufacturer, String abbreviation, ObjectContext ctx) {
 		MotorMfg record= new MotorMfg();
 		ctx.registerNewObject(record);
 		record.setName(manufacturer);
@@ -28,7 +28,7 @@ public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 		return record;
 	}
 	
-	public static List<MotorMfg> get(DataContext ctx, Expression filter) {
+	public static List<MotorMfg> get(ObjectContext ctx, Expression filter) {
 		SelectQuery query= new SelectQuery(MotorMfg.class);
 		if (filter != null) {
 			query.andQualifier(filter);
@@ -41,7 +41,7 @@ public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 		}
 	}
 	
-	public static HashMap<String, MotorMfg> getNameMap(DataContext ctx, Expression filter) {
+	public static HashMap<String, MotorMfg> getNameMap(ObjectContext ctx, Expression filter) {
 		HashMap<String, MotorMfg> map= new HashMap<String, MotorMfg>();
 		for (MotorMfg mfg : get(ctx, filter)) {
 			map.put(mfg.getName(), mfg);

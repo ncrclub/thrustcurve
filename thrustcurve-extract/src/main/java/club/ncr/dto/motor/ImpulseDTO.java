@@ -22,8 +22,8 @@ public enum ImpulseDTO {
     L("L", (int)(2.0 * K.maxNewtonSeconds)),
     M("M", (int)(2.0 * L.maxNewtonSeconds)),
     N("N", (int)(2.0 * M.maxNewtonSeconds)),
-    O("O", (int)(2.0 * N.maxNewtonSeconds))
-    // P("P", (int)(2.0 * O.maxNewtonSeconds)),
+    O("O", (int)(2.0 * N.maxNewtonSeconds)),
+    P("P", (int)(2.0 * O.maxNewtonSeconds)),
     // Q("Q", (int)(2.0 * P.maxNewtonSeconds)),
     // R("R", (int)(2.0 * Q.maxNewtonSeconds)),
     // S("S", (int)(2.0 * R.maxNewtonSeconds)),

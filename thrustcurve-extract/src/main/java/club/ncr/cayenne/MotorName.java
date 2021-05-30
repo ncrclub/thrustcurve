@@ -2,18 +2,15 @@ package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._MotorName;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
-import org.apache.cayenne.query.SortOrder;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class MotorName extends _MotorName implements Comparable {
 
-	public static MotorName createNew(String commonName, MotorImpulse impulse, DataContext ctx) {
+	public static MotorName createNew(String commonName, MotorImpulse impulse, ObjectContext ctx) {
 		// TODO Auto-generated method stub
 		MotorName record= new MotorName();
 		ctx.registerNewObject(record);
@@ -38,7 +35,7 @@ public class MotorName extends _MotorName implements Comparable {
 		
 	}
 	
-	public static HashMap<String, MotorName> getMap(DataContext ctx, Expression filter) {
+	public static HashMap<String, MotorName> getMap(ObjectContext ctx, Expression filter) {
 		HashMap<String, MotorName> map= new HashMap<String, MotorName>();
 		for (MotorName name : get(ctx, filter)) {
 			map.put(""+ name.getName(), name);

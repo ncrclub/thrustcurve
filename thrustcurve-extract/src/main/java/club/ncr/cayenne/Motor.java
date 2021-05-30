@@ -3,7 +3,7 @@ package club.ncr.cayenne;
 import club.ncr.cayenne.auto._Motor;
 import club.ncr.dto.MotorDTO;
 import club.ncr.util.CayenneKit;
-import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Motor extends _Motor {
 	
-	public static Motor getByExternalId(String id, DataContext ctx) {
+	public static Motor getByExternalId(String id, ObjectContext ctx) {
 		
 		List<Motor> list= get(ctx, ExpressionFactory.matchExp(Motor.EXTERNAL_ID.getName(), id));
 		
@@ -30,7 +30,7 @@ public class Motor extends _Motor {
 		
 	}
 	
-	public static List<Motor> get(DataContext ctx, Expression filter) {
+	public static List<Motor> get(ObjectContext ctx, Expression filter) {
 		SelectQuery query= new SelectQuery(Motor.class);
 		if (filter != null) {
 			query.andQualifier(filter);
@@ -44,7 +44,7 @@ public class Motor extends _Motor {
 		}
 	}
 	
-	public static HashMap<String, Motor> getMap(DataContext ctx, Expression filter) {
+	public static HashMap<String, Motor> getMap(ObjectContext ctx, Expression filter) {
 		HashMap<String, Motor> map= new HashMap<>();
 		for (Motor motor : get(ctx, filter)) {
 			map.put(motor.getManufacturer().getName() +"/"+ motor.getCommonName() +"/"+ motor.getDiameter().getDiameter() +"/"+ motor.getPropellant().getName(), motor);
@@ -53,7 +53,7 @@ public class Motor extends _Motor {
 	}
 
 
-	public static Motor createNew(DataContext ctx, String source, String externalId, MotorMfg manufacturer, MotorName name, MotorType type, MotorImpulse impulse, MotorDiameter diameter, MotorCase motorCase, MotorPropellant propellant, MotorCertOrg certOrg) {
+	public static Motor createNew(ObjectContext ctx, String source, String externalId, MotorMfg manufacturer, MotorName name, MotorType type, MotorImpulse impulse, MotorDiameter diameter, MotorCase motorCase, MotorPropellant propellant, MotorCertOrg certOrg) {
 
 		Motor m= new Motor();
 

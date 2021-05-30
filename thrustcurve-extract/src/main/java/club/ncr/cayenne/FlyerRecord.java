@@ -1,7 +1,7 @@
 package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._FlyerRecord;
-import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FlyerRecord extends _FlyerRecord {
 
-	public static List<FlyerRecord> get(DataContext ctx, Expression matchExp) {
+	public static List<FlyerRecord> get(ObjectContext ctx, Expression matchExp) {
 		
 		SelectQuery query= new SelectQuery(FlyerRecord.class, matchExp);
 		

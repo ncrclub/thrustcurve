@@ -4,6 +4,7 @@ import club.ncr.cayenne.*;
 import club.ncr.dto.MotorCaseDTO;
 import club.ncr.dto.MotorManufacturerDTO;
 import club.ncr.dto.motor.ImpulseDTO;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.exp.Expression;
@@ -22,20 +23,21 @@ import java.util.stream.Stream;
 
 public class MotorDbCache {
 
-	private Map<String, MotorMfg> manufacturers= new TreeMap<>();
-	private Map<String, MotorCertOrg> certOrgs= new HashMap<>();
-	private Map<Float, MotorDiameter> diameters= new TreeMap<>();
-	private Map<String, MotorName> motorNames = new TreeMap<>();
+	private final ManufacturersCache manufacturers;
+	private final MotorCertOrgCache certOrgs;
+	private final MotorDiameterCache diameters;
+	private final MotorNameCache motorNames;
 	private Map<ImpulseDTO, Set<Float>> diametersByImpulse= new TreeMap<>();
 	private Map<ImpulseDTO, Set<MotorName>> namesByImpulse = new TreeMap<>();
 	private Map<ImpulseDTO, MotorImpulse> impulses= new TreeMap<>();
-	private Map<String, MotorPropellant> propellants= new TreeMap<>();
-	private Map<String, MotorType> types= new TreeMap<>();
+	private final MotorPropellantCache propellants;
+	private final MotorTypeCache types;
+	private final MotorCaseCache casesCache;
 	private Map<String, MotorCaseDTO> cases= new TreeMap<>();
-	private Map<String, MotorDataFormat> formats= new TreeMap<>();
+	private MotorDataFormatCache formats;
 
-	private final DataContext ctx;
-	private boolean autoCreate = false;
+	private final ObjectContext ctx;
+	private boolean autoCreate;
 
 	private static ServerRuntime runtime;
 
@@ -46,13 +48,26 @@ public class MotorDbCache {
 	private final long MAX_AGE = 60 * 60 * 1000;
 
 	public MotorDbCache(String cayenneConfigFile) {
+	    this(cayenneConfigFile,false);
+    }
+
+	public MotorDbCache(String cayenneConfigFile, boolean autoCreate) {
+		this.autoCreate = autoCreate;
 
 		if (this.runtime == null) {
 			LOG.info("initializing config " + cayenneConfigFile);
 			this.runtime = ServerRuntime.builder().addConfig(cayenneConfigFile).build();
 		}
-		this.ctx = (DataContext) runtime.newContext();
+		this.ctx = runtime.newContext();
 
+		this.manufacturers= new ManufacturersCache(ctx, this.autoCreate);
+		this.certOrgs = new MotorCertOrgCache(ctx, this.autoCreate);
+		this.motorNames = new MotorNameCache(ctx, this.autoCreate);
+		this.types = new MotorTypeCache(ctx, this.autoCreate);
+		this.diameters = new MotorDiameterCache(ctx, this.autoCreate);
+		this.propellants = new MotorPropellantCache(ctx, this.autoCreate);
+		this.casesCache = new MotorCaseCache(ctx, this.autoCreate);
+		this.formats = new MotorDataFormatCache(ctx, this.autoCreate);
 		asyncRefresh();
 	}
 
@@ -67,19 +82,27 @@ public class MotorDbCache {
 		return this;
 	}
 
-	public void refresh() {
-		Map<String, MotorMfg> manufacturers= new TreeMap<>();
-		Map<String, MotorCertOrg> certOrgs= new HashMap<>();
-		Map<Float, MotorDiameter> diameters= new TreeMap<>();
-		Map<String, MotorName> motorNames = new TreeMap<>();
-		Map<ImpulseDTO, Set<Float>> diametersByImpulse= new TreeMap<>();
-		Map<ImpulseDTO, Set<MotorName>> namesByImpulse = new TreeMap<>();
-		Map<ImpulseDTO, MotorImpulse> impulses= new TreeMap<>();
-		Map<String, MotorPropellant> propellants= new TreeMap<>();
-		Map<String, MotorType> types= new TreeMap<>();
-		Map<String, MotorCaseDTO> cases= new TreeMap<>();
-		Map<String, MotorDataFormat> formats= new TreeMap<>();
+	public List<CayenneRecordCache> caches() {
+		return Arrays.asList(
+						manufacturers,
+						formats,
+						casesCache,
+						certOrgs,
+						motorNames,
+						types,
+						diameters,
+						propellants
+		);
+	}
 
+	public void refresh() {
+
+		caches().stream().parallel().forEach(c -> c.refresh());
+
+		final Map<ImpulseDTO, Set<Float>> diametersByImpulse= new TreeMap<>();
+		final Map<ImpulseDTO, Set<MotorName>> namesByImpulse = new TreeMap<>();
+		final Map<ImpulseDTO, MotorImpulse> impulses= new TreeMap<>();
+		final Map<String, MotorCaseDTO> cases= new TreeMap<>();
 
 		// prime the impulses
 		for (ImpulseDTO impulse : ImpulseDTO.values()) {
@@ -87,22 +110,6 @@ public class MotorDbCache {
 			impulses.put(impulse, i);
 			diametersByImpulse.put(impulse, new TreeSet<>());
 		}
-
-		for (MotorMfg mfg : MotorMfg.get(ctx, null)) {
-			manufacturers.put(mfg.getName(), mfg);
-		}
-
-		for (MotorDiameter diam : MotorDiameter.get(ctx, null)) {
-			diameters.put(diam.getDiameter(), diam);
-		}
-
-		for (MotorPropellant prop : MotorPropellant.get(ctx, null)) {
-			propellants.put(prop.getName(), prop);
-		}
-
-		for (MotorCertOrg org : MotorCertOrg.get(ctx, null)) { certOrgs.put(org.getName(), org); }
-		for (MotorType type : MotorType.get(ctx, null)) { types.put(type.getName(), type); }
-		for (MotorDataFormat format : MotorDataFormat.get(ctx, null)) { formats.put(format.getName(), format); }
 
 		MotorImpulse.getAll(ctx).stream()
 			.forEach(i -> {
@@ -124,22 +131,14 @@ public class MotorDbCache {
 						namesByImpulse.put(i.getDto(), names);
 					}
 					names.add(motorName);
-					motorNames.put(motorName.getName(), motorName);
 				}
 			}
 		);
 
-		this.manufacturers= manufacturers;
-		this.certOrgs= certOrgs;
-		this.diameters= diameters;
-		this.motorNames = motorNames;
+		this.cases = cases;
 		this.diametersByImpulse= diametersByImpulse;
 		this.namesByImpulse = namesByImpulse;
 		this.impulses= impulses;
-		this.propellants= propellants;
-		this.types= types;
-		this.cases= cases;
-		this.formats= formats;
 		this.lastRefresh = System.currentTimeMillis();
 
 	}
@@ -163,15 +162,7 @@ public class MotorDbCache {
 	}
 
 	public MotorMfg getManufacturer(String name, String abbv) {
-		checkCache(false);
-		MotorMfg record= manufacturers.get(name);
-		
-		if (record == null && autoCreate) {
-			record= MotorMfg.createNew(name, abbv, ctx);
-			manufacturers.put(name, record);
-		}
-		
-		return record;
+		return manufacturers.get(name, abbv);
 	}
 	
 	public MotorCertOrg getCertOrganization(String org) {
@@ -266,21 +257,6 @@ public class MotorDbCache {
 		return record;
 	}
 
-	/*
-	public MotorCaseDTO getMotorCase(String name, MotorMfg mfg, MotorDiameter diameter, MotorImpulse impulse) {
-		MotorCaseDTO record= cases.get(name +"-"+ mfg +"-"+ diameter +"-"+ impulse);
-		
-		if (record == null && autoCreate) {
-			MotorCase c = MotorCase.getOrCreate(name, mfg, diameter, impulse, ctx);
-			record = new MotorCaseDTO(c);
-			cases.put(name +"-"+ mfg +"-"+ diameter +"-"+ impulse, record);
-		}
-		
-		return record;
-	}
-	 */
-
-
 	public MotorDataFormat getMotorDataFormat(String name) {
 		
 		MotorDataFormat record= formats.get(name);
@@ -295,7 +271,6 @@ public class MotorDbCache {
 
 	
 	public Collection<MotorMfg> getManufacturers() {
-		checkCache(false);
 	    return manufacturers.values();
 	}
 	public Collection<MotorCaseDTO> getMotorCases() { return cases.values(); }
@@ -457,8 +432,8 @@ public class MotorDbCache {
 	 * @param diam
 	 * @return
 	 */
-	public Motor custom(MotorName name, String brandName, MotorType type, MotorMfg mfg, MotorPropellant prop, MotorCase motorCase, double weight, double grossWeight, double burnTime, double totalImpulse, double thrustAvg, double thrustMax, double length, String imp, float diam) {
-		MotorImpulse impulse = MotorImpulse.getOrCreate(ctx, imp);
+	public Motor custom(ImpulseDTO imp, MotorName name, String brandName, MotorType type, MotorMfg mfg, MotorPropellant prop, MotorCase motorCase, double weight, double grossWeight, double burnTime, double totalImpulse, double thrustAvg, double thrustMax, double length, float diam) {
+		MotorImpulse impulse = MotorImpulse.getOrCreate(ctx, imp.impulse);
 		MotorDiameter diameter = getDiameter(diam);
 		MotorCertOrg certOrg= getCertOrganization(null);
 
@@ -474,7 +449,7 @@ public class MotorDbCache {
 			motor = Motor.createNew(
 					ctx,
 					"custom",
-					imp + thrustAvg +":"+ diam +"mm:"+ mfg.getAbbreviation().toLowerCase()
+					imp.impulse + thrustAvg +":"+ diam +"mm:"+ mfg.getAbbreviation().toLowerCase()
 					, mfg
 					, name
 					, type
@@ -639,6 +614,7 @@ public class MotorDbCache {
 	
 	public void setAutoCreate(boolean autoCreate) {
 		this.autoCreate = autoCreate;
+		caches().stream().parallel().forEach(c -> c.setAutoCreate(autoCreate));
 	}
 
 	public List<MotorMfg> findManufacturer(String manufacturer) {

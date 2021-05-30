@@ -2,7 +2,7 @@ package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._MotorCaseImpulse;
 import club.ncr.dto.motor.ImpulseDTO;
-import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public class MotorCaseImpulse extends _MotorCaseImpulse {
     private static final long serialVersionUID = 1L;
 
 
-    public static List<MotorCaseImpulse> get(DataContext ctx, ImpulseDTO impulse, Float diameter) {
+    public static List<MotorCaseImpulse> get(ObjectContext ctx, ImpulseDTO impulse, Float diameter) {
 
         SelectQuery<MotorCaseImpulse> query = new SelectQuery(MotorCaseImpulse.class);
 
