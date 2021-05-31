@@ -12,10 +12,25 @@ public class ManufacturersCache extends CayenneRecordCache<String, MotorMfg> {
         super(ctx, autoCreate);
     }
 
+    public MotorMfg getByAbbreviation(String abbv) {
+
+        for (MotorMfg mfg : values()) {
+            if (mfg.getAbbreviation().equalsIgnoreCase(abbv)) {
+                return mfg;
+            }
+        }
+        return null;
+
+    }
+
     public MotorMfg get(String name, String abbv) {
+        return get(name, abbv, autoCreate());
+    }
+
+    public MotorMfg get(String name, String abbv, boolean autoCreate) {
         MotorMfg record= super.get(name);
 
-        if (record == null && autoCreate()) {
+        if (record == null && autoCreate) {
             record= MotorMfg.createNew(name, abbv, context());
             put(name, record);
         }

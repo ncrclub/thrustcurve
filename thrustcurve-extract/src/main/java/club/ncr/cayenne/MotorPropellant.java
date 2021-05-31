@@ -21,6 +21,14 @@ public class MotorPropellant extends _MotorPropellant {
 		return record;
 		
 	}
+	public static MotorPropellant createNew(String propellant, MotorType type, ObjectContext ctx) {
+		MotorPropellant record= new MotorPropellant();
+		ctx.registerNewObject(record);
+		record.setName(propellant);
+		record.setType(type.getName());
+		ctx.commitChanges();
+		return record;
+	}
 
 	public static List<MotorPropellant> get(ObjectContext ctx, Expression filter) {
 		SelectQuery query= new SelectQuery(MotorPropellant.class);

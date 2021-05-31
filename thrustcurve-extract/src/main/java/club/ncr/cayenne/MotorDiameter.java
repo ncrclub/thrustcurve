@@ -79,9 +79,9 @@ public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDia
 		Float d = getDiameter();
 		int i = d.intValue();
 		if (d != i) {
-			return d + "mm";
+			return Double.toString(d);
 		} else {
-			return i + "mm";
+			return Integer.toString(i);
 		}
 	}
 

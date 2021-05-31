@@ -162,9 +162,17 @@ public class MotorDbCache {
 	}
 
 	public MotorMfg getManufacturer(String name, String abbv) {
-		return manufacturers.get(name, abbv);
+		return getManufacturer(name, abbv, autoCreate);
 	}
-	
+
+	public MotorMfg getManufacturer(String name, String abbv, boolean autoCreate) {
+		return manufacturers.get(name, abbv, autoCreate);
+	}
+
+	public MotorMfg getMfgByAbbreviation(String abbv) {
+		return manufacturers.getByAbbreviation(abbv);
+	}
+
 	public MotorCertOrg getCertOrganization(String org) {
 		checkCache(false);
 		MotorCertOrg record= certOrgs.get(org);
@@ -190,6 +198,9 @@ public class MotorDbCache {
 	}
 
 	public MotorName getCommonName(String name, MotorImpulse impulse) {
+	    return getCommonName(name, impulse, autoCreate);
+    }
+	public MotorName getCommonName(String name, MotorImpulse impulse, boolean autoCreate) {
 		checkCache(false);
 		MotorName record= motorNames.get(name);
 		if (record == null && autoCreate) {
@@ -230,18 +241,26 @@ public class MotorDbCache {
 		checkCache(false);
 
 		MotorPropellant record= propellants.get(name);
-		
+
 		if (record == null && autoCreate) {
 			String type = "AP";
-		    if ("black powder".equalsIgnoreCase(name)) {
-		    	type = "BP";
+			if ("black powder".equalsIgnoreCase(name)) {
+				type = "BP";
 			} else if (name.toLowerCase().contains("nitrous")) {
-		    	type = "HYBRID";
+				type = "HYBRID";
 			}
-			record= MotorPropellant.createNew(name, type, ctx);
-			propellants.put(name, record);
+			record = getPropellant(name, type);
 		}
-		
+
+		return record;
+
+	}
+	public MotorPropellant getPropellant(String name, String type) {
+		MotorPropellant record= propellants.get(name);
+		if (record == null && autoCreate) {
+			record= MotorPropellant.createNew(name, type, ctx);
+        }
+		propellants.put(name, record);
 		return record;
 	}
 
@@ -422,25 +441,28 @@ public class MotorDbCache {
 	 </pre>
 	 *
 	 *
+	 * @param imp
+	 * @param certOrg
 	 * @param weight
 	 * @param grossWeight
 	 * @param totalImpulse
 	 * @param thrustAvg
 	 * @param thrustMax
 	 * @param length
-	 * @param imp
 	 * @param diam
 	 * @return
 	 */
-	public Motor custom(ImpulseDTO imp, MotorName name, String brandName, MotorType type, MotorMfg mfg, MotorPropellant prop, MotorCase motorCase, double weight, double grossWeight, double burnTime, double totalImpulse, double thrustAvg, double thrustMax, double length, float diam) {
+	public Motor custom(ImpulseDTO imp, MotorName name, String brandName, String designation, MotorCertOrg certOrg, MotorType type, MotorMfg mfg, MotorPropellant prop, MotorCase motorCase, double weight, double grossWeight, double burnTime, double totalImpulse, double thrustAvg, double thrustMax, double length, float diam) {
 		MotorImpulse impulse = MotorImpulse.getOrCreate(ctx, imp.impulse);
 		MotorDiameter diameter = getDiameter(diam);
-		MotorCertOrg certOrg= getCertOrganization(null);
 
-		Expression where = ExpressionFactory.matchExp(Motor.IMPULSE.getName(), impulse)
-				.andExp(ExpressionFactory.matchExp(Motor.DIAMETER.getName(), diameter))
-				.andExp(ExpressionFactory.matchExp(Motor.TYPE.getName(), type))
-				.andExp(ExpressionFactory.matchExp(Motor.COMMON_NAME.getName(), name))
+		Expression where = Motor.IMPULSE.eq(impulse)
+				.andExp(Motor.MANUFACTURER.eq(mfg))
+				.andExp(Motor.TYPE.eq(type))
+				.andExp(Motor.PROPELLANT.eq(prop))
+				.andExp(Motor.COMMON_NAME.eq(name))
+				.andExp(Motor.BRAND_NAME.eq(brandName))
+				.andExp(Motor.DIAMETER.eq(diameter))
 				;
 
 		Motor motor = Motor.get(ctx, where).stream().findFirst().orElse(null);
@@ -449,7 +471,7 @@ public class MotorDbCache {
 			motor = Motor.createNew(
 					ctx,
 					"custom",
-					imp.impulse + thrustAvg +":"+ diam +"mm:"+ mfg.getAbbreviation().toLowerCase()
+					mfg.getAbbreviation().toLowerCase() +":"+ name.getName() +":"+ ((int)diam) +":"+ prop.getName().toLowerCase()
 					, mfg
 					, name
 					, type
@@ -460,16 +482,15 @@ public class MotorDbCache {
 					, certOrg
 			);
 
+			motor.setDesignation(designation);
+			motor.setBrandName(brandName);
 			motor.setBurnTime(burnTime);
 			motor.setGrossWeight(grossWeight);
-			motor.setBrandName(brandName);
 			motor.setWeight(weight);
 			motor.setThrustAvg(thrustAvg);
 			motor.setThrustMax(thrustMax);
 			motor.setTotalImpulseNs(totalImpulse);
-			motor.setDesignation(name +" ("+ diameter.toString() +")");
 			motor.setLength(length);
-			motor.setCase(motorCase);
 
 			ctx.commitChanges();
 		}
@@ -547,7 +568,11 @@ public class MotorDbCache {
 		research(13233.00d, 32284.25d, 7.34d, 27228.81d, 4142.14d, 6849.80d, 1360.25d, "O", 152f);
 		research(16132.40d, 29323.10d, 6.40d, 33724.82d, 5495.88d, 6234.78d, 885.60d, "O", 161f);
 	}
-	
+
+	public MotorCase getOrCreateMotorCase(String name, MotorMfg mfg, MotorDiameter diameter, MotorImpulse impulse) {
+		return MotorCase.getOrCreate(name, mfg, diameter, impulse, ctx);
+	}
+
 	public void update(SearchResults results, PrintStream out) {
 
 		Map<String, MotorImpulse> impulses = MotorImpulse.getMap(ctx, null);

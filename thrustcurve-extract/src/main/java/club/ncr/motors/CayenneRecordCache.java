@@ -54,9 +54,8 @@ public abstract class CayenneRecordCache<K extends Comparable<K>, V extends Base
     }
 
     public V get(K key) {
-        if (isEmpty()) {
-            refresh();
-        }
+        if (key == null) { return null; }
+        if (isEmpty()) { refresh(); }
         return cache.get(key);
     }
 
