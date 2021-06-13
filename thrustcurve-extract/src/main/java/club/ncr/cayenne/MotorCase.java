@@ -1,7 +1,9 @@
 package club.ncr.cayenne;
 
 import club.ncr.cayenne.auto._MotorCase;
+import club.ncr.util.CayenneKit;
 import org.apache.cayenne.ObjectContext;
+import org.apache.cayenne.configuration.CayenneRuntime;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;

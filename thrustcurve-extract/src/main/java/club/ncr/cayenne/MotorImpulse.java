@@ -3,8 +3,8 @@ package club.ncr.cayenne;
 import club.ncr.cayenne.auto._MotorImpulse;
 import club.ncr.dto.motor.ImpulseDTO;
 import club.ncr.motors.QueryFilters;
+import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import org.apache.cayenne.ObjectContext;
-import org.apache.cayenne.configuration.CayenneRuntime;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
@@ -68,8 +68,18 @@ public class MotorImpulse extends _MotorImpulse implements Comparable<MotorImpul
 	}
 
 	public static List<MotorImpulse> get(ObjectContext ctx, Expression filter) {
+	    return get(ctx, filter, 3);
+    }
+	public static List<MotorImpulse> get(ObjectContext ctx, Expression filter, int retries) {
 		SelectQuery query = select(MotorImpulse.class, filter, new Ordering(MotorImpulse.IMPULSE.getName(), SortOrder.ASCENDING_INSENSITIVE));
-		return (List<MotorImpulse>)ctx.performQuery(query);
+		try {
+			return (List<MotorImpulse>) ctx.performQuery(query);
+		} catch (Exception e) {
+			if (retries > 0 && e.getCause() != null && e.getCause() instanceof CommunicationsException) {
+				return get(ctx, filter, retries-1);
+			}
+			throw e;
+		}
 	}
 
 	public static HashMap<String, MotorImpulse> getMap(ObjectContext ctx, Expression filter) {

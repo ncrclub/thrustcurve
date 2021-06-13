@@ -111,8 +111,25 @@ public class MotorDTO implements Comparable<MotorDTO> {
     public int compareTo(MotorDTO o) {
         int diff;
 
-        if ((diff = (int)(diameter - o.diameter)) != 0) { return diff; }
         if ((diff = impulse.compareTo(o.impulse)) != 0) { return diff; }
+
+        try {
+            int thrust = Integer.parseInt(name.substring(1));
+            int oThrust = Integer.parseInt(o.name.substring(1));
+            return thrust - oThrust;
+        } catch (NumberFormatException skip) { }
+
+        if (averageThrust != null && averageThrust > 0) {
+            if (o.averageThrust != null && o.averageThrust > 0) {
+                return (int) (averageThrust - o.averageThrust);
+            }
+        }
+        if (total_impulse_ns != null && total_impulse_ns > 0) {
+            if (o.total_impulse_ns != null && o.total_impulse_ns > 0) {
+                return (int) (total_impulse_ns - o.total_impulse_ns);
+            }
+        }
+        if ((diff = (int)(diameter - o.diameter)) != 0) { return diff; }
         if ((diff = name.compareTo(o.name)) != 0) { return diff; }
         if ((diff = manufacturer.compareTo(o.manufacturer)) != 0) { return diff; }
         if ((diff = (int)(maxThrust - o.maxThrust)) != 0) { return diff; }

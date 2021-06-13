@@ -3,6 +3,7 @@ package club.ncr.cayenne;
 import club.ncr.cayenne.auto._Motor;
 import club.ncr.dto.MotorDTO;
 import club.ncr.util.CayenneKit;
+import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -29,8 +30,11 @@ public class Motor extends _Motor {
 		return list.get(0);
 		
 	}
-	
+
 	public static List<Motor> get(ObjectContext ctx, Expression filter) {
+	    return get(ctx, filter, 3);
+    }
+	public static List<Motor> get(ObjectContext ctx, Expression filter, int retries) {
 		SelectQuery query= new SelectQuery(Motor.class);
 		if (filter != null) {
 			query.andQualifier(filter);
@@ -40,7 +44,11 @@ public class Motor extends _Motor {
 			return (List<Motor>) ctx.performQuery(query);
 		} catch (Exception e) {
 			// try again
-			return (List<Motor>) ctx.performQuery(query);
+			if (retries > 0 && e.getCause() != null && e.getCause() instanceof CommunicationsException) {
+				return get(ctx, filter, retries-1);
+			}
+
+			throw e;
 		}
 	}
 	
