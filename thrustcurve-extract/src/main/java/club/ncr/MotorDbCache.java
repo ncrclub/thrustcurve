@@ -27,14 +27,15 @@ public class MotorDbCache {
     private final Motors motors;
 	private final MotorCases cases;
 	private final MotorManufacturers manufacturers;
+	private final MotorDiameters motorDiameters;
 	private final MotorCertOrgs certOrgs;
 	private final MotorTypes motorTypes;
 	private final MotorNames names;
 	private final MotorDataFormats dataFormats;
 
+	private Map<ImpulseDTO, MotorImpulse> impulses= new TreeMap<>();
 	private Map<ImpulseDTO, Set<Float>> diametersByImpulse= new TreeMap<>();
 	private Map<ImpulseDTO, Set<MotorName>> namesByImpulse = new TreeMap<>();
-	private Map<ImpulseDTO, MotorImpulse> impulses= new TreeMap<>();
 
 	private final ManufacturersCache manufacturersCache;
 	private final MotorCertOrgCache certOrgsCache;
@@ -71,6 +72,7 @@ public class MotorDbCache {
 		this.motors = new Motors(ctx);
 		this.cases = new MotorCases(ctx);
 		this.manufacturers = new MotorManufacturers(ctx);
+		this.motorDiameters = new MotorDiameters(ctx);
 		this.certOrgs = new MotorCertOrgs(ctx);
 		this.names = new MotorNames(ctx);
 		this.propellants = new MotorPropellants(ctx);
@@ -80,7 +82,7 @@ public class MotorDbCache {
 		this.manufacturersCache = new ManufacturersCache(manufacturers, this.autoCreate);
 		this.motorNames = new MotorNameCache(names, this.autoCreate);
 		this.types = new MotorTypeCache(motorTypes, this.autoCreate);
-		this.diameters = new MotorDiameterCache(new MotorDiameters(ctx), this.autoCreate);
+		this.diameters = new MotorDiameterCache(motorDiameters, this.autoCreate);
 		this.propellantsCache = new MotorPropellantCache(propellants, this.autoCreate);
 		this.certOrgsCache = new MotorCertOrgCache(certOrgs, this.autoCreate);
 		// this.casesCache = new MotorCaseCache(ctx, this.autoCreate);
@@ -118,7 +120,7 @@ public class MotorDbCache {
 		final Map<ImpulseDTO, Set<Float>> diametersByImpulse= new TreeMap<>();
 		final Map<ImpulseDTO, Set<MotorName>> namesByImpulse = new TreeMap<>();
 		final Map<ImpulseDTO, MotorImpulse> impulses= new TreeMap<>();
-		// final Map<String, MotorCaseDTO> cases= new TreeMap<>();
+		final Map<String, MotorCaseDTO> cases= new TreeMap<>();
 
 		// prime the impulses
 		for (ImpulseDTO impulse : ImpulseDTO.values()) {
@@ -129,19 +131,20 @@ public class MotorDbCache {
 
 		MotorImpulse.getAll(ctx).stream()
 			.forEach(i -> {
-				// Set<Float> diams = diametersByImpulse.get(i.getDto());
+				Set<Float> diams = diametersByImpulse.getOrDefault(i.getDto(), new TreeSet<>());
+				if (diams.isEmpty()) {
+					diametersByImpulse.put(i.getDto(), diams);
+				}
 
-                /*
 				for (Float diameter : i.getMotorDiameters()) {
-					// diams.add(diameter);
+					diams.add(diameter);
 					for (MotorCase motorCase : i.getMotorCases(diameter)) {
 						for (MotorCaseMfg mcm : motorCase.getMotorCaseManufacturer()) {
+							cases.put(motorCase.uuid(), new MotorCaseDTO(motorCase, new MotorManufacturerDTO(mcm.getMotorManufacturer())));
 
-							// cases.put(motorCase.uuid(), motorCase);
 						}
 					}
 				}
-                 */
 
 				for (MotorName motorName : i.getMotorNames()) {
 					Set<MotorName> names = namesByImpulse.getOrDefault(i.getDto(), new TreeSet<>());
@@ -222,11 +225,6 @@ public class MotorDbCache {
 		MotorName record= motorNames.get(name);
 		if (record == null && autoCreate) {
 			record= names.createNew(name, impulse);
-			Set names = namesByImpulse.getOrDefault(impulse.getDto(), new TreeSet<>());
-			if (names.isEmpty()) {
-			    namesByImpulse.put(impulse.getDto(), names);
-			}
-			names.add(record);
 			motorNames.put(name, record);
 		}
 		return record;

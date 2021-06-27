@@ -1,6 +1,7 @@
 package club.ncr.cayenne.dao;
 
 import club.ncr.cayenne.DAO;
+import club.ncr.cayenne.func.Retry;
 import club.ncr.cayenne.model.MotorType;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
@@ -37,7 +38,7 @@ public class MotorTypes implements DAO<MotorType> {
             query.andQualifier(filter);
         }
         query.addOrdering(new Ordering(MotorType.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
-        return (List<MotorType>)ctx.performQuery(query);
+        return new Retry<>(() -> ctx.performQuery(query)).execute(3);
     }
 
     @Override
