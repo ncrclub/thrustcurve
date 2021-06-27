@@ -1,6 +1,7 @@
 package club.ncr.cayenne.dao;
 
 import club.ncr.cayenne.DAO;
+import club.ncr.cayenne.func.Retry;
 import club.ncr.cayenne.model.MotorCase;
 import club.ncr.cayenne.model.MotorImpulse;
 import club.ncr.cayenne.model.MotorMfg;
@@ -77,14 +78,18 @@ public class MotorCases implements DAO<MotorCase> {
         return get(filter).stream().collect(Collectors.toMap(k -> k.uuid(), v -> v));
     }
 
-    @Override
     public List<MotorCase> get(Expression filter) {
+        return get(Optional.ofNullable(filter));
+    }
+
+    @Override
+    public List<MotorCase> get(Optional<Expression> filter) {
         SelectQuery query= new SelectQuery(MotorCase.class);
-        if (filter != null) {
-            query.andQualifier(filter);
+        if (filter != null && filter.isPresent()) {
+            query.andQualifier(filter.get());
         }
         query.addOrdering(new Ordering(MotorCase.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
-        return (List<MotorCase>)ctx.performQuery(query);
+        return new Retry<>(() -> ctx.performQuery(query)).execute(3);
     }
 
     @Override

@@ -16,6 +16,7 @@ import org.thrustcurve.api.data.TCMotorData;
 import org.thrustcurve.api.data.TCMotorRecord;
 import org.thrustcurve.api.search.SearchResults;
 
+import javax.swing.text.html.Option;
 import java.io.PrintStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -178,7 +179,7 @@ public class MotorDbCache {
 	}
 
 	public List<Motor> all() {
-		return motors.get(null);
+		return motors.get(Optional.empty());
 	}
 
 	public MotorMfg getManufacturer(String name, String abbv) {
@@ -195,7 +196,7 @@ public class MotorDbCache {
 
 	public MotorCertOrg getCertOrganization(String org) {
 		checkCache(false);
-		MotorCertOrg record= certOrgs.get(MotorCertOrg.NAME.eq(org)).stream().findFirst().orElse(null);
+		MotorCertOrg record= certOrgs.get(Optional.of(MotorCertOrg.NAME.eq(org))).stream().findFirst().orElse(null);
 		
 		if (record == null && autoCreate) {
 			record= certOrgs.createNew(org);
@@ -404,7 +405,7 @@ public class MotorDbCache {
 				.andExp(ExpressionFactory.matchExp(Motor.COMMON_NAME.getName(), name))
 				;
 
-		Motor motor = motors.get(where).stream().findFirst().orElse(null);
+		Motor motor = motors.get(Optional.of(where)).stream().findFirst().orElse(null);
 
 		if (motor == null) {
 			motor = motors.createNew(

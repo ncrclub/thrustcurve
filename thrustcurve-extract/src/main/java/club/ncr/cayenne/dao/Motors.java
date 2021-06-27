@@ -24,27 +24,32 @@ public class Motors implements DAO<Motor> {
 	}
 
 	public Optional<Motor> getByExternalId(String id) {
-		return get(ExpressionFactory.matchExp(Motor.EXTERNAL_ID.getName(), id)).stream().findFirst();
+		return get(Optional.of(Motor.EXTERNAL_ID.eq(id))).stream().findFirst();
 	}
 
 	@Override
 	public List<Motor> getAll() {
-		return get((Expression)null, 3);
+		return get(Optional.empty(), 3);
 	}
 
 	@Override
 	public Map<String, Motor> getMap(Expression filter) {
-		return get(filter).stream().collect(Collectors.toMap(k -> k.getExternalId(), v -> v));
+		return get(Optional.ofNullable(filter)).stream().collect(Collectors.toMap(k -> k.getExternalId(), v -> v));
 	}
 
 	public List<Motor> get(Expression filter) {
+		return get(Optional.ofNullable(filter), 3);
+	}
+
+	@Override
+	public List<Motor> get(Optional<Expression> filter) {
 	    return get(filter, 3);
     }
 
-	public List<Motor> get(Expression filter, int retries) {
+	public List<Motor> get(Optional<Expression> filter, int retries) {
 		SelectQuery query= new SelectQuery(Motor.class);
-		if (filter != null) {
-			query.andQualifier(filter);
+		if (filter != null && filter.isPresent()) {
+			query.andQualifier(filter.get());
 		}
 		query.addOrdering(new Ordering(Motor.COMMON_NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
         return new Retry<>(() -> ctx.performQuery(query)).execute(retries);

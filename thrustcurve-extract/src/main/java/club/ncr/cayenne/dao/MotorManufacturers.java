@@ -1,6 +1,7 @@
 package club.ncr.cayenne.dao;
 
 import club.ncr.cayenne.DAO;
+import club.ncr.cayenne.func.Retry;
 import club.ncr.cayenne.model.MotorMfg;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
@@ -9,10 +10,7 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MotorManufacturers implements DAO<MotorMfg> {
 
@@ -31,24 +29,24 @@ public class MotorManufacturers implements DAO<MotorMfg> {
         return record;
     }
 
-    @Override
     public List<MotorMfg> get(Expression filter) {
+        return get(Optional.ofNullable(filter));
+    }
+
+    @Override
+    public List<MotorMfg> get(Optional<Expression> filter) {
         SelectQuery query= new SelectQuery(MotorMfg.class);
-        if (filter != null) {
-            query.andQualifier(filter);
+        if (filter != null && filter.isPresent()) {
+            query.andQualifier(filter.get());
         }
         query.addOrdering(new Ordering(MotorMfg.NAME.getName(), SortOrder.ASCENDING));
-        try {
-            return (List<MotorMfg>) ctx.performQuery(query);
-        } catch (CayenneRuntimeException err) {
-            return (List<MotorMfg>) ctx.performQuery(query);
-        }
+        return new Retry<>(() -> ctx.performQuery(query)).execute(3);
     }
 
     @Override
     public Map<String, MotorMfg> getMap(Expression filter) {
-        HashMap<String, MotorMfg> map= new HashMap<String, MotorMfg>();
-        for (MotorMfg mfg : get(filter)) {
+        Map<String, MotorMfg> map= new HashMap<>();
+        for (MotorMfg mfg : get(Optional.ofNullable(filter))) {
             map.put(mfg.getName(), mfg);
         }
         return map;
@@ -56,6 +54,6 @@ public class MotorManufacturers implements DAO<MotorMfg> {
 
     @Override
     public Collection<MotorMfg> getAll() {
-        return get((Expression)null);
+        return get(Optional.empty());
     }
 }

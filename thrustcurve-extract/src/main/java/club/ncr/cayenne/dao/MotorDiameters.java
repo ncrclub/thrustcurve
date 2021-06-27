@@ -12,6 +12,7 @@ import org.apache.cayenne.query.SortOrder;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class MotorDiameters implements DAO<MotorDiameter> {
 
@@ -34,10 +35,10 @@ public class MotorDiameters implements DAO<MotorDiameter> {
     }
 
     @Override
-    public List<MotorDiameter> get(Expression filter) {
+    public List<MotorDiameter> get(Optional<Expression> filter) {
         SelectQuery query= new SelectQuery(MotorDiameter.class);
-        if (filter != null) {
-            query.andQualifier(filter);
+        if (filter != null && filter.isPresent()) {
+            query.andQualifier(filter.get());
         }
         query.addOrdering(new Ordering(MotorDiameter.DIAMETER.getName(), SortOrder.ASCENDING));
         return (List<MotorDiameter>)ctx.performQuery(query);
@@ -45,8 +46,8 @@ public class MotorDiameters implements DAO<MotorDiameter> {
 
     @Override
     public HashMap<String, MotorDiameter> getMap(Expression filter) {
-        HashMap<String, MotorDiameter> map= new HashMap<String, MotorDiameter>();
-        for (MotorDiameter diam : get(filter)) {
+        HashMap<String, MotorDiameter> map= new HashMap<>();
+        for (MotorDiameter diam : get(Optional.ofNullable(filter))) {
             map.put(""+ diam.getDiameter(), diam);
         }
         return map;
@@ -54,6 +55,6 @@ public class MotorDiameters implements DAO<MotorDiameter> {
 
     @Override
     public Collection<MotorDiameter> getAll() {
-        return this.get((Expression)null);
+        return this.get(Optional.empty());
     }
 }

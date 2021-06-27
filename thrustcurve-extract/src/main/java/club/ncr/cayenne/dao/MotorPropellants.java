@@ -9,10 +9,7 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class MotorPropellants implements DAO<MotorPropellant> {
@@ -43,10 +40,10 @@ public class MotorPropellants implements DAO<MotorPropellant> {
     }
 
     @Override
-    public List<MotorPropellant> get(Expression filter) {
+    public List<MotorPropellant> get(Optional<Expression> filter) {
         SelectQuery query= new SelectQuery(MotorPropellant.class);
-        if (filter != null) {
-            query.andQualifier(filter);
+        if (filter != null && filter.isPresent()) {
+            query.andQualifier(filter.get());
         }
         query.addOrdering(new Ordering(MotorPropellant.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
         return (List<MotorPropellant>)ctx.performQuery(query);
@@ -54,19 +51,19 @@ public class MotorPropellants implements DAO<MotorPropellant> {
 
     @Override
     public Collection<MotorPropellant> getAll() {
-        return get((Expression)null);
+        return get(Optional.empty());
     }
 
     @Override
     public Map<String, MotorPropellant> getMap(Expression filter) {
         HashMap<String, MotorPropellant> map= new HashMap<String, MotorPropellant>();
-        for (MotorPropellant prop : get(filter)) {
+        for (MotorPropellant prop : get(Optional.ofNullable(filter))) {
             map.put(prop.getName(), prop);
         }
         return map;
     }
 
     public boolean exists(String name) {
-        return !get(MotorPropellant.NAME.eq(name)).isEmpty();
+        return !get(Optional.of(MotorPropellant.NAME.eq(name))).isEmpty();
     }
 }

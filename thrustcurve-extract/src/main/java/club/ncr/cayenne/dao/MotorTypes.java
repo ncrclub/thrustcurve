@@ -9,10 +9,7 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MotorTypes implements DAO<MotorType> {
 
@@ -32,10 +29,10 @@ public class MotorTypes implements DAO<MotorType> {
     }
 
     @Override
-    public List<MotorType> get(Expression filter) {
+    public List<MotorType> get(Optional<Expression> filter) {
         SelectQuery query= new SelectQuery(MotorType.class);
-        if (filter != null) {
-            query.andQualifier(filter);
+        if (filter != null && filter.isPresent()) {
+            query.andQualifier(filter.get());
         }
         query.addOrdering(new Ordering(MotorType.NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
         return new Retry<>(() -> ctx.performQuery(query)).execute(3);
@@ -43,13 +40,13 @@ public class MotorTypes implements DAO<MotorType> {
 
     @Override
     public Collection<MotorType> getAll() {
-        return this.get((Expression)null);
+        return this.get(Optional.empty());
     }
 
     @Override
     public Map<String, MotorType> getMap(Expression filter) {
         Map<String, MotorType> map= new HashMap<>();
-        for (MotorType type : get(filter)) {
+        for (MotorType type : get(Optional.ofNullable(filter))) {
             map.put(type.getName(), type);
         }
         return map;

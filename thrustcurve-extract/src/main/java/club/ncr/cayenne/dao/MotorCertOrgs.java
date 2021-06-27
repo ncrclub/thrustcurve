@@ -8,10 +8,7 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MotorCertOrgs implements DAO<MotorCertOrg> {
 
@@ -31,10 +28,10 @@ public class MotorCertOrgs implements DAO<MotorCertOrg> {
     }
 
     @Override
-    public List<MotorCertOrg> get(Expression filter) {
+    public List<MotorCertOrg> get(Optional<Expression> filter) {
         SelectQuery query= new SelectQuery(MotorCertOrg.class);
-        if (filter != null) {
-            query.andQualifier(filter);
+        if (filter != null && filter.isPresent()) {
+            query.andQualifier(filter.get());
         }
         query.addOrdering(new Ordering(MotorCertOrg.NAME.getName(), SortOrder.ASCENDING));
         return (List<MotorCertOrg>)ctx.performQuery(query);
@@ -42,13 +39,13 @@ public class MotorCertOrgs implements DAO<MotorCertOrg> {
 
     @Override
     public Collection<MotorCertOrg> getAll() {
-        return this.get((Expression)null);
+        return this.get(Optional.empty());
     }
 
     @Override
     public Map<String, MotorCertOrg> getMap(Expression filter) {
         HashMap<String, MotorCertOrg> map= new HashMap<String, MotorCertOrg>();
-        for (MotorCertOrg org : get(filter)) {
+        for (MotorCertOrg org : get(Optional.ofNullable(filter))) {
             map.put(org.getName(), org);
         }
         return map;
