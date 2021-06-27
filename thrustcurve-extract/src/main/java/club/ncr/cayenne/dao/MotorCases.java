@@ -1,5 +1,6 @@
 package club.ncr.cayenne.dao;
 
+import club.ncr.cayenne.DAO;
 import club.ncr.cayenne.model.MotorCase;
 import club.ncr.cayenne.model.MotorImpulse;
 import club.ncr.cayenne.model.MotorMfg;
@@ -13,17 +14,14 @@ import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class MotorCases { // extends CayenneRecordCache<String, MotorCase> {
+public class MotorCases implements DAO<MotorCase> {
 
     private final ObjectContext ctx;
-    // public Map<String, MotorCaseDTO> dtos= new TreeMap<>();
-    // private final MotorCaseCache cache;
 
     public MotorCases(ObjectContext ctx) {
-        // super(ctx, false);
         this.ctx = ctx;
-        // this.cache = new MotorCaseCache(ctx, false);
     }
 
     public MotorCase getOrCreate(String name, MotorMfg mfg, MotorDiameter diameter, MotorImpulse impulse) {
@@ -74,6 +72,12 @@ public class MotorCases { // extends CayenneRecordCache<String, MotorCase> {
         return record;
     }
 
+    @Override
+    public Map<String, MotorCase> getMap(Expression filter) {
+        return get(filter).stream().collect(Collectors.toMap(k -> k.uuid(), v -> v));
+    }
+
+    @Override
     public List<MotorCase> get(Expression filter) {
         SelectQuery query= new SelectQuery(MotorCase.class);
         if (filter != null) {
@@ -83,7 +87,7 @@ public class MotorCases { // extends CayenneRecordCache<String, MotorCase> {
         return (List<MotorCase>)ctx.performQuery(query);
     }
 
-    //@Override
+    @Override
     public Collection<MotorCase> getAll() {
         return get((Expression)null);
     }

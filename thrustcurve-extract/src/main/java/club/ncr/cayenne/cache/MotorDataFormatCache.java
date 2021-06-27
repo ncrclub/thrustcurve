@@ -1,19 +1,15 @@
 package club.ncr.cayenne.cache;
 
+import club.ncr.cayenne.dao.MotorDataFormats;
 import club.ncr.cayenne.model.MotorDataFormat;
-import org.apache.cayenne.ObjectContext;
 
-import java.util.Collection;
+public class MotorDataFormatCache extends RecordCache<String, MotorDataFormat> {
 
-public class MotorDataFormatCache extends CayenneRecordCache<String, MotorDataFormat> {
+    private final MotorDataFormats ctx;
 
-    public MotorDataFormatCache(ObjectContext ctx, boolean autoCreate) {
+    public MotorDataFormatCache(MotorDataFormats ctx, boolean autoCreate) {
         super(ctx, autoCreate);
-    }
-
-    @Override
-    public Collection<MotorDataFormat> getAll() {
-        return MotorDataFormat.get(context(), null);
+        this.ctx = ctx;
     }
 
     @Override
@@ -25,7 +21,7 @@ public class MotorDataFormatCache extends CayenneRecordCache<String, MotorDataFo
         MotorDataFormat record= super.get(key);
 
         if (record == null && autoCreate()) {
-            record= MotorDataFormat.createNew(key, extension, context());
+            record= ctx.createNew(key, extension);
             put(key, record);
         }
 

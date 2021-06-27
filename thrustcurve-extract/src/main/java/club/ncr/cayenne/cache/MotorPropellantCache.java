@@ -1,21 +1,18 @@
 package club.ncr.cayenne.cache;
 
+import club.ncr.cayenne.dao.MotorPropellants;
 import club.ncr.cayenne.model.MotorPropellant;
 import club.ncr.cayenne.model.MotorType;
-import org.apache.cayenne.ObjectContext;
 
-import java.util.Collection;
+public class MotorPropellantCache extends RecordCache<String, MotorPropellant> {
 
-public class MotorPropellantCache extends CayenneRecordCache<String, MotorPropellant> {
+    private final MotorPropellants dao;
 
-    public MotorPropellantCache(ObjectContext ctx, boolean autoCreate) {
-        super(ctx, autoCreate);
+    public MotorPropellantCache(MotorPropellants dao, boolean autoCreate) {
+        super(dao, autoCreate);
+        this.dao = dao;
     }
 
-    @Override
-    public Collection<MotorPropellant> getAll() {
-        return MotorPropellant.get(context(), null);
-    }
 
     @Override
     public String key(MotorPropellant value) {
@@ -26,7 +23,7 @@ public class MotorPropellantCache extends CayenneRecordCache<String, MotorPropel
         MotorPropellant record= super.get(name);
 
         if (record == null && autoCreate()) {
-            record= MotorPropellant.createNew(name, type.getName(), context());
+            record= dao.createNew(name, type.getName());
             put(name, record);
         }
 

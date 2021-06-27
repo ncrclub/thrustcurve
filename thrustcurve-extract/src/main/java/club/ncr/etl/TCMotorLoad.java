@@ -71,7 +71,7 @@ public class TCMotorLoad {
 
 				} else if (results.size() >= 49) {
 
-					for (MotorMfg mfg : cache.getManufacturers()) {
+					for (MotorMfg mfg : cache.getManufacturersCache()) {
 						criteria= new  SearchCriteria();
 						criteria.impulseClass(imp.getImpulse());
 

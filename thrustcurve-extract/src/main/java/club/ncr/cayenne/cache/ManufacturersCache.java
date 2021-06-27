@@ -1,15 +1,16 @@
 package club.ncr.cayenne.cache;
 
+import club.ncr.cayenne.dao.MotorManufacturers;
 import club.ncr.cayenne.model.MotorMfg;
-import org.apache.cayenne.ObjectContext;
 
-import java.util.Collection;
-
-public class ManufacturersCache extends CayenneRecordCache<String, MotorMfg> {
+public class ManufacturersCache extends RecordCache<String, MotorMfg> {
 
 
-    public ManufacturersCache(ObjectContext ctx, boolean autoCreate) {
-        super(ctx, autoCreate);
+    private final MotorManufacturers source;
+
+    public ManufacturersCache(MotorManufacturers dao, boolean autoCreate) {
+        super(dao, autoCreate);
+        this.source = dao;
     }
 
     public MotorMfg getByAbbreviation(String abbv) {
@@ -31,18 +32,12 @@ public class ManufacturersCache extends CayenneRecordCache<String, MotorMfg> {
         MotorMfg record= super.get(name);
 
         if (record == null && autoCreate) {
-            record= MotorMfg.createNew(name, abbv, context());
+            record= source.createNew(name, abbv);
             put(name, record);
         }
 
         return record;
     }
-
-    @Override
-    public Collection<MotorMfg> getAll() {
-        return MotorMfg.get(context(), null);
-    }
-
 
     @Override
     public String key(MotorMfg value) {

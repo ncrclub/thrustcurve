@@ -1,8 +1,7 @@
 package club.ncr;
 
 import club.ncr.cayenne.cache.*;
-import club.ncr.cayenne.dao.MotorCases;
-import club.ncr.cayenne.dao.Motors;
+import club.ncr.cayenne.dao.*;
 import club.ncr.cayenne.model.*;
 import club.ncr.dto.MotorCaseDTO;
 import club.ncr.dto.MotorManufacturerDTO;
@@ -27,17 +26,24 @@ public class MotorDbCache {
 
     private final Motors motors;
 	private final MotorCases cases;
+	private final MotorManufacturers manufacturers;
+	private final MotorCertOrgs certOrgs;
+	private final MotorTypes motorTypes;
+	private final MotorNames names;
+	private final MotorDataFormats dataFormats;
 
-	private final ManufacturersCache manufacturers;
-	private final MotorCertOrgCache certOrgs;
-	private final MotorDiameterCache diameters;
-	private final MotorNameCache motorNames;
 	private Map<ImpulseDTO, Set<Float>> diametersByImpulse= new TreeMap<>();
 	private Map<ImpulseDTO, Set<MotorName>> namesByImpulse = new TreeMap<>();
 	private Map<ImpulseDTO, MotorImpulse> impulses= new TreeMap<>();
-	private final MotorPropellantCache propellants;
+
+	private final ManufacturersCache manufacturersCache;
+	private final MotorCertOrgCache certOrgsCache;
+	private final MotorDiameterCache diameters;
+	private final MotorNameCache motorNames;
+	private final MotorPropellants propellants;
+	private final MotorPropellantCache propellantsCache;
 	private final MotorTypeCache types;
-	private MotorDataFormatCache formats;
+	private final MotorDataFormatCache formats;
 
 	private final ObjectContext ctx;
 	private boolean autoCreate;
@@ -62,17 +68,23 @@ public class MotorDbCache {
 			this.runtime = ServerRuntime.builder().addConfig(cayenneConfigFile).build();
 		}
 		this.ctx = runtime.newContext();
-
-		this.manufacturers= new ManufacturersCache(ctx, this.autoCreate);
-		this.certOrgs = new MotorCertOrgCache(ctx, this.autoCreate);
-		this.motorNames = new MotorNameCache(ctx, this.autoCreate);
-		this.types = new MotorTypeCache(ctx, this.autoCreate);
-		this.diameters = new MotorDiameterCache(ctx, this.autoCreate);
-		this.propellants = new MotorPropellantCache(ctx, this.autoCreate);
-		// this.casesCache = new MotorCaseCache(ctx, this.autoCreate);
-		this.formats = new MotorDataFormatCache(ctx, this.autoCreate);
 		this.motors = new Motors(ctx);
 		this.cases = new MotorCases(ctx);
+		this.manufacturers = new MotorManufacturers(ctx);
+		this.certOrgs = new MotorCertOrgs(ctx);
+		this.names = new MotorNames(ctx);
+		this.propellants = new MotorPropellants(ctx);
+		this.motorTypes = new MotorTypes(ctx);
+		this.dataFormats = new MotorDataFormats(ctx);
+
+		this.manufacturersCache = new ManufacturersCache(manufacturers, this.autoCreate);
+		this.motorNames = new MotorNameCache(names, this.autoCreate);
+		this.types = new MotorTypeCache(motorTypes, this.autoCreate);
+		this.diameters = new MotorDiameterCache(new MotorDiameters(ctx), this.autoCreate);
+		this.propellantsCache = new MotorPropellantCache(propellants, this.autoCreate);
+		this.certOrgsCache = new MotorCertOrgCache(certOrgs, this.autoCreate);
+		// this.casesCache = new MotorCaseCache(ctx, this.autoCreate);
+		this.formats = new MotorDataFormatCache(dataFormats, this.autoCreate);
 		asyncRefresh();
 	}
 
@@ -87,15 +99,15 @@ public class MotorDbCache {
 		return this;
 	}
 
-	public List<CayenneRecordCache> caches() {
+	public List<RecordCache> caches() {
 		return Arrays.asList(
-						manufacturers,
+				manufacturersCache,
 						formats,
-						certOrgs,
+						certOrgsCache,
 						motorNames,
 						types,
 						diameters,
-						propellants
+						propellantsCache
 		);
 	}
 
@@ -117,10 +129,11 @@ public class MotorDbCache {
 
 		MotorImpulse.getAll(ctx).stream()
 			.forEach(i -> {
-				Set<Float> diams = diametersByImpulse.get(i.getDto());
+				// Set<Float> diams = diametersByImpulse.get(i.getDto());
 
+                /*
 				for (Float diameter : i.getMotorDiameters()) {
-					diams.add(diameter);
+					// diams.add(diameter);
 					for (MotorCase motorCase : i.getMotorCases(diameter)) {
 						for (MotorCaseMfg mcm : motorCase.getMotorCaseManufacturer()) {
 
@@ -128,6 +141,7 @@ public class MotorDbCache {
 						}
 					}
 				}
+                 */
 
 				for (MotorName motorName : i.getMotorNames()) {
 					Set<MotorName> names = namesByImpulse.getOrDefault(i.getDto(), new TreeSet<>());
@@ -169,20 +183,20 @@ public class MotorDbCache {
 	}
 
 	public MotorMfg getManufacturer(String name, String abbv, boolean autoCreate) {
-		return manufacturers.get(name, abbv, autoCreate);
+		return manufacturersCache.get(name, abbv, autoCreate);
 	}
 
 	public MotorMfg getMfgByAbbreviation(String abbv) {
-		return manufacturers.getByAbbreviation(abbv);
+		return manufacturersCache.getByAbbreviation(abbv);
 	}
 
 	public MotorCertOrg getCertOrganization(String org) {
 		checkCache(false);
-		MotorCertOrg record= certOrgs.get(org);
+		MotorCertOrg record= certOrgs.get(MotorCertOrg.NAME.eq(org)).stream().findFirst().orElse(null);
 		
 		if (record == null && autoCreate) {
-			record= MotorCertOrg.createNew(org, ctx);
-			certOrgs.put(org, record);
+			record= certOrgs.createNew(org);
+			certOrgsCache.put(org, record);
 		}
 		
 		return record;
@@ -207,7 +221,7 @@ public class MotorDbCache {
 		checkCache(false);
 		MotorName record= motorNames.get(name);
 		if (record == null && autoCreate) {
-			record= MotorName.createNew(name, impulse, ctx);
+			record= names.createNew(name, impulse);
 			Set names = namesByImpulse.getOrDefault(impulse.getDto(), new TreeSet<>());
 			if (names.isEmpty()) {
 			    namesByImpulse.put(impulse.getDto(), names);
@@ -243,7 +257,7 @@ public class MotorDbCache {
 	public MotorPropellant getPropellant(String name) {
 		checkCache(false);
 
-		MotorPropellant record= propellants.get(name);
+		MotorPropellant record= propellantsCache.get(name);
 
 		if (record == null && autoCreate) {
 			String type = "AP";
@@ -259,11 +273,11 @@ public class MotorDbCache {
 
 	}
 	public MotorPropellant getPropellant(String name, String type) {
-		MotorPropellant record= propellants.get(name);
+		MotorPropellant record= propellantsCache.get(name);
 		if (record == null && autoCreate) {
-			record= MotorPropellant.createNew(name, type, ctx);
+			record= propellants.createNew(name, type);
         }
-		propellants.put(name, record);
+		propellantsCache.put(name, record);
 		return record;
 	}
 
@@ -272,7 +286,7 @@ public class MotorDbCache {
 		MotorType record= types.get(name);
 		
 		if (record == null && autoCreate) {
-			record= MotorType.createNew(name, ctx);
+			record= motorTypes.createNew(name);
 			types.put(name, record);
 		}
 		
@@ -284,7 +298,7 @@ public class MotorDbCache {
 		MotorDataFormat record= formats.get(name);
 		
 		if (record == null && autoCreate) {
-			record= MotorDataFormat.createNew(name, null, ctx);
+			record= dataFormats.createNew(name, null);
 			formats.put(name, record);
 		}
 		
@@ -292,8 +306,8 @@ public class MotorDbCache {
 	}
 
 	
-	public Collection<MotorMfg> getManufacturers() {
-	    return manufacturers.values();
+	public Collection<MotorMfg> getManufacturersCache() {
+	    return manufacturersCache.values();
 	}
 	public Collection<MotorCaseDTO> getMotorCases() { return cases.getAll().stream().flatMap(c -> c.getMotorCaseManufacturer().stream().map(m -> new MotorCaseDTO(c, new MotorManufacturerDTO(m.getMotorManufacturer())))).collect(Collectors.toList()); }
 	public List<MotorCaseDTO> getMotorCases(Float diameter, ImpulseDTO impulse) {
@@ -330,7 +344,7 @@ public class MotorDbCache {
 		return filtered;
 
 	}
-	public Collection<MotorCertOrg> getCertOrganizations() { return certOrgs.values(); }
+	public Collection<MotorCertOrg> getCertOrganizations() { return certOrgsCache.values(); }
 	public Collection<MotorDiameter> getDiameters() { return diameters.values(); }
 	public Set<Float> getDiameters(ImpulseDTO impulse) {
 		checkCache(false);
@@ -341,7 +355,7 @@ public class MotorDbCache {
 	public Stream<ImpulseDTO> streamImpulses() { return Arrays.stream(ImpulseDTO.values()); }
 	public Collection<MotorName> getMotorNames() { return motorNames.values(); }
 	public Collection<MotorName> getMotorNames(ImpulseDTO impulse) { return namesByImpulse.get(impulse); }
-	public Collection<MotorPropellant> getPropellants() { return propellants.values(); }
+	public Collection<MotorPropellant> getPropellants() { return propellantsCache.values(); }
 	public Collection<MotorType> getMotorTypes() { return types.values(); }
 
 
@@ -591,7 +605,7 @@ public class MotorDbCache {
 
 			// 2021-05-17 fix/prevent bad data
 			// caught what looks like a mixed-up field/value for propellant/motor_case
-			if ("".equals(record.getPropellant()) && MotorPropellant.exists(ctx, record.getMotorCase())) {
+			if ("".equals(record.getPropellant()) && propellants.exists(record.getMotorCase())) {
 				prop= getPropellant(record.getMotorCase());
 				motorCase= cases.getOrCreate(record.getPropellant(), mfg, diameter, impulse);
 			} else {
@@ -651,7 +665,7 @@ public class MotorDbCache {
 		Expression filter = MotorMfg.NAME.containsIgnoreCase(manufacturer)
 				.orExp(MotorMfg.ABBREVIATION.containsIgnoreCase(manufacturer));
 
-		return MotorMfg.get(ctx, filter);
+		return manufacturers.get(filter);
 	}
 
 

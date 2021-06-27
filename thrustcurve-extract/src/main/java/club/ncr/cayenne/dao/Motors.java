@@ -1,5 +1,6 @@
 package club.ncr.cayenne.dao;
 
+import club.ncr.cayenne.DAO;
 import club.ncr.cayenne.func.Retry;
 import club.ncr.cayenne.model.*;
 import club.ncr.cayenne.select.Builder;
@@ -11,11 +12,10 @@ import org.apache.cayenne.query.Orderings;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.query.SortOrder;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class Motors {
+public class Motors implements DAO<Motor> {
 
 	private final ObjectContext ctx;
 
@@ -24,14 +24,19 @@ public class Motors {
 	}
 
 	public Optional<Motor> getByExternalId(String id) {
-		List<Motor> list= get(ExpressionFactory.matchExp(Motor.EXTERNAL_ID.getName(), id));
-		if (list.size() == 0) { return Optional.empty(); }
-		return Optional.of(list.get(0));
+		return get(ExpressionFactory.matchExp(Motor.EXTERNAL_ID.getName(), id)).stream().findFirst();
 	}
 
+	@Override
 	public List<Motor> getAll() {
-		return get(null, 3);
+		return get((Expression)null, 3);
 	}
+
+	@Override
+	public Map<String, Motor> getMap(Expression filter) {
+		return get(filter).stream().collect(Collectors.toMap(k -> k.getExternalId(), v -> v));
+	}
+
 	public List<Motor> get(Expression filter) {
 	    return get(filter, 3);
     }
@@ -44,17 +49,6 @@ public class Motors {
 		query.addOrdering(new Ordering(Motor.COMMON_NAME.getName(), SortOrder.ASCENDING_INSENSITIVE));
         return new Retry<>(() -> ctx.performQuery(query)).execute(retries);
 	}
-
-	/*
-	public static HashMap<String, Motor> getMap(ObjectContext ctx, Expression filter) {
-		HashMap<String, Motor> map= new HashMap<>();
-		for (Motor motor : get(ctx, filter)) {
-			map.put(motor.getManufacturer().getName() +"/"+ motor.getCommonName() +"/"+ motor.getDiameter().getDiameter() +"/"+ motor.getPropellant().getName(), motor);
-		}
-		return map;
-	}
-
-	 */
 
 	public Motor createNew(String source, String externalId, MotorMfg manufacturer, MotorName name, MotorType type, MotorImpulse impulse, MotorDiameter diameter, MotorCase motorCase, MotorPropellant propellant, MotorCertOrg certOrg) {
 

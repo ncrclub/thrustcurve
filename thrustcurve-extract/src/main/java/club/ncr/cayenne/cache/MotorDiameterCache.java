@@ -1,19 +1,15 @@
 package club.ncr.cayenne.cache;
 
+import club.ncr.cayenne.dao.MotorDiameters;
 import club.ncr.cayenne.model.MotorDiameter;
-import org.apache.cayenne.ObjectContext;
 
-import java.util.Collection;
+public class MotorDiameterCache extends RecordCache<Float, MotorDiameter> {
 
-public class MotorDiameterCache extends CayenneRecordCache<Float, MotorDiameter> {
+    private final MotorDiameters source;
 
-    public MotorDiameterCache(ObjectContext ctx, boolean autoCreate) {
-        super(ctx, autoCreate);
-    }
-
-    @Override
-    public Collection<MotorDiameter> getAll() {
-        return MotorDiameter.get(context(), null);
+    public MotorDiameterCache(MotorDiameters dao, boolean autoCreate) {
+        super(dao, autoCreate);
+        this.source = dao;
     }
 
     @Override
@@ -25,8 +21,7 @@ public class MotorDiameterCache extends CayenneRecordCache<Float, MotorDiameter>
         MotorDiameter record= super.get(key);
 
         if (record == null && autoCreate()) {
-            record= MotorDiameter.createNew(key, context());
-            put(key, record);
+            put(key, record = source.createNew(key));
         }
 
         return record;

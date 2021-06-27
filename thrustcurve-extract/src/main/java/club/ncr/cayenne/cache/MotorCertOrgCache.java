@@ -1,20 +1,17 @@
 package club.ncr.cayenne.cache;
 
+import club.ncr.cayenne.dao.MotorCertOrgs;
 import club.ncr.cayenne.model.MotorCertOrg;
-import org.apache.cayenne.ObjectContext;
 
-import java.util.Collection;
 import java.util.Optional;
 
-public class MotorCertOrgCache extends CayenneRecordCache<String, MotorCertOrg> {
+public class MotorCertOrgCache extends RecordCache<String, MotorCertOrg> {
 
-    public MotorCertOrgCache(ObjectContext ctx, boolean autoCreate) {
+    private final MotorCertOrgs ctx;
+
+    public MotorCertOrgCache(MotorCertOrgs ctx, boolean autoCreate) {
         super(ctx, autoCreate);
-    }
-
-    @Override
-    public Collection<MotorCertOrg> getAll() {
-        return MotorCertOrg.get(context(), null);
+        this.ctx = ctx;
     }
 
     @Override
@@ -26,7 +23,7 @@ public class MotorCertOrgCache extends CayenneRecordCache<String, MotorCertOrg> 
         MotorCertOrg record= super.get(name);
 
         if (record == null && autoCreate()) {
-            record= MotorCertOrg.createNew(name, context());
+            record= ctx.createNew(name);
             put(name, record);
         }
 

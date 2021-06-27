@@ -20,6 +20,8 @@ import static club.ncr.cayenne.select.Builder.select;
 
 public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 
+	/*
+	@Deprecated
 	public static MotorMfg createNew(String manufacturer, String abbreviation, ObjectContext ctx) {
 		MotorMfg record= new MotorMfg();
 		ctx.registerNewObject(record);
@@ -28,7 +30,8 @@ public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 		ctx.commitChanges();
 		return record;
 	}
-	
+
+	@Deprecated
 	public static List<MotorMfg> get(ObjectContext ctx, Expression filter) {
 		SelectQuery query= new SelectQuery(MotorMfg.class);
 		if (filter != null) {
@@ -41,7 +44,10 @@ public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 			return (List<MotorMfg>) ctx.performQuery(query);
 		}
 	}
-	
+
+	 */
+
+	/*
 	public static HashMap<String, MotorMfg> getNameMap(ObjectContext ctx, Expression filter) {
 		HashMap<String, MotorMfg> map= new HashMap<String, MotorMfg>();
 		for (MotorMfg mfg : get(ctx, filter)) {
@@ -49,6 +55,7 @@ public class MotorMfg extends _MotorMfg implements Comparable<MotorMfg> {
 		}
 		return map;
 	}
+	 */
 	
 	public JsonValue toJsonValue() {
 		JsonObject json= new JsonObject();

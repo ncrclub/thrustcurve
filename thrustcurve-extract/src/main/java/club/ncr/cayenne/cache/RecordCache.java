@@ -1,25 +1,24 @@
 package club.ncr.cayenne.cache;
 
+import club.ncr.cayenne.DAO;
 import org.apache.cayenne.BaseDataObject;
-import org.apache.cayenne.ObjectContext;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
-public abstract class CayenneRecordCache<K extends Comparable<K>, V extends BaseDataObject> {
+public abstract class RecordCache<K extends Comparable<K>, V extends BaseDataObject> {
 
-    public abstract Collection<V> getAll();
+    private final DAO<V> dao;
+    private Map<K, V> cache = new TreeMap<>();
+    private boolean autoCreate;
+
     public abstract K key(V value);
 
-    private Map<K, V> cache = new TreeMap<>();
 
-    private boolean autoCreate;
-    private final ObjectContext ctx;
-
-    public CayenneRecordCache(ObjectContext ctx, boolean autoCreate) {
+    public RecordCache(DAO<V> dao, boolean autoCreate) {
         this.autoCreate = autoCreate;
-        this.ctx = ctx;
+        this.dao = dao;
     }
 
     public void put(K key, V value) {
@@ -32,13 +31,15 @@ public abstract class CayenneRecordCache<K extends Comparable<K>, V extends Base
         cache.put(key, value);
     }
 
+    public Collection<V> update(Collection<V> values) {
+        if (values != null) {
+            values.forEach(v -> put(key(v), v));
+        }
+        return values;
+    }
 
     public void refresh() {
-        final Map<K, V> cache= new TreeMap<>();
-        for (V val : getAll()) {
-            cache.put(key(val), val);
-        }
-        this.cache = cache;
+        update(dao.getAll());
     }
 
     public void setAutoCreate(boolean autoCreate) {
@@ -63,13 +64,13 @@ public abstract class CayenneRecordCache<K extends Comparable<K>, V extends Base
         return cache.values();
     }
 
-    protected ObjectContext context() {
-        return ctx;
-    }
-
     public int size() {
         return cache.size();
     }
 
-
+    /*
+    public CayenneDao<V> dao() {
+        return dao;
+    }
+     */
 }

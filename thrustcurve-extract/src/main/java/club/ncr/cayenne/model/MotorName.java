@@ -9,40 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MotorName extends _MotorName implements Comparable {
-
-	public static MotorName createNew(String commonName, MotorImpulse impulse, ObjectContext ctx) {
-		// TODO Auto-generated method stub
-		MotorName record= new MotorName();
-		ctx.registerNewObject(record);
-		record.setName(commonName);
-		record.setImpulse(impulse);
-		ctx.commitChanges();
-		return record;
-		
-	}
-	
-	public static List<MotorName> get(ObjectContext ctx, Expression filter) {
-	
-		SelectQuery query= new SelectQuery(MotorName.class);
-		if (filter != null) {
-			query.andQualifier(filter);
-		}
-		query
-			.addOrderings(MotorImpulse.IMPULSE.asc()
-			.then(MotorName.NAME.ascInsensitive()));
-		return (List<MotorName>)ctx.performQuery(query);
-		
-		
-	}
-	
-	public static HashMap<String, MotorName> getMap(ObjectContext ctx, Expression filter) {
-		HashMap<String, MotorName> map= new HashMap<String, MotorName>();
-		for (MotorName name : get(ctx, filter)) {
-			map.put(""+ name.getName(), name);
-		}
-		return map;
-	}
-	
 	public int compareTo(Object o) {
 		if (o == null) { return 1; }
 		if (o instanceof Motor) {

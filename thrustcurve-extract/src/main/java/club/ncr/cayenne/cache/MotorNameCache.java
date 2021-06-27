@@ -1,20 +1,16 @@
 package club.ncr.cayenne.cache;
 
+import club.ncr.cayenne.dao.MotorNames;
 import club.ncr.cayenne.model.MotorImpulse;
 import club.ncr.cayenne.model.MotorName;
-import org.apache.cayenne.ObjectContext;
 
-import java.util.Collection;
+public class MotorNameCache extends RecordCache<String, MotorName> {
 
-public class MotorNameCache extends CayenneRecordCache<String, MotorName> {
+    private final MotorNames ctx;
 
-    public MotorNameCache(ObjectContext ctx, boolean autoCreate) {
+    public MotorNameCache(MotorNames ctx, boolean autoCreate) {
         super(ctx, autoCreate);
-    }
-
-    @Override
-    public Collection<MotorName> getAll() {
-        return MotorName.get(context(), null);
+        this.ctx = ctx;
     }
 
     @Override
@@ -26,7 +22,7 @@ public class MotorNameCache extends CayenneRecordCache<String, MotorName> {
         MotorName record= super.get(name);
 
         if (record == null && autoCreate()) {
-            record= MotorName.createNew(name, impulse, context());
+            record= ctx.createNew(name, impulse);
             put(name, record);
         }
 
