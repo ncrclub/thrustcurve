@@ -1,8 +1,9 @@
 package club.ncr.cayenne.model;
 
+import club.ncr.cayenne.dao.MotorCases;
 import club.ncr.cayenne.model.auto._MotorDiameter;
 import club.ncr.cayenne.dao.Motors;
-import club.ncr.dto.motor.ImpulseDTO;
+import club.ncr.dto.ImpulseDTO;
 import club.ncr.cayenne.select.Builder;
 import club.ncr.motors.QueryFilters;
 import org.apache.cayenne.ObjectContext;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDiameter> {
 
+	@Deprecated
 	public static MotorDiameter createNew(Float diameter, ObjectContext ctx) {
 		MotorDiameter record= new MotorDiameter();
 		ctx.registerNewObject(record);
@@ -28,8 +30,9 @@ public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDia
 		ctx.commitChanges();
 		return record;
 	}
-	
-	
+
+
+	@Deprecated
 	public static List<MotorDiameter> get(ObjectContext ctx, Expression filter) {
 		SelectQuery query= new SelectQuery(MotorDiameter.class);
 		if (filter != null) {
@@ -38,7 +41,8 @@ public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDia
 		query.addOrdering(new Ordering(MotorDiameter.DIAMETER.getName(), SortOrder.ASCENDING));
 		return (List<MotorDiameter>)ctx.performQuery(query);
 	}
-	
+
+	@Deprecated
 	public static HashMap<String, MotorDiameter> getMap(ObjectContext ctx, Expression filter) {
 		HashMap<String, MotorDiameter> map= new HashMap<String, MotorDiameter>();
 		for (MotorDiameter diam : get(ctx, filter)) {
@@ -47,6 +51,7 @@ public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDia
 		return map;
 	}
 
+	@Deprecated
 	public static SelectQuery select(Expression filter, Ordering orderBy) {
 		return Builder.select(MotorDiameter.class, filter, orderBy);
 	}
@@ -59,7 +64,7 @@ public class MotorDiameter extends _MotorDiameter implements Comparable<MotorDia
 	@Override
 	public List<MotorCase> getMotorCases() {
 		List<MotorCase> cases = new ArrayList<>(super.getMotorCases());
-		cases.addAll(MotorCase.get(getObjectContext(), MotorCase.MOTOR_DIAMETER.isNull()));
+		cases.addAll(new MotorCases(getObjectContext()).get(MotorCase.MOTOR_DIAMETER.isNull()));
 		return cases;
 	}
 

@@ -13,52 +13,7 @@ import java.util.List;
 public class MotorCase extends _MotorCase implements Comparable<MotorCase> {
 
 
-	@Deprecated
-	public static MotorCase getOrCreate(String name, MotorMfg mfg, MotorDiameter diameter, MotorImpulse impulse, ObjectContext ctx) {
 
-	    MotorCase exists = MotorCase.get(ctx, MotorCase.NAME.eq(name))
-				.stream()
-				.filter(c -> c.getMotorDiameter().equals(diameter))
-				// .filter(c -> c.getMotors().stream().filter(m -> m.getManufacturer().equals(mfg)).findFirst().isPresent())
-				.findFirst().orElse(null);
-
-	    if (exists != null) {
-
-	        MotorImpulse impulseRef = exists.getMotorCaseImpulses().stream()
-					.map(mci -> mci.getMotorImpulse())
-					.filter(i -> impulse.equals(i))
-                    .findFirst().orElse(null);
-
-	        if (impulseRef == null) {
-				MotorCaseImpulse mci = new MotorCaseImpulse();
-				mci.setMotorImpulse(impulse);
-				exists.addToMotorCaseImpulses(mci);
-				ctx.commitChanges();
-			}
-
-	    	return exists;
-		}
-
-		MotorCase record= new MotorCase();
-		ctx.registerNewObject(record);
-		record.setName(name);
-
-		record.setMotorDiameter(diameter);
-
-		MotorCaseImpulse mci = new MotorCaseImpulse();
-		mci.setMotorImpulse(impulse);
-		mci.setMotorCase(record);
-		record.addToMotorCaseImpulses(mci);
-
-		MotorCaseMfg mcm = new MotorCaseMfg();
-		mcm.setMotorManufacturer(mfg);
-		mcm.setMotorCase(record);
-		record.addToMotorCaseManufacturer(mcm);
-
-		ctx.commitChanges();
-		
-		return record;
-	}
 
 	@Deprecated
 	public static List<MotorCase> get(ObjectContext ctx, Expression filter) {

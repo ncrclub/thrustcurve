@@ -2,7 +2,7 @@ package club.ncr.etl;
 
 import club.ncr.cayenne.model.MotorDiameter;
 import club.ncr.cayenne.model.MotorImpulse;
-import club.ncr.dto.motor.ImpulseDTO;
+import club.ncr.dto.ImpulseDTO;
 import club.ncr.MotorDbCache;
 import club.ncr.cayenne.model.MotorMfg;
 import org.slf4j.Logger;

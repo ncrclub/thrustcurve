@@ -6,7 +6,7 @@ import club.ncr.cayenne.dao.Motors;
 import club.ncr.cayenne.model.*;
 import club.ncr.dto.MotorCaseDTO;
 import club.ncr.dto.MotorManufacturerDTO;
-import club.ncr.dto.motor.ImpulseDTO;
+import club.ncr.dto.ImpulseDTO;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.exp.Expression;
@@ -37,7 +37,6 @@ public class MotorDbCache {
 	private Map<ImpulseDTO, MotorImpulse> impulses= new TreeMap<>();
 	private final MotorPropellantCache propellants;
 	private final MotorTypeCache types;
-	private final MotorCaseCache casesCache;
 	private MotorDataFormatCache formats;
 
 	private final ObjectContext ctx;
@@ -70,7 +69,7 @@ public class MotorDbCache {
 		this.types = new MotorTypeCache(ctx, this.autoCreate);
 		this.diameters = new MotorDiameterCache(ctx, this.autoCreate);
 		this.propellants = new MotorPropellantCache(ctx, this.autoCreate);
-		this.casesCache = new MotorCaseCache(ctx, this.autoCreate);
+		// this.casesCache = new MotorCaseCache(ctx, this.autoCreate);
 		this.formats = new MotorDataFormatCache(ctx, this.autoCreate);
 		this.motors = new Motors(ctx);
 		this.cases = new MotorCases(ctx);
@@ -92,7 +91,6 @@ public class MotorDbCache {
 		return Arrays.asList(
 						manufacturers,
 						formats,
-						casesCache,
 						certOrgs,
 						motorNames,
 						types,
@@ -126,7 +124,7 @@ public class MotorDbCache {
 					for (MotorCase motorCase : i.getMotorCases(diameter)) {
 						for (MotorCaseMfg mcm : motorCase.getMotorCaseManufacturer()) {
 
-							cases.put(motorCase.uuid(), new MotorCaseDTO(motorCase, new MotorManufacturerDTO(mcm.getMotorManufacturer())));
+							// cases.put(motorCase.uuid(), motorCase);
 						}
 					}
 				}
@@ -297,7 +295,7 @@ public class MotorDbCache {
 	public Collection<MotorMfg> getManufacturers() {
 	    return manufacturers.values();
 	}
-	public Collection<MotorCaseDTO> getMotorCases() { return cases.cases.values(); }
+	public Collection<MotorCaseDTO> getMotorCases() { return cases.getAll().stream().flatMap(c -> c.getMotorCaseManufacturer().stream().map(m -> new MotorCaseDTO(c, new MotorManufacturerDTO(m.getMotorManufacturer())))).collect(Collectors.toList()); }
 	public List<MotorCaseDTO> getMotorCases(Float diameter, ImpulseDTO impulse) {
 		return MotorCaseImpulse.get(ctx, impulse, diameter)
 				.stream()

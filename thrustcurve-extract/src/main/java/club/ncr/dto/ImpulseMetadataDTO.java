@@ -2,7 +2,6 @@ package club.ncr.dto;
 
 import club.ncr.cayenne.model.Motor;
 import club.ncr.cayenne.model.MotorImpulse;
-import club.ncr.dto.motor.ImpulseDTO;
 
 import java.util.Objects;
 

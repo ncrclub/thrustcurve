@@ -1,7 +1,7 @@
 package club.ncr.cayenne.model;
 
 import club.ncr.cayenne.model.auto._MotorCaseImpulse;
-import club.ncr.dto.motor.ImpulseDTO;
+import club.ncr.dto.ImpulseDTO;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 

@@ -3,7 +3,6 @@ package club.ncr.dto;
 import club.ncr.Tuple;
 import club.ncr.cayenne.model.Motor;
 import club.ncr.cayenne.model.MotorName;
-import club.ncr.dto.motor.ImpulseDTO;
 
 import java.util.Set;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package club.ncr.dto.motor;
+package club.ncr.dto;
 
 import club.ncr.cayenne.model.MotorImpulse;
 

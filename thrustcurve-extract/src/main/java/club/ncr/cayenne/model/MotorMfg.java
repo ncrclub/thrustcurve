@@ -2,7 +2,7 @@ package club.ncr.cayenne.model;
 
 import club.ncr.cayenne.model.auto._MotorMfg;
 import club.ncr.cayenne.dao.Motors;
-import club.ncr.dto.motor.ImpulseDTO;
+import club.ncr.dto.ImpulseDTO;
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.exp.Expression;
