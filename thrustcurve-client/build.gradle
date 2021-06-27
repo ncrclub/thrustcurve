@@ -1,5 +1,4 @@
 
-description = ''
 dependencies {
-    compile group: 'xerces', name: 'xercesImpl', version:'2.11.0'
+    implemenation group: 'xerces', name: 'xercesImpl', version:'2.11.0'
 }

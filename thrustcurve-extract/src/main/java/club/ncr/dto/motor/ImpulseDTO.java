@@ -1,8 +1,6 @@
 package club.ncr.dto.motor;
 
-import club.ncr.cayenne.MotorCase;
-import club.ncr.cayenne.MotorDiameter;
-import club.ncr.cayenne.MotorImpulse;
+import club.ncr.cayenne.model.MotorImpulse;
 
 public enum ImpulseDTO {
 

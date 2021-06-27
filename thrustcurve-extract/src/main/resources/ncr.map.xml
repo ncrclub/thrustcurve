@@ -242,7 +242,7 @@
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
 		<db-attribute name="name" type="VARCHAR" isMandatory="true" length="64"/>
 	</db-entity>
-	<obj-entity name="FlightEvent" className="club.ncr.cayenne.FlightEvent" dbEntityName="flight_event">
+	<obj-entity name="FlightEvent" className="club.ncr.cayenne.model.FlightEvent" dbEntityName="flight_event">
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="eventDate" type="java.util.Date" db-attribute-path="event_date"/>
 		<obj-attribute name="id" type="java.lang.Integer" db-attribute-path="id"/>
@@ -250,7 +250,7 @@
 		<obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/>
 		<obj-attribute name="weatherConditions" type="java.lang.String" db-attribute-path="weather_conditions"/>
 	</obj-entity>
-	<obj-entity name="FlightLog" className="club.ncr.cayenne.FlightLog" dbEntityName="flight_log">
+	<obj-entity name="FlightLog" className="club.ncr.cayenne.model.FlightLog" dbEntityName="flight_log">
 		<obj-attribute name="altitude" type="java.lang.Integer" db-attribute-path="altitude"/>
 		<obj-attribute name="flightDate" type="java.util.Date" db-attribute-path="flight_date"/>
 		<obj-attribute name="flightNotes" type="java.lang.String" db-attribute-path="flight_notes"/>
@@ -263,7 +263,7 @@
 		<obj-attribute name="motorNameId" type="java.lang.Integer" db-attribute-path="motor_name_id"/>
 		<obj-attribute name="motorWeight" type="java.lang.Double" db-attribute-path="motor_weight"/>
 	</obj-entity>
-	<obj-entity name="FlyerRecord" className="club.ncr.cayenne.FlyerRecord" dbEntityName="flyer_record">
+	<obj-entity name="FlyerRecord" className="club.ncr.cayenne.model.FlyerRecord" dbEntityName="flyer_record">
 		<obj-attribute name="address1" type="java.lang.String" db-attribute-path="address_1"/>
 		<obj-attribute name="address2" type="java.lang.String" db-attribute-path="address_2"/>
 		<obj-attribute name="addressCity" type="java.lang.String" db-attribute-path="address_city"/>
@@ -297,7 +297,7 @@
 		<obj-attribute name="username" type="java.lang.String" db-attribute-path="username"/>
 		<obj-attribute name="workPhone" type="java.lang.String" db-attribute-path="work_phone"/>
 	</obj-entity>
-	<obj-entity name="FlyerRocket" className="club.ncr.cayenne.FlyerRocket" dbEntityName="flyer_rocket">
+	<obj-entity name="FlyerRocket" className="club.ncr.cayenne.model.FlyerRocket" dbEntityName="flyer_rocket">
 		<obj-attribute name="flyerUserId" type="java.lang.Integer" db-attribute-path="flyer_user_id"/>
 		<obj-attribute name="maidenFlightDate" type="java.util.Date" db-attribute-path="maiden_flight_date"/>
 		<obj-attribute name="rocketName" type="java.lang.String" db-attribute-path="rocket_name"/>
@@ -305,7 +305,7 @@
 		<obj-attribute name="userNotes" type="java.lang.String" db-attribute-path="user_notes"/>
 		<obj-attribute name="weightUnits" type="java.lang.String" db-attribute-path="weight_units"/>
 	</obj-entity>
-	<obj-entity name="LegacyFlyerRecord" className="club.ncr.cayenne.LegacyFlyerRecord" dbEntityName="legacy_flyer_record">
+	<obj-entity name="LegacyFlyerRecord" className="club.ncr.cayenne.model.LegacyFlyerRecord" dbEntityName="legacy_flyer_record">
 		<obj-attribute name="address1" type="java.lang.String" db-attribute-path="address_1"/>
 		<obj-attribute name="address2" type="java.lang.String" db-attribute-path="address_2"/>
 		<obj-attribute name="addressCity" type="java.lang.String" db-attribute-path="address_city"/>
@@ -332,7 +332,7 @@
 		<obj-attribute name="username" type="java.lang.String" db-attribute-path="username"/>
 		<obj-attribute name="workPhone" type="java.lang.String" db-attribute-path="work_phone"/>
 	</obj-entity>
-	<obj-entity name="LegacyLaunchEvent" className="club.ncr.cayenne.LegacyLaunchEvent" dbEntityName="legacy_launch_event">
+	<obj-entity name="LegacyLaunchEvent" className="club.ncr.cayenne.model.LegacyLaunchEvent" dbEntityName="legacy_launch_event">
 		<obj-attribute name="clubLaunch" type="java.lang.String" db-attribute-path="club_launch"/>
 		<obj-attribute name="createdDate" type="java.util.Date" db-attribute-path="created_date"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
@@ -341,7 +341,7 @@
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="weather" type="java.lang.String" db-attribute-path="weather"/>
 	</obj-entity>
-	<obj-entity name="LegacyLaunchLog" className="club.ncr.cayenne.LegacyLaunchLog" dbEntityName="legacy_launch_log">
+	<obj-entity name="LegacyLaunchLog" className="club.ncr.cayenne.model.LegacyLaunchLog" dbEntityName="legacy_launch_log">
 		<obj-attribute name="altitude" type="java.lang.Long" db-attribute-path="altitude"/>
 		<obj-attribute name="contests" type="java.lang.String" db-attribute-path="contests"/>
 		<obj-attribute name="createdDate" type="java.util.Date" db-attribute-path="created_date"/>
@@ -363,11 +363,11 @@
 		<obj-attribute name="rocket" type="java.lang.String" db-attribute-path="rocket"/>
 		<obj-attribute name="rsoInitials" type="java.lang.String" db-attribute-path="rso_initials"/>
 	</obj-entity>
-	<obj-entity name="LegacyLevelType" className="club.ncr.cayenne.LegacyLevelType" dbEntityName="legacy_level_type">
+	<obj-entity name="LegacyLevelType" className="club.ncr.cayenne.model.LegacyLevelType" dbEntityName="legacy_level_type">
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="id" type="java.lang.Byte" db-attribute-path="id"/>
 	</obj-entity>
-	<obj-entity name="Motor" className="club.ncr.cayenne.Motor" dbEntityName="motor">
+	<obj-entity name="Motor" className="club.ncr.cayenne.model.Motor" dbEntityName="motor">
 		<obj-attribute name="brandName" type="java.lang.String" db-attribute-path="brand_name"/>
 		<obj-attribute name="burnTime" type="double" db-attribute-path="burn_time"/>
 		<obj-attribute name="createdDate" type="java.util.Date" db-attribute-path="created_date"/>
@@ -382,16 +382,16 @@
 		<obj-attribute name="totalImpulseNs" type="double" db-attribute-path="total_impulse_ns"/>
 		<obj-attribute name="weight" type="double" db-attribute-path="weight"/>
 	</obj-entity>
-	<obj-entity name="MotorCase" className="club.ncr.cayenne.MotorCase" dbEntityName="motor_case">
+	<obj-entity name="MotorCase" className="club.ncr.cayenne.model.MotorCase" dbEntityName="motor_case">
 		<obj-attribute name="id" type="int" db-attribute-path="id"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
-	<obj-entity name="MotorCaseImpulse" className="club.ncr.cayenne.MotorCaseImpulse" dbEntityName="motor_case_impulse"/>
-	<obj-entity name="MotorCaseMfg" className="club.ncr.cayenne.MotorCaseMfg" dbEntityName="motor_case_mfg"/>
-	<obj-entity name="MotorCertOrg" className="club.ncr.cayenne.MotorCertOrg" dbEntityName="motor_cert_org">
+	<obj-entity name="MotorCaseImpulse" className="club.ncr.cayenne.model.MotorCaseImpulse" dbEntityName="motor_case_impulse"/>
+	<obj-entity name="MotorCaseMfg" className="club.ncr.cayenne.model.MotorCaseMfg" dbEntityName="motor_case_mfg"/>
+	<obj-entity name="MotorCertOrg" className="club.ncr.cayenne.model.MotorCertOrg" dbEntityName="motor_cert_org">
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
 	</obj-entity>
-	<obj-entity name="MotorData" className="club.ncr.cayenne.MotorData" dbEntityName="motor_data">
+	<obj-entity name="MotorData" className="club.ncr.cayenne.model.MotorData" dbEntityName="motor_data">
 		<obj-attribute name="data" type="byte[]" db-attribute-path="data"/>
 		<obj-attribute name="dataUrl" type="java.lang.String" db-attribute-path="data_url"/>
 		<obj-attribute name="infoUrl" type="java.lang.String" db-attribute-path="info_url"/>
@@ -399,30 +399,30 @@
 		<obj-attribute name="source" type="java.lang.String" db-attribute-path="source"/>
 		<obj-attribute name="tcFileID" type="int" db-attribute-path="file_id"/>
 	</obj-entity>
-	<obj-entity name="MotorDataFormat" className="club.ncr.cayenne.MotorDataFormat" dbEntityName="motor_data_format">
+	<obj-entity name="MotorDataFormat" className="club.ncr.cayenne.model.MotorDataFormat" dbEntityName="motor_data_format">
 		<obj-attribute name="fileExtension" type="java.lang.String" db-attribute-path="FileExtension"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
 	</obj-entity>
-	<obj-entity name="MotorDiameter" className="club.ncr.cayenne.MotorDiameter" dbEntityName="motor_diameter">
+	<obj-entity name="MotorDiameter" className="club.ncr.cayenne.model.MotorDiameter" dbEntityName="motor_diameter">
 		<obj-attribute name="diameter" type="java.lang.Float" db-attribute-path="Diameter"/>
 	</obj-entity>
-	<obj-entity name="MotorImpulse" className="club.ncr.cayenne.MotorImpulse" dbEntityName="motor_impulse">
+	<obj-entity name="MotorImpulse" className="club.ncr.cayenne.model.MotorImpulse" dbEntityName="motor_impulse">
 		<obj-attribute name="classification" type="int" db-attribute-path="Classification"/>
 		<obj-attribute name="impulse" type="java.lang.String" db-attribute-path="Impulse"/>
 	</obj-entity>
-	<obj-entity name="MotorMfg" className="club.ncr.cayenne.MotorMfg" dbEntityName="motor_mfg">
+	<obj-entity name="MotorMfg" className="club.ncr.cayenne.model.MotorMfg" dbEntityName="motor_mfg">
 		<obj-attribute name="abbreviation" type="java.lang.String" db-attribute-path="abbreviation"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
 	</obj-entity>
-	<obj-entity name="MotorName" className="club.ncr.cayenne.MotorName" dbEntityName="motor_name">
+	<obj-entity name="MotorName" className="club.ncr.cayenne.model.MotorName" dbEntityName="motor_name">
 		<obj-attribute name="id" type="java.lang.Integer" db-attribute-path="ID"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
 	</obj-entity>
-	<obj-entity name="MotorPropellant" className="club.ncr.cayenne.MotorPropellant" dbEntityName="motor_propellant">
+	<obj-entity name="MotorPropellant" className="club.ncr.cayenne.model.MotorPropellant" dbEntityName="motor_propellant">
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="Name"/>
 		<obj-attribute name="type" type="java.lang.String" db-attribute-path="Type"/>
 	</obj-entity>
-	<obj-entity name="MotorType" className="club.ncr.cayenne.MotorType" dbEntityName="motor_type">
+	<obj-entity name="MotorType" className="club.ncr.cayenne.model.MotorType" dbEntityName="motor_type">
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 	</obj-entity>
 	<db-relationship name="flight_logs" source="flight_event" target="flight_log" toMany="true">

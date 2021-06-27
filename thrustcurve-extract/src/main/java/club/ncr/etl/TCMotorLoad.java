@@ -1,10 +1,10 @@
 package club.ncr.etl;
 
-import club.ncr.cayenne.MotorDiameter;
-import club.ncr.cayenne.MotorImpulse;
+import club.ncr.cayenne.model.MotorDiameter;
+import club.ncr.cayenne.model.MotorImpulse;
 import club.ncr.dto.motor.ImpulseDTO;
-import club.ncr.motors.MotorDbCache;
-import club.ncr.cayenne.MotorMfg;
+import club.ncr.MotorDbCache;
+import club.ncr.cayenne.model.MotorMfg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thrustcurve.TCApiClient;
@@ -14,8 +14,6 @@ import org.thrustcurve.api.search.SearchResults;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class TCMotorLoad {
 

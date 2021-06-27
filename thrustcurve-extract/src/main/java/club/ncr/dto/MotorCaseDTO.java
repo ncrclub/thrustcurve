@@ -1,11 +1,10 @@
 package club.ncr.dto;
 
-import club.ncr.cayenne.*;
-import org.thrustcurve.api.data.TCMotorData;
+import club.ncr.cayenne.model.Motor;
+import club.ncr.cayenne.model.MotorCase;
+import club.ncr.cayenne.model.MotorDiameter;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 public class MotorCaseDTO implements Comparable<MotorCaseDTO> {

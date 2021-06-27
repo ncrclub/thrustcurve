@@ -1,6 +1,6 @@
 package club.ncr.dto;
 
-import club.ncr.cayenne.MotorPropellant;
+import club.ncr.cayenne.model.MotorPropellant;
 
 import java.util.Objects;
 

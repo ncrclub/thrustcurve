@@ -1,7 +1,7 @@
 package club.ncr.motors;
 
-import club.ncr.cayenne.Motor;
-import club.ncr.cayenne.MotorMfg;
+import club.ncr.cayenne.model.Motor;
+import club.ncr.cayenne.model.MotorMfg;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;

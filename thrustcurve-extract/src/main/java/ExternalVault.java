@@ -1,4 +1,3 @@
-import club.ncr.security.Crypto;
 import club.ncr.security.HashVault;
 import org.apache.cayenne.configuration.PasswordEncoding;
 

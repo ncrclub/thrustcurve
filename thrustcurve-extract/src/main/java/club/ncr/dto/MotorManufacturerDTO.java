@@ -1,6 +1,6 @@
 package club.ncr.dto;
 
-import club.ncr.cayenne.MotorMfg;
+import club.ncr.cayenne.model.MotorMfg;
 import org.thrustcurve.api.data.TCMotorRecord;
 
 import java.util.Objects;

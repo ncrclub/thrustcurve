@@ -1,6 +1,6 @@
 package club.ncr.dto;
 
-import club.ncr.cayenne.MotorData;
+import club.ncr.cayenne.model.MotorData;
 import org.thrustcurve.api.data.TCMotorData;
 
 
